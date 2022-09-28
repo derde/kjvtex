@@ -1,0 +1,19 @@
+Pericopes for the Psalms from 24-150
+Exact control of header position (not grid, I think)
+Allow page numbers when chapter titles
+Set book name to be exact - a multiple of 6\baselineskip 
+git 
+
+Switch to proper text reference (e.g. bible protector.com)
+    https://bibleprotector.com/TEXT-PCE-127.txt
+    -- book abbreviations
+    -- << >> prompts from psalms - Check Psalm 14 - beware embedded italic
+    -- <<[ ]>> prompts from epistles - beware embedded italics
+    -- <<END>> section dividers 
+
+Checklist:
+    Appropriate margins
+    Appropriate page size
+    Genesis 1:1 page
+    Matthew 1:1 page
+    Revelation end page
