@@ -7,7 +7,6 @@
 % twoside says it's a real book
 % \usepackage{microtype} % Improves spacing
 \usepackage{fontspec}
-\usepackage{multicol}
 % \usepackage{xunicode}
 % \usepackage[margin=0.8in]{geometry}
 %\usepackage[left=1.5cm,top=2.0cm,right=1.5cm,bottom=1.5cm,bindingoffset=0.5cm]{geometry}
@@ -23,8 +22,15 @@
 \usepackage{needspace}
 \usepackage[english]{babel}
 \usepackage[fontsize=10pt,baseline=12pt]{grid}%
-\usepackage[left=1.5cm,top=1.5cm,right=1.0cm,bottom=1.0cm,bindingoffset=0.5cm,headheight=5mm]{geometry}%
-\geometry{papersize={165mm,235mm}}%
+\usepackage[left=1.0cm,top=1.0cm,right=1.0cm,bottom=1.0cm,bindingoffset=0.5cm,headheight=5mm]{geometry}%
+%\geometry{papersize={165mm,235mm}}%
+\geometry{papersize={150mm,222mm}}%
+\usepackage[grid]{mymulticol}
+\setlength{\columnsep}{1.5em}
+%\premulticols = 50pt
+%\postmulticols= 20pt
+%\multicolsep = 12pt plus 4pt minus 3pt
+%
 %This complains about initex being required ... 
 %\begin{hyphenrules}{afrikaans}\include{hyph-af}\end{hyphenrules}
 %\usepackage{etoolbox}
@@ -84,7 +90,7 @@
 % \setmainfont[Numbers=Uppercase]{Latin Modern Roman}
 % \setmonofont[Scale=0.90,Ligatures=NoCommon]{Courier New}
 \newfontfamily\mysuperscriptfont[Scale=0.65]{DejaVu Sans Condensed}
-\newfontfamily\mybooktitlefont[Scale=3.29]{DejaVu Sans Condensed}
+\newfontfamily\mybooktitlefont[Scale=3.28]{DejaVu Sans Condensed}
 \newfontfamily\mychapterfont[Scale=0.9]{DejaVu Sans Condensed}
 %\usepackage{fontspec}  
 %\setmainfont[Ligatures=TeX]{Linux Libertine O}  
@@ -124,25 +130,34 @@
 %\newcommand{\biblpagetitles}[2]{\markboth{#1}{#2}}%
 \newcommand{\bibltwocolumn}{\begin{multicols}{2}}%
 \newcommand{\biblonecolumn}{\end{multicols}}%
+%\renewcommand{\bibltwocolumn}{\par}%
+%\renewcommand{\biblonecolumn}{\par}%
 \newcommand{\biblendbook}[1]{\biblonecolumn}%
 \newcommand{\biblnewsection}{\par\newpage\thispagestyle{noheadings}}%
 \newcommand{\biblnewbook}[1]{%
-\null%\vspace{2cm}%
-\addcontentsline{toc1}{books}{#1}%
+%\null%\vspace{2cm}%
+%\addcontentsline{toc1}{books}{#1}%
 %\biblbookheading{#1}
 }%
 \newcommand{\biblenddocument}{\biblonecolumn}%
 %
 %\newcommand{\biblbookheading}[1]{\needspace{7\baselineskip}\begin{center}\textbf{\mybooktitlefont\Huge {#1}}\end{center}\par\vspace{\baselineskip}\bibltwocolumn}%
-\newcommand{\biblbookheading}[1]{\needspace{7\baselineskip}\thispagestyle{nopagenumber}\begin{center}%
-\textbf{\mybooktitlefont{#1}}\end{center}\bibltwocolumn\par\vspace{\baselineskip}}%
+%\newcommand*{\strutfivelines}{\rule[0.05\baselineskip]{0pt}{4.00\baselineskip}}%
+\def\strutfivelines{\vrule height 4.90\parskip depth 1.00\parskip width 0pt}   
+\newcommand*{\mybox}[1]{\framebox{\strutfivelines #1}}%
+\newcommand{\biblbookheading}[1]{%\par{\center #1}\par%\section{#1}
+\needspace{7\baselineskip}
+\thispagestyle{nopagenumber}%
+\begin{center}\textbf{\mybooktitlefont{\center #1}}\end{center}%
+%\par%
+\bibltwocolumn}%
 %\newcommand{\biblleftcolumn}[1]{\selectlanguage{#1}\widowpenalty=0\clubpenalty=0} % just make widows, because alignment is more important
 %\newcommand{\biblrightcolumn}[1]{\switchcolumn\selectlanguage{#1}\widowpenalty=0\clubpenalty=0}%
 %\newcommand{\bibldonecolumns}{\biblonecolumn}%
 %\newcommand{\biblendchapter}{\vfill}%
 %\newcommand{\biblnewchapter}[1]{\markboth{#1}{#1}}%
 \newcommand{\markieset}{}%
-\newcommand{\biblnewchapter}[1]{\renewcommand\markieset{\markboth{#1}{#1}}}%
+\newcommand{\biblnewchapter}[1]{\markright{#1}\renewcommand\markieset{\markboth{#1}{#1}}}%
 \newcommand{\biblendchapter}[1]{\markright{#1}}%
 %
 %\newcommand{\biblchapter}[2]{\vspace{2cm}\needspace{3\baselineskip}}
@@ -155,7 +170,8 @@
 %% \end{paracol}\nopagebreak}%
 %% \setlength{\abnormalparskip{1pt}}
 %%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\bibldropcapschapter}[1]{\needspace{1\baselineskip}\lettrine[lines=2, lraise=0.0, lhang=0.05, findent=3pt, nindent=0pt, loversize=0.0]{\textbf{\mychapterfont #1}}{}\markieset}%
+\newcommand{\bibldropcapschapter}[1]{\needspace{0.5\baselineskip}
+\lettrine[lines=2, lraise=0.0, lhang=0.05, findent=3pt, nindent=0pt, loversize=0.0]{\textbf{\mychapterfont #1}}{}\markieset}%
 % Work around lettrine bug with "Fpar" definition from https://tex.stackexchange.com/questions/369868/using-lettrine-with-short-paragraphs :
 \def\biblsyntheticpar{\par}%
 \def\biblsyntheticparii{\hfil\vadjust{\vskip\parskip}\break\indent}%
@@ -172,15 +188,16 @@
 %\setlength{\headsep}{3pt}%
 \begin{document}
 %\tableofcontents
+\raggedright% this is nice in that it makes the central margin seem bigger, but the bleed-through from the other side might look bad
 \mainmatter%
 \fontsize{10}{10}\selectfont%
 \thispagestyle{plain}
 \null
-\vspace{7\baselineskip}%
-\begin{center}\textbf{\mybooktitlefont\Huge {King James Bible}}
+\vspace{7\parskip}%
+\begin{center}\textbf{\mybooktitlefont{King James Bible}}
 \par
 \vspace{7\baselineskip}%
-http://soulwinning.africa/
+https://github.com/derde/kjvtex
 \par
 The fruit of the righteous is a tree of life; and he that winneth souls is wise.
 \end{center}
@@ -190,3 +207,6 @@ The fruit of the righteous is a tree of life; and he that winneth souls is wise.
 \biblenddocument%
 %%\bigskip%%\ldots
 \end{document}
+
+
+
