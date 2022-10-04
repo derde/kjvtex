@@ -21,12 +21,13 @@
 \usepackage{fancyhdr}
 \usepackage{needspace}
 \usepackage[english]{babel}
+% Grid sets rigid baseline and glue lengths to keep register-true - front and back pages aligned
 \usepackage[fontsize=10pt,baseline=12pt]{grid}%
 \usepackage[left=1.0cm,top=1.0cm,right=1.0cm,bottom=1.0cm,bindingoffset=0.5cm,headheight=5mm]{geometry}%
 %\geometry{papersize={165mm,235mm}}%
 \geometry{papersize={150mm,222mm}}%
 \usepackage[grid]{mymulticol}
-\setlength{\columnsep}{1.5em}
+\setlength{\columnsep}{1.0em}
 %\premulticols = 50pt
 %\postmulticols= 20pt
 %\multicolsep = 12pt plus 4pt minus 3pt
@@ -76,7 +77,8 @@
 %\fontspec{Liberation Serif}              % (TimesNewRoman0)
 %\setmainfont[Numbers=Uppercase]{Liberation Serif} % 1046 pages
 %
-\fontspec{Charis SIL}\setmainfont[Numbers=Uppercase]{Charis SIL}% 1006 pages +2
+%\fontspec{Charis SIL}
+\setmainfont[]{Charis SIL}% 1006 pages +2
 %\fontspec{Gentium Book Plus}\setmainfont[Numbers=Uppercase]{Gentium Book Plus}% 947 pages +2
 % \fontspec[Scale=0.8]{Times New Roman}   % (TimesNewRoman1)
 % map TimesNewRoman(0)/bx/sc (bold smallcaps) to Junicode(1)/m/sc (normal smallcaps of fake bold)
@@ -91,7 +93,7 @@
 % \setmonofont[Scale=0.90,Ligatures=NoCommon]{Courier New}
 \newfontfamily\mysuperscriptfont[Scale=0.65]{DejaVu Sans Condensed}
 % Line space = 12pt*4 = 48 , Height = 4*8pt*n+4pt*n = 48pt = n*(24+4)pt=48
-\newfontfamily\mybooktitlefont[Scale=3.80]{DejaVu Sans Condensed}
+\newfontfamily\mybooktitlefont[Scale=2.80]{DejaVu Sans Condensed}
 \newfontfamily\mychapterfont[Scale=0.9]{DejaVu Sans Condensed}
 %\usepackage{fontspec}  
 %\setmainfont[Ligatures=TeX]{Linux Libertine O}  
@@ -134,22 +136,21 @@
 %\renewcommand{\bibltwocolumn}{\par}%
 %\renewcommand{\biblonecolumn}{\par}%
 \newcommand{\biblendbook}[1]{\biblonecolumn}%
-\newcommand{\biblnewsection}{\par\newpage\thispagestyle{noheadings}}%
-\newcommand{\biblnewbook}[1]{%
-%\null%\vspace{2cm}%
-%\addcontentsline{toc1}{books}{#1}%
-%\biblbookheading{#1}
+\newcommand{\biblnewsection}{\par\newpage%\thispagestyle{noheadings}
 }%
 \newcommand{\biblenddocument}{\biblonecolumn}%
 %
 %\newcommand{\biblbookheading}[1]{\needspace{7\baselineskip}\begin{center}\textbf{\mybooktitlefont\Huge {#1}}\end{center}\par\vspace{\baselineskip}\bibltwocolumn}%
-%\newcommand*{\strutfivelines}{\rule[0.05\baselineskip]{0pt}{4.00\baselineskip}}%
-\def\strutfivelines{\vrule height 4.90\parskip depth 1.00\parskip width 0pt}   
-\newcommand*{\mybox}[1]{\framebox{\strutfivelines #1}}%
+% \strutsomelines:
+% * The 1.3\baselineskip is necessary sinnce the large text has a big baseline
+% * 0pt makes it invisible
+% * 5\baselineskip means it covers 5 lines
+\def\strutsomelines{\rule[-1.3\baselineskip]{0pt}{4.0\baselineskip}}%
+% Heading for each book of the Bible: big text
 \newcommand{\biblbookheading}[1]{%\par{\center #1}\par%\section{#1}
-\needspace{7\baselineskip}
-\thispagestyle{nopagenumber}%
-\begin{center}\textbf{\mybooktitlefont{\center #1}}\end{center}%
+\needspace{8\baselineskip}
+%\thispagestyle{nopagenumber}%
+\begin{center}\textbf{\mybooktitlefont{\strutsomelines #1}}\end{center}%
 %\par%
 \bibltwocolumn}%
 %\newcommand{\biblleftcolumn}[1]{\selectlanguage{#1}\widowpenalty=0\clubpenalty=0} % just make widows, because alignment is more important
@@ -160,6 +161,7 @@
 \newcommand{\markieset}{}%
 \newcommand{\biblnewchapter}[1]{\markright{#1}\renewcommand\markieset{\markboth{#1}{#1}}}%
 \newcommand{\biblendchapter}[1]{\markright{#1}}%
+\newcommand{\biblnewbook}[1]{\markboth{#1}{#1}}%
 %
 %\newcommand{\biblchapter}[2]{\vspace{2cm}\needspace{3\baselineskip}}
 %% %New book in separate paracol
@@ -175,6 +177,7 @@
 \lettrine[lines=2, lraise=0.0, lhang=0.05, findent=3pt, nindent=0pt, loversize=0.0]{\textbf{\mychapterfont #1}}{}\markieset}%
 % Work around lettrine bug with "Fpar" definition from https://tex.stackexchange.com/questions/369868/using-lettrine-with-short-paragraphs :
 \def\biblsyntheticpar{\par}%
+% Synthetic paragraph that should be used for verse 2, in case it is right net to verse 1 and the dropcaps chapter number
 \def\biblsyntheticparii{\hfil\vadjust{\vskip\parskip}\break\indent}%
 % Don't warn for slightly overfull hboxen
 \hfuzz=2pt%
@@ -187,21 +190,38 @@
 %\setlength{\columnseprule}{0.3pt}%
 \setlength{\columnseprule}{0.0pt}%
 %\setlength{\headsep}{3pt}%
+\makeatletter
+\newcommand{\mysize}{\***@size}
+\newcommand{\myfamily}{\***@family}
+\newcommand{\myseries}{\***@series}
+\makeatother
 \begin{document}
 %\tableofcontents
 \raggedright% this is nice in that it makes the central margin seem bigger, but the bleed-through from the other side might look bad
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \mainmatter%
+\thispagestyle{noheadings}%
 \fontsize{10}{10}\selectfont%
-\thispagestyle{plain}
 \null
-\vspace{7\parskip}%
+\strutsomelines\par
 \begin{center}\textbf{\mybooktitlefont{King James Bible}}
 \par
 \vspace{7\baselineskip}%
-https://github.com/derde/kjvtex
 \par
-The fruit of the righteous is a tree of life; and he that winneth souls is wise.
+The fruit of the righteous is a tree of life;\par and he that winneth souls is wise.
 \end{center}
+\vfill
+\par
+Printed in \makeatletter \f@family \makeatother
+{} at \the\fontdimen6\font\the\font
+\par
+Source repository: https://github.com/derde/kjvtex
+\par
+Source text md5sum: 6e4d92f05ea149b78a74d4c92ed78355
+\par
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage\shipout\null\stepcounter{page}
 \include{english}% Load main content
