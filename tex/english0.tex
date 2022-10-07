@@ -1,7 +1,7 @@
 % !TeX document-id = {7879a0e9-c3ab-473f-99fc-635c7bcf5210}
 % !TEX encoding = UTF-8 Unicode
 % !TEX TS-program = XeLaTeX
-\documentclass[10pt,twoside,openany,a4paper]{book}
+\documentclass[9pt,twoside,openany,a4paper]{book}
 %\usepackage[utf8]{inputenc}
 % openany says chapters start on either page
 % twoside says it's a real book
@@ -22,10 +22,12 @@
 \usepackage{needspace}
 \usepackage[english]{babel}
 % Grid sets rigid baseline and glue lengths to keep register-true - front and back pages aligned
-\usepackage[fontsize=10pt,baseline=12pt]{grid}%
-\usepackage[left=1.0cm,top=1.0cm,right=1.0cm,bottom=1.0cm,bindingoffset=0.5cm,headheight=5mm]{geometry}%
-%\geometry{papersize={165mm,235mm}}%
-\geometry{papersize={150mm,222mm}}%
+\usepackage[fontsize=8.5pt,baseline=9.5pt]{grid}%
+% Bottom border is 0.7 instead of 1.0, because we're not using the footer, and it's hard to turn off
+\usepackage[left=1.0cm,top=1.0cm,right=1.0cm,bottom=0.9cm,bindingoffset=0.1cm,headheight=5mm]{geometry}%
+\geometry{papersize={130mm,220mm}}%
+%\geometry{papersize={118mm,180mm}}%
+% 0.3528pt/mm ... 334pt,510pt
 \usepackage[grid]{mymulticol}
 \setlength{\columnsep}{1.0em}
 %\premulticols = 50pt
@@ -94,6 +96,7 @@
 \newfontfamily\mysuperscriptfont[Scale=0.65]{DejaVu Sans Condensed}
 % Line space = 12pt*4 = 48 , Height = 4*8pt*n+4pt*n = 48pt = n*(24+4)pt=48
 \newfontfamily\mybooktitlefont[Scale=2.80]{DejaVu Sans Condensed}
+% Chapter numbers would be a little bigger than two lines in double size, so scale them down a bit:
 \newfontfamily\mychapterfont[Scale=0.9]{DejaVu Sans Condensed}
 %\usepackage{fontspec}  
 %\setmainfont[Ligatures=TeX]{Linux Libertine O}  
@@ -182,7 +185,8 @@
 % Don't warn for slightly overfull hboxen
 \hfuzz=2pt%
 % All our vertical stuff is bad for now
-%\vbadness=10001%
+\vbadness=10000%
+\vfuzz=0pt%
 % Try to avoid stranded chapter header at the bottom of the page (this doesn't work)
 %\widowpenalty=0%
 %\clubpenalty=0%
@@ -203,7 +207,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \mainmatter%
 \thispagestyle{noheadings}%
-\fontsize{10}{10}\selectfont%
+%\fontsize{10}{10}\selectfont%
 \null
 \strutsomelines\par
 \begin{center}\textbf{\mybooktitlefont{King James Bible}}
@@ -214,12 +218,12 @@ The fruit of the righteous is a tree of life;\par and he that winneth souls is w
 \end{center}
 \vfill
 \par
-Printed in \makeatletter \f@family \makeatother
+Typesetting by \LaTeX{} in \makeatletter \f@family \makeatother
 {} at \the\fontdimen6\font\the\font
 \par
 Source repository: https://github.com/derde/kjvtex
 \par
-Source text md5sum: 6e4d92f05ea149b78a74d4c92ed78355
+Source text TEXT-PCE-127.txt, md5sum: d6176dd776234eeaf0944dd0cac24bef
 \par
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

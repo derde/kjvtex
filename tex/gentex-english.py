@@ -5,7 +5,6 @@ import re
 import itertools
 import sys
 
-
 class Renumbering:
     def __init__(self,file):
         self.ltor={}
@@ -171,6 +170,74 @@ class bibleformatter:
     'SJIGGAJŌN'  :   'Sjiggajōn',
     'VANWEË'     :   'Vanweë',
     }
+    bookAbbreviations = {
+        'Ge'   : 'Genesis',
+        'Ex'   : 'Exodus',
+        'Le'   : 'Leviticus',
+        'Nu'   : 'Numbers',
+        'De'   : 'Deuteronomy',
+        'Jos'  : 'Joshua',
+        'Jg'   : 'Judges',
+        'Ru'   : 'Ruth',
+        '1Sa'  : '1 Samuel',
+        '2Sa'  : '2 Samuel',
+        '1Ki'  : '1 Kings',
+        '2Ki'  : '2 Kings',
+        '1Ch'  : '1 Chronicles',
+        '2Ch'  : '2 Chronicles',
+        'Ezr'  : 'Ezra',
+        'Ne'   : 'Nehemiah',
+        'Es'   : 'Esther',
+        'Job'  : 'Job',
+        'Ps'   : 'Psalms',
+        'Pr'   : 'Proverbs',
+        'Ec'   : 'Ecclesiastes',
+        'Song' : 'Song of Solomon',
+        'Isa'  : 'Isaiah',
+        'Jer'  : 'Jeremiah',
+        'La'   : 'Lamentations',
+        'Eze'  : 'Ezekiel',
+        'Da'   : 'Daniel',
+        'Ho'   : 'Hosea',
+        'Joe'  : 'Joel',
+        'Am'   : 'Amos',
+        'Ob'   : 'Obadiah',
+        'Jon'  : 'Jonah',
+        'Mic'  : 'Micah',
+        'Na'   : 'Nahum',
+        'Hab'  : 'Habakkuk',
+        'Zep'  : 'Zephaniah',
+        'Hag'  : 'Haggai',
+        'Zec'  : 'Zechariah',
+        'Mal'  : 'Malachi',
+        'Mt'   : 'Matthew',
+        'Mr'   : 'Mark',
+        'Lu'   : 'Luke',
+        'Joh'  : 'John',
+        'Ac'   : 'Acts',
+        'Ro'   : 'Romans',
+        '1Co'  : '1 Corinthians',
+        '2Co'  : '2 Corinthians',
+        'Ga'   : 'Galatians',
+        'Eph'  : 'Ephesians',
+        'Php'  : 'Philippians',
+        'Col'  : 'Colossians',
+        '1Th'  : '1 Thessalonians',
+        '2Th'  : '2 Thessalonians',
+        '1Ti'  : '1 Timothy',
+        '2Ti'  : '2 Timothy',
+        'Tit'  : 'Titus',
+        'Phm'  : 'Philemon',
+        'Heb'  : 'Hebrews',
+        'Jas'  : 'James',
+        '1Pe'  : '1 Peter',
+        '2Pe'  : '2 Peter',
+        '1Jo'  : '1 John',
+        '2Jo'  : '2 John',
+        '3Jo'  : '3 John',
+        'Jude' : 'Jude',
+        'Re'   : 'Revelation',
+    }
 
     def __init__(self,file, is_afrikaans=False):
         self.state={
@@ -196,6 +263,7 @@ class bibleformatter:
         for line in self.fd:
             m=lineformat_re.search(line.strip())
             book,chapter,verse,text=m.groups()
+            book=self.bookAbbreviations.get(book,book)
             text=text.replace('’',"'")
             yield book,chapter,verse,text
 
@@ -210,6 +278,7 @@ class bibleformatter:
 
     def verseheading(self,verse):
         r= self.setverseforheading()
+        # r+=  r'\verse{'+verse+'}'  
         if verse!='1': r+=  r'\verse{'+verse+'}'  
         return r
 
@@ -246,6 +315,16 @@ class bibleformatter:
     def sub_format_italics(self,m):
         smallcapsd='{\em ' + m.group(1) + '}'
         return smallcapsd
+    def sub_format_epistleattribution(self,m):
+        return '\par{\em ' + m.group(1) + '}'
+    def sub_format_sectionsep(self,m):
+        return '\par{\em ' + m.group(1) + '}'
+    def sub_format_psalmheading(self,m):
+        return '{\em ' + m.group(1) + '}\\biblsyntheticparii%\n'
+    def sub_format_italics_bracketquote(self,m):
+        # FIXME: for psalms, the <<< >>> is followed by paragraph break
+        # FIXME: for NT book notes, the <<[ ]>> is preceded by paragraph break
+        return self.sub_format_italics(m)+r'\biblsyntheticparii'+'%\n'
 
     def reformat_english(self,text):
         # Rewrite CAPITALISED WORDS as smallcaps .. this might do the wrong thing in the new testament and odd places
@@ -325,6 +404,9 @@ class bibleformatter:
                         chaptertext=[];
                         # chaptertext.append(r'\par'+'\n');
                 chaptertext.append(self.verseheading(verse))
+            text=re.sub(r'<<\[(.*?)\]>>*',self.sub_format_epistleattribution,text)
+            text=re.sub(r'<<([^a-z]*?)>>',self.sub_format_sectionsep,text)
+            text=re.sub(r'<<(.*?)>>',self.sub_format_psalmheading,text)
             text=re.sub(r'\[(.*?)\]',self.sub_format_italics,text)
             chaptertext.append(self.reformat(text)+'\n');
             obook = book
@@ -334,8 +416,8 @@ class bibleformatter:
         newbook=False
         self.state['paragraph']=0
 
-def iteratechapters():
-    en=bibleformatter('../1769.txt')
+def iteratechapters(src="../1769.txt"):
+    en=bibleformatter(src)
     ochapter=''
     obook=''
     oparagraph=None
@@ -374,7 +456,9 @@ def iteratechapters():
 outfd=sys.stdout
 if len(sys.argv)>1:
     outfd=open(sys.argv[1],'w')
-for splurge in iteratechapters():
+src='../1769.txt'
+src='../TEXT-PCE-127.txt'
+for splurge in iteratechapters(src):
     outfd.write( splurge )
 
 
