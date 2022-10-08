@@ -439,8 +439,8 @@ def iteratechapters(src="../1769.txt"):
             o += r'\biblnewsection'+'%\n'
 
         if paragraph['newbook']:
-            o += r'\biblnewbook{'+paragraph['book'] + '}%\n' 
             o+=r'\biblbookheading{'+paragraph['book']+'}%\n';
+            o+= r'\biblnewbook{'+paragraph['book'] + '}%\n' 
             obook=paragraph['book']
     
         # Print current chapter
