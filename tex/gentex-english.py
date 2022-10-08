@@ -271,7 +271,7 @@ class bibleformatter:
         # Generate  chapter numbers for each book
         o='';
         if chapter=='1':
-            if not book.startswith('Ps'):
+            if book in ('Obadiah','Philemon','2 John','3 John','Jude'):
                 return o+self.verseheading('1') #  + '\n';
         return o+self.verseheading('1') +  \
             r'\bibldropcapschapter{'+chapter+'}' + '%\n' 
@@ -445,7 +445,10 @@ def iteratechapters(src="../1769.txt"):
     
         # Print current chapter
         if chapter!=ochapter:
-            o += r'\biblnewchapter{%(book_s)s %(chapter)s}' % paragraph + '%\n'
+            if paragraph['book'] in ('Obadiah','Philemon','2 John','3 John','Jude'):
+                o += r'\biblnewchapter{%(book_s)s}' % paragraph + '%\n' # omit chapter from heading for 1-heading book
+            else:
+                o += r'\biblnewchapter{%(book_s)s %(chapter)s}' % paragraph + '%\n'
             ochapter=chapter
         elif (chapter==ochapter):
             o+=r'\biblsyntheticpar'+'%\n'

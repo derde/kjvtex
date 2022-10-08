@@ -28,8 +28,13 @@
 \geometry{papersize={130mm,220mm}}%
 %\geometry{papersize={118mm,180mm}}%
 % 0.3528pt/mm ... 334pt,510pt
+%\usepackage[grid]{mymulticol}
 \usepackage[grid]{mymulticol}
-\setlength{\columnsep}{1.0em}
+\setlength{\columnsep}{\baselineskip}%{1.0em}
+\setlength{\premulticols}{0\baselineskip}
+\setlength{\postmulticols}{0\baselineskip}
+\setlength{\multicolsep}{0\baselineskip}
+\setlength{\emergencystretch}{0\baselineskip}
 %\premulticols = 50pt
 %\postmulticols= 20pt
 %\multicolsep = 12pt plus 4pt minus 3pt
@@ -148,13 +153,14 @@
 % * The 1.3\baselineskip is necessary sinnce the large text has a big baseline
 % * 0pt makes it invisible
 % * 5\baselineskip means it covers 5 lines
-\def\strutsomelines{\rule[-1.3\baselineskip]{0pt}{4.0\baselineskip}}%
+\def\strutsomelines{\rule[-1\baselineskip]{0pt}{4.0\baselineskip}}%
 % Heading for each book of the Bible: big text
 \newcommand{\biblbookheading}[1]{%\par{\center #1}\par%\section{#1}
-\needspace{8\baselineskip}
+\needspace{8\baselineskip}%
 %\thispagestyle{nopagenumber}%
-\begin{center}\textbf{\mybooktitlefont{\strutsomelines #1}}\end{center}%
-%\par%
+%\begin{center}\textbf{\mybooktitlefont{\strutsomelines #1}}\end{center}%
+{\centering \textbf{\mybooktitlefont #1}\strut\strutsomelines\par} 
+%#1\par%
 \bibltwocolumn}%
 %\newcommand{\biblleftcolumn}[1]{\selectlanguage{#1}\widowpenalty=0\clubpenalty=0} % just make widows, because alignment is more important
 %\newcommand{\biblrightcolumn}[1]{\switchcolumn\selectlanguage{#1}\widowpenalty=0\clubpenalty=0}%
@@ -228,6 +234,10 @@ Source text TEXT-PCE-127.txt, md5sum: d6176dd776234eeaf0944dd0cac24bef
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage\shipout\null\stepcounter{page}
+%\tracingcommands=1
+%\tracingparagraphs=1 
+%\tracingmacros=1
+%\tracingoutput=1
 \include{english}% Load main content
 \biblenddocument%
 %%\bigskip%%\ldots
