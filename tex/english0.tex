@@ -1,7 +1,7 @@
 % !TeX document-id = {7879a0e9-c3ab-473f-99fc-635c7bcf5210}
 % !TEX encoding = UTF-8 Unicode
 % !TEX TS-program = XeLaTeX
-\documentclass[9pt,twoside,openany,a4paper]{book}
+\documentclass[8pt,twoside,openany,a4paper]{extbook}
 %\usepackage[utf8]{inputenc}
 % openany says chapters start on either page
 % twoside says it's a real book
@@ -24,13 +24,14 @@
 % Grid sets rigid baseline and glue lengths to keep register-true - front and back pages aligned
 \usepackage[fontsize=8.5pt,baseline=9.5pt]{grid}%
 % Bottom border is 0.7 instead of 1.0, because we're not using the footer, and it's hard to turn off
-\usepackage[left=1.0cm,top=1.0cm,right=1.0cm,bottom=0.9cm,bindingoffset=0.1cm,headheight=5mm]{geometry}%
-\geometry{papersize={130mm,220mm}}%
+%\usepackage[left=0.7cm,top=1.0cm,right=0.7cm,bottom=0.9cm,bindingoffset=0.0cm,headheight=5mm]{geometry}%
+\usepackage[left=0.7cm,top=0.7cm,right=0.7cm,bottom=0.6cm,bindingoffset=0.0cm,headheight=5mm]{geometry}%
+\geometry{papersize={148mm,210mm}}%
 %\geometry{papersize={118mm,180mm}}%
 % 0.3528pt/mm ... 334pt,510pt
 %\usepackage[grid]{mymulticol}
-\usepackage[grid]{mymulticol}
-\setlength{\columnsep}{\baselineskip}%{1.0em}
+\usepackage[grid]{multicol}
+\setlength{\columnsep}{1.0em}
 \setlength{\premulticols}{0\baselineskip}
 \setlength{\postmulticols}{0\baselineskip}
 \setlength{\multicolsep}{0\baselineskip}
@@ -50,7 +51,7 @@
 %\checkandfixthelayout
 %%%%%%%%%%%%%
 %Nice spacing, but not grid-like:
-\setlength{\parindent}{0.1em}
+\setlength{\parindent}{0.5em}
 %\setlength{\parskip}{0cm plus4mm minus1pt}
 \fancypagestyle{noheadings}{%
     \fancyhead[EL]{} % hush
@@ -83,9 +84,15 @@
 %\setromanfont[Numbers=Uppercase]{DejaVu Sans Condensed}
 %\fontspec{Liberation Serif}              % (TimesNewRoman0)
 %\setmainfont[Numbers=Uppercase]{Liberation Serif} % 1046 pages
-%
-%\fontspec{Charis SIL}
-\setmainfont[]{Charis SIL}% 1006 pages +2
+%% New Standard ... but you need fontforge to add semicolon to Old Standar ...
+%% % \def\myfontname{New Standard}
+%% % \fontspec{\myfontname}
+%% % \setmainfont[ItalicFont=Old Standard TT Italic]{\myfontname}% 1006 pages +2
+%% CHARIS SIL:
+\def\myfontname{Charis SIL}
+\fontspec{\myfontname}
+\setmainfont{\myfontname}% 1006 pages +2
+\newfontfamily\myfootnotefont[Scale=0.80]{\myfontname} % Used for smallcaps
 %\fontspec{Gentium Book Plus}\setmainfont[Numbers=Uppercase]{Gentium Book Plus}% 947 pages +2
 % \fontspec[Scale=0.8]{Times New Roman}   % (TimesNewRoman1)
 % map TimesNewRoman(0)/bx/sc (bold smallcaps) to Junicode(1)/m/sc (normal smallcaps of fake bold)
@@ -100,7 +107,7 @@
 % \setmonofont[Scale=0.90,Ligatures=NoCommon]{Courier New}
 \newfontfamily\mysuperscriptfont[Scale=0.65]{DejaVu Sans Condensed}
 % Line space = 12pt*4 = 48 , Height = 4*8pt*n+4pt*n = 48pt = n*(24+4)pt=48
-\newfontfamily\mybooktitlefont[Scale=2.80]{DejaVu Sans Condensed}
+\newfontfamily\mybooktitlefont[Scale=2.80]{\myfontname}
 % Chapter numbers would be a little bigger than two lines in double size, so scale them down a bit:
 \newfontfamily\mychapterfont[Scale=0.9]{DejaVu Sans Condensed}
 %\usepackage{fontspec}  
@@ -155,12 +162,9 @@
 % * 5\baselineskip means it covers 5 lines
 \def\strutsomelines{\rule[-1\baselineskip]{0pt}{4.0\baselineskip}}%
 % Heading for each book of the Bible: big text
-\newcommand{\biblbookheading}[1]{%\par{\center #1}\par%\section{#1}
+\newcommand{\biblbookheading}[1]{
 \needspace{8\baselineskip}%
-%\thispagestyle{nopagenumber}%
-%\begin{center}\textbf{\mybooktitlefont{\strutsomelines #1}}\end{center}%
 {\centering \textbf{\mybooktitlefont #1}\strut\strutsomelines\par} 
-%#1\par%
 \bibltwocolumn}%
 %\newcommand{\biblleftcolumn}[1]{\selectlanguage{#1}\widowpenalty=0\clubpenalty=0} % just make widows, because alignment is more important
 %\newcommand{\biblrightcolumn}[1]{\switchcolumn\selectlanguage{#1}\widowpenalty=0\clubpenalty=0}%
@@ -224,24 +228,19 @@ The fruit of the righteous is a tree of life;\par and he that winneth souls is w
 \end{center}
 \vfill
 \par
-Typesetting by \LaTeX{} in \makeatletter \f@family \makeatother
-{} at \the\fontdimen6\font\the\font
+Typesetting by \LaTeX{} in \makeatletter \f@family \makeatother\ \the\fontdimen6\font\the\font\ text, / \the\baselineskip\ spacing
 \par
 Source repository: https://github.com/derde/kjvtex
 \par
 Source text TEXT-PCE-127.txt, md5sum: d6176dd776234eeaf0944dd0cac24bef
 \par
+\vspace{2\baselineskip}%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage\shipout\null\stepcounter{page}
-%\tracingcommands=1
-%\tracingparagraphs=1 
-%\tracingmacros=1
-%\tracingoutput=1
+\newpage
+\shipout\null\stepcounter{page}%this page intentionally left blank
 \include{english}% Load main content
 \biblenddocument%
 %%\bigskip%%\ldots
 \end{document}
-
-
 

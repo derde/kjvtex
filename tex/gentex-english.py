@@ -131,11 +131,8 @@ REV      : Revelation      :  Openbaring'''
         m=re.search('(\S+) (\d+:\d+)',refs)
         chapverse = m.group(2)
         ref1 = self.bookmaplookup(0,1,m.group(1))+' '+chapverse
-        ref2 = self.bookmaplookup(0,2,m.group(1))+' '+chapverse
-        nref1=self.renumbering.tomasoretic(ref1)
-        nref2=self.renumbering.tomasoretic(nref1)
-        self.paragraphs[nref1] = True
-        self.paragraphs[nref2] = True
+        #if ref1.startswith('Psalms'): ref1='Psalm '+ref1.split()[-1]
+        self.paragraphs[ref1] = True
         # if nref1!=ref1 or nref2!=ref2: print(ref1,ref2,"=>",nref1,nref2)
 
     def isnewparagraph(self,ref):
@@ -306,7 +303,7 @@ class bibleformatter:
         if m.span(1)[0]==0:
             return m.group(1)+m.group(2)
         word=m.group(1)
-        smallcapsd=word[0]+r'{\footnotesize '+word[1:]+'}'
+        smallcapsd=word[0]+r'{\myfootnotefont '+word[1:]+'}'
         # smallcapsd= r'\textsc{'+m.group(1).title()+'}'
         whitespace=m.group(2)
         # if not whitespace: whitespace='%\n'
