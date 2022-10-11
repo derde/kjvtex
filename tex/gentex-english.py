@@ -253,7 +253,9 @@ class bibleformatter:
             self.reformat=self.reformat_english
             self.markheading=r'\markright';
         self.fd=open(file,'r')
-
+        self.shortnames={}
+        for k,v in self.bookAbbreviations.items():
+            self.shortnames[v]=k
 
     def booktochapters(self):
         lineformat_re=re.compile('(.*?) (\d+):(\d+) (.*)')
@@ -366,6 +368,7 @@ class bibleformatter:
 
     def booktoparagraphs(self):
         '''Parse the book, and return paragraphs'''
+        index=0
         obook=''
         ochapter=''
         chaptertext=[]
@@ -374,13 +377,14 @@ class bibleformatter:
         newsection=True
         for book,chapter,verse,text in self.booktochapters():
             self.state['book']=book
+            self.state['short']=self.shortnames[book]
             self.state['chapter']=chapter
             self.state['verse']=verse
             self.state['text']=text
             if ( chapter!=ochapter or book!=obook ):
                 if ochapter:
                     self.state['paragraph']+=1
-                    yield { 'newsection': newsection, 'newbook': newbook, 'book':obook, 'chapter': ochapter, 'paragraph': self.state['paragraph'], 'chaptertext': ''.join(chaptertext), }
+                    yield { 'index': index, 'newsection': newsection, 'newbook': newbook, 'book':obook, 'short': self.shortnames[obook], 'chapter': ochapter, 'paragraph': self.state['paragraph'], 'chaptertext': ''.join(chaptertext), }
                     newbook=False
                     newsection=False
                     self.state['paragraph']=0
@@ -388,6 +392,7 @@ class bibleformatter:
                 if book!=obook:
                     newsection=newsection or book.startswith('Matthew')
                     newbook=True
+                    index+=1
                 chaptertext.append(self.chapternumber(book,chapter))
             if verse!='1':
                 if self.isnewparagraph(book,chapter,verse,text):
@@ -395,7 +400,7 @@ class bibleformatter:
                         chaptertext.append(r'\biblsyntheticparii'+'%\n')  # just shove in a synthetic paragraph break, since real \par breaks drop-caps number
                     else:
                         self.state['paragraph']+=1
-                        yield { 'newsection': newsection, 'newbook': newbook, 'book':obook, 'chapter': ochapter, 'paragraph': self.state['paragraph'], 'chaptertext': ''.join(chaptertext), }
+                        yield { 'index':index, 'newsection': newsection, 'newbook': newbook, 'book':obook, 'short': self.shortnames[obook], 'chapter': ochapter, 'paragraph': self.state['paragraph'], 'chaptertext': ''.join(chaptertext), }
                         newbook=False
                         newsection=False
                         chaptertext=[];
@@ -409,15 +414,16 @@ class bibleformatter:
             obook = book
             ochapter = chapter
         self.state['paragraph']+=1
-        yield { 'newsection': False, 'newbook': newbook, 'book':obook, 'chapter': ochapter, 'paragraph': self.state['paragraph'], 'chaptertext': ''.join(chaptertext), }
+        yield { 'index':index, 'newsection': False, 'newbook': newbook, 'book':obook, 'short':self.shortnames[obook], 'chapter': ochapter, 'paragraph': self.state['paragraph'], 'chaptertext': ''.join(chaptertext), }
         newbook=False
         self.state['paragraph']=0
 
-def iteratechapters(src="../1769.txt"):
+def iteratechapters(src):
     en=bibleformatter(src)
     ochapter=''
     obook=''
     oparagraph=None
+    bookindex=0
     for paragraph in en.booktoparagraphs():
         paragraph['book_s']=en.singular(paragraph['book'])  # singular
         if not oparagraph: oparagraph=paragraph
@@ -425,11 +431,11 @@ def iteratechapters(src="../1769.txt"):
         # End previous chapter?
         chapter = '{%(book_s)s %(chapter)s}' % paragraph
         if ochapter and chapter!=ochapter:
-            o += r'\biblendchapter{%(book_s)s %(chapter)s}' % oparagraph + '%\n'
+            o += r'\biblendchapter{%(book_s)s %(chapter)s}{%(index)s}' % oparagraph + '%\n'
         # End previous book?
         if paragraph['newbook']:
             if obook:
-                o += r'\biblendbook{'+obook+'}%\n'
+                o += r'\biblendbook{'+obook+'}{'+str(paragraph['index'])+'}%\n'
             # yield r'\biblchapter{'+paragraph['book']+' / ' + right['book']+'}\n'  # TeX chapter, which is a book of the Bible
 
         if paragraph['newsection']:
@@ -437,7 +443,8 @@ def iteratechapters(src="../1769.txt"):
 
         if paragraph['newbook']:
             o+=r'\biblbookheading{'+paragraph['book']+'}%\n';
-            o+= r'\biblnewbook{'+paragraph['book'] + '}%\n' 
+            o+= r'\biblnewbook{'+paragraph['book'] + '}{'+paragraph['short']+'}{'+str(bookindex)+'}%\n' 
+            bookindex+=1
             obook=paragraph['book']
     
         # Print current chapter

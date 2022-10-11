@@ -1,9 +1,102 @@
 Printable KJV
 
-    all text and no commentary
+Goals:
+ * all text and no commentary (no tendentious notes, etc)
+ * made for reading: i.e. 
+ * minimum cost: ie. most efficient use of page space, fewest number of pages
 
 Wrapped text, embedded line numbers
 No headings, no maps
 
 Errata:
     Psalm 24:3 pericope - no effect?!
+
+
+Tradeoffs in printing:
+
+Margins
+ * 7mm all around is about as small as you can go.
+ * The inner margin must be bigger if the binding is not flat
+ * TODO It would be nice to make the inner margin 7mm on the left page, and the inner margin 10mm on the left page, to make use of the ragged right, which generally does not reach the end of the block
+
+Page size
+ * Larger page size means fewer pages, therefore less binding, fewer headers
+ * Larger page size means longer line, therefore more efficiency in wrapping
+ * Wider than A5 page size starts to become unwieldy
+ > The largest practical paper size should be used
+
+Text size
+ * 10pt seems nice, but it seems that 8.5pt might be an acceptable minimum
+ > Dunno
+
+Inter-line spacing
+ * Reducing the inter-line spacing to 90% of the point size makes the capitals run into the letters ypjq that hang down from the line
+ * Generally having the point size the same as the line spacing works best. (That's at least with the Charis SIL font)
+ * Generally the space between the words should be the same as the height of the letters with no tails, acemnorsuvwxz
+ > Minimum line spacing
+
+Ragged vs justified
+ * Ragged seems to turn off hyphenation, so it is a small loss in efficiency
+ * Justified makes a block that needs a column separation of 1.5em, or a line.  With ragged you can do 1em colum separation.
+ > Ragged seems nicer
+
+Kerning
+ * The kerning is set to -3 to -2 to 0 em (I think that's a different em to latex \em).  This is slightly on-top-of each other, but it's a big saving
+
+
+METRICS OF OTHER BIBLES
+
+KJV Hard cover
+    pages=1357 (genesis to revelation)
+    top-margin=14mm 
+    heading-height=3mm
+    outer-margin=9mm
+    inner-margin=10mm
+    bottom-margin=9mm
+    ragged-right
+    psalms-blank-lines
+    lines-per-page=47
+    text-height=157mm
+    line-spacing=157/47mm=9.5pt
+    height-of-ph-to-inter-line-spacing=39:27
+    text-height-p-h=9.5pt/39*27=6.5pt (8.5pt declared)
+
+ESV soft cover
+    pages=1042 (genesis to revelation)
+    top-space=16mm (from top of page to main text)
+    top-margin=9mm (from top of page to heading printing)
+    heading-height=3mm (height of heading)
+    outer-margin=9mm
+    inner-margin=13mm
+    bottom-space=7mm (footnotes on every page)
+    bottom-margin=13mm (footnotes on every page)
+    footnote-height=1.5mm 
+    ragged-right
+    psalms-blank-lines
+    lines-per-page=53
+    text-height=185mm
+    line-spacing=185/53mm=9.9pt
+    height-of-ph-to-inter-line-spacing=38:49
+    text-height-p-h=7.7pt
+
+Christian art large print
+    pages=1739 (genesis to revelation)
+    top-space=16mm (from top of page to main text)
+    top-margin=7mm (from top of page to heading printing)
+    heading-height=3mm (height of heading)
+    outer-margin=8mm
+    inner-margin=9mm
+    bottom-space=14mm (footnotes on every page)
+    bottom-margin=6mm (footnotes on every page)
+    footnote-height=2mm 
+    justified
+    psalms-verse-per-line
+    lines-per-page=38
+    text-height=182mm
+    line-spacing=182/38mm=13.5pt
+    height-of-ph-to-inter-line-spacing=40:44
+    text-height-ph=12.2pt
+
+
+FEATURES:
+    Print table of contents block down outer margin to identify quire errors. This is a nondescript little black block ... a shade of grey might be better ...
