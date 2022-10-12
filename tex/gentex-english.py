@@ -283,7 +283,7 @@ class bibleformatter:
     def verseheading(self,verse):
         r= self.setverseforheading()
         # r+=  r'\verse{'+verse+'}'  
-        if verse!='1': r+=  r'\verse{'+verse+'}'  
+        if verse!='1': r+=  r' \verse{'+verse+'}'  
         return r
 
     def setverseforheading(self):
