@@ -1,6 +1,10 @@
 #! /usr/bin/python3
 # coding: utf-8
 
+# DISCLAIMER: this code is torturous, because it is hacked from code for making
+# a side-by-side parallel Bible, which needs a lot of bad hacks.  I'm sorry.
+# Don't write your own code like this.  Be better.
+
 import re
 import itertools
 import sys
@@ -272,8 +276,9 @@ class bibleformatter:
         if chapter=='1':
             if book in ('Obadiah','Philemon','2 John','3 John','Jude'):
                 return o+self.verseheading('1') #  + '\n';
-        return o+self.verseheading('1') +  \
+        o+=self.verseheading('1') +  \
             r'\bibldropcapschapter{'+chapter+'}' + '%\n' 
+        return o
 
     def verseheading(self,verse):
         r= self.setverseforheading()
@@ -368,7 +373,7 @@ class bibleformatter:
 
     def booktoparagraphs(self):
         '''Parse the book, and return paragraphs'''
-        index=0
+        index=26
         obook=''
         ochapter=''
         chaptertext=[]
@@ -377,10 +382,16 @@ class bibleformatter:
         newsection=True
         for book,chapter,verse,text in self.booktochapters():
             self.state['book']=book
+            self.state['BOOK']=book.upper()
             self.state['short']=self.shortnames[book]
             self.state['chapter']=chapter
             self.state['verse']=verse
             self.state['text']=text
+            self.state['index']=index
+            self.state['shortbook']=( book in ('Obadiah','Philemon','2 John','3 John','Jude') )
+            versetmpl = {True: '%(BOOK)s %(verse)s',
+                        False: '%(BOOK)s %(chapter)s:%(verse)s' }
+            self.state['REFERENCE']=versetmpl[self.state['shortbook']] % self.state
             if ( chapter!=ochapter or book!=obook ):
                 if ochapter:
                     self.state['paragraph']+=1
@@ -392,7 +403,8 @@ class bibleformatter:
                 if book!=obook:
                     newsection=newsection or book.startswith('Matthew')
                     newbook=True
-                    index+=1
+                    index=(index+1) % 66
+                    self.state['index']=index
                 chaptertext.append(self.chapternumber(book,chapter))
             if verse!='1':
                 if self.isnewparagraph(book,chapter,verse,text):
@@ -410,7 +422,9 @@ class bibleformatter:
             text=re.sub(r'<<([^a-z]*?)>>',self.sub_format_sectionsep,text)
             text=re.sub(r'<<(.*?)>>',self.sub_format_psalmheading,text)
             text=re.sub(r'\[(.*?)\]',self.sub_format_italics,text)
-            chaptertext.append(self.reformat(text)+'\n');
+            chaptertext.append('\\biblnewreference{%(REFERENCE)s}{%(index)s}' % self.state)
+            chaptertext.append(self.reformat(text)+'');
+            chaptertext.append('\\biblendreference{%(REFERENCE)s}{%(index)s}' % self.state)
             obook = book
             ochapter = chapter
         self.state['paragraph']+=1
