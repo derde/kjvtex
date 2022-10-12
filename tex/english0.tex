@@ -89,9 +89,11 @@
 %% % \setmainfont[ItalicFont=Old Standard TT Italic]{\myfontname}% 1006 pages +2
 %% CHARIS SIL:
 \def\myfontname{Charis SIL}
+\def\mystretch{0.85}
+\def\invmystretch{1.17}
 \fontspec{\myfontname}
-\setmainfont{\myfontname}% 1006 pages +2
-\newfontfamily\myfootnotefont[Scale=0.80]{\myfontname} % Used for (synthetic) smallcaps
+\setmainfont[FakeBold=\invmystretch,FakeStretch=\mystretch,Scale=1.00]{\myfontname}% 1006 pages +2
+\newfontfamily\myfootnotefont[FakeBold=\invmystretch,FakeStretch=\mystretch,Scale=0.80]{\myfontname} % Used for (synthetic) smallcaps
 %\fontspec{Gentium Book Plus}\setmainfont[Numbers=Uppercase]{Gentium Book Plus}% 947 pages +2
 % \fontspec[Scale=0.8]{Times New Roman}   % (TimesNewRoman1)
 % map TimesNewRoman(0)/bx/sc (bold smallcaps) to Junicode(1)/m/sc (normal smallcaps of fake bold)
@@ -104,11 +106,11 @@
 %\setmainfont[Numbers=Uppercase]{New Standard} % 1046 pages
 % \setmainfont[Numbers=Uppercase]{Latin Modern Roman}
 % \setmonofont[Scale=0.90,Ligatures=NoCommon]{Courier New}
-\newfontfamily\mysuperscriptfont[Scale=0.65]{DejaVu Sans Condensed}
+\newfontfamily\mysuperscriptfont[FakeBold=\invmystretch,FakeStretch=\mystretch,Scale=0.65]{DejaVu Sans Condensed}
 % Line space = 12pt*4 = 48 , Height = 4*8pt*n+4pt*n = 48pt = n*(24+4)pt=48
-\newfontfamily\mybooktitlefont[Scale=2.80]{\myfontname}
+\newfontfamily\mybooktitlefont[FakeBold=\invmystretch,FakeStretch=\mystretch,Scale=2.80]{\myfontname}
 % Chapter numbers would be a little bigger than two lines in double size, so scale them down a bit:
-\newfontfamily\mychapterfont[Scale=0.9]{DejaVu Sans Condensed}
+\newfontfamily\mychapterfont[FakeBold=\invmystretch,FakeStretch=\mystretch,Scale=0.90]{DejaVu Sans Condensed}
 %\usepackage{fontspec}  
 %\setmainfont[Ligatures=TeX]{Linux Libertine O}  
 %\usepackage{metalogo,hyperref}  
@@ -215,30 +217,36 @@
 %\addfontfeature{LetterSpace=-2 plus 2 minus 1}% This is around 16 pages longer
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Kerning adjustment: big deal page-count affecter
-\addfontfeature{LetterSpace=-3 plus 3 minus 0}% The 3m space is what a good font design uses ... and we trample it
+\addfontfeature{LetterSpace=0 plus 0 minus 2}% The 3em space is what a good font design uses ... and we trample it
 % Big deal don't hypenate rule: we would save pages by hypenating, but it's ugly
-\hyphenpenalty=1000
+\hyphenpenalty=1300
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%k
 \mainmatter%
 \thispagestyle{noheadings}%
 %\fontsize{10}{10}\selectfont%
 \null
 \strutsomelines\par
-\begin{center}\textbf{\mybooktitlefont{King James Bible}}
-\par
-\vspace{7\baselineskip}%
-\par
+\begin{center}%
+\textbf{\mybooktitlefont{King James Bible}}
+\par\vspace{7\baselineskip}\par
 The fruit of the righteous is a tree of life;\par and he that winneth souls is wise.
+\par\vspace{7\baselineskip}\par
+And whosoever will, let him take the water of life freely.
 \end{center}
 \vfill
 \par
-Typesetting by \LaTeX{} in \makeatletter \f@family \makeatother\ \the\fontdimen6\font\the\font\ text, / line spacing \the\baselineskip
+Typesetting by \LaTeX{},
+Font \makeatletter \f@family \makeatother\ \the\fontdimen6\font\the\font\ text,
+scaled \mystretch / bold \invmystretch,
+line spacing \the\baselineskip
 \par
 {\uselengthunit{mm}Paper size \rndprintlength{\pdfpagewidth} $ \times $ \rndprintlength{\pdfpageheight}}
 \par
 Source repository: https://github.com/derde/kjvtex
 \par
 Source text TEXT-PCE-127.txt, md5sum: d6176dd776234eeaf0944dd0cac24bef
+\par
+No headings, verses continue on same line, justified
 \par
 \vspace{2\baselineskip}%
 
