@@ -72,9 +72,9 @@
 \def\mybookname{GEN}
 \def\mybookindex{0}
 \fancyhead[OL]{\begin{textblock}{1}(25,\mybookindex)\hfill\rule[0em]{4mm}{4mm}\end{textblock}}% This is the chapter marker block
-\fancyhead[OR]{\textbf{\textsf{--- \leftmark}}}% Top right header
-\fancyhead[EL]{\textbf{\textsf{--- \rightmark}}}% Top left header - leading dash is to discourage accidental reading of the heading
-\fancyhead[C]{\textbf{\textsf{\thepage}}}% Center footer
+\fancyhead[OR]{\myheadingfont \textbf{\textemdash\ \leftmark}}% Top right header
+\fancyhead[EL]{\myheadingfont \textbf{\textemdash\ \rightmark}}% Top left header - leading dash is to discourage accidental reading of the heading
+ \fancyhead[C]{\myheadingfont \textbf{\thepage}}% Center footer
 \renewcommand{\headrulewidth}{0.0pt}% lines just amplify the skewness of skewly printed pages 
 \renewcommand{\footrulewidth}{0.0pt}%
 %\defaultfontfeatures{Scale=MatchLowercase}
@@ -89,11 +89,13 @@
 %% % \setmainfont[ItalicFont=Old Standard TT Italic]{\myfontname}% 1006 pages +2
 %% CHARIS SIL:
 \def\myfontname{Charis SIL}
-\def\mystretch{0.85}
-\def\invmystretch{1.17}
+\def\mysansfont{DejaVu Sans Condensed}
+\def\mystretch{0.85}\def\myboldness{FakeBold=1.00,}\def\myboldness{}
 \fontspec{\myfontname}
-\setmainfont[FakeBold=\invmystretch,FakeStretch=\mystretch,Scale=1.00]{\myfontname}% 1006 pages +2
-\newfontfamily\myfootnotefont[FakeBold=\invmystretch,FakeStretch=\mystretch,Scale=0.80]{\myfontname} % Used for (synthetic) smallcaps
+\setmainfont[\myboldness FakeStretch=\mystretch,Scale=1.00]{\myfontname}% 1006 pages +2
+\newfontfamily\myheadingfont[\myboldness FakeStretch=\mystretch,Scale=0.80]{\myfontname} % Used for (synthetic) smallcaps
+\newfontfamily\myfootnotefont[\myboldness FakeStretch=\mystretch,Scale=0.80]{\myfontname} % Used for (synthetic) smallcaps
+\newfontfamily\mylatexfont[FakeStretch=1.3]{\myfontname} % For saying "Latex" without looking ugly
 %\fontspec{Gentium Book Plus}\setmainfont[Numbers=Uppercase]{Gentium Book Plus}% 947 pages +2
 % \fontspec[Scale=0.8]{Times New Roman}   % (TimesNewRoman1)
 % map TimesNewRoman(0)/bx/sc (bold smallcaps) to Junicode(1)/m/sc (normal smallcaps of fake bold)
@@ -106,11 +108,11 @@
 %\setmainfont[Numbers=Uppercase]{New Standard} % 1046 pages
 % \setmainfont[Numbers=Uppercase]{Latin Modern Roman}
 % \setmonofont[Scale=0.90,Ligatures=NoCommon]{Courier New}
-\newfontfamily\mysuperscriptfont[FakeBold=\invmystretch,FakeStretch=\mystretch,Scale=0.65]{DejaVu Sans Condensed}
+\newfontfamily\mysuperscriptfont[\myboldness FakeStretch=\mystretch,Scale=0.65]{\mysansfont}
 % Line space = 12pt*4 = 48 , Height = 4*8pt*n+4pt*n = 48pt = n*(24+4)pt=48
-\newfontfamily\mybooktitlefont[FakeBold=\invmystretch,FakeStretch=\mystretch,Scale=2.80]{\myfontname}
+\newfontfamily\mybooktitlefont[\myboldness FakeStretch=\mystretch,Scale=2.80]{\myfontname}
 % Chapter numbers would be a little bigger than two lines in double size, so scale them down a bit:
-\newfontfamily\mychapterfont[FakeBold=\invmystretch,FakeStretch=\mystretch,Scale=0.90]{DejaVu Sans Condensed}
+\newfontfamily\mychapterfont[\myboldness FakeStretch=\mystretch,Scale=0.90]{\mysansfont}
 %\usepackage{fontspec}  
 %\setmainfont[Ligatures=TeX]{Linux Libertine O}  
 %\usepackage{metalogo,hyperref}  
@@ -235,18 +237,18 @@ And whosoever will, let him take the water of life freely.
 \end{center}
 \vfill
 \par
-Typesetting by \LaTeX{},
-Font \makeatletter \f@family \makeatother\ \the\fontdimen6\font\the\font\ text,
-scaled \mystretch / bold \invmystretch,
-line spacing \the\baselineskip
-\par
+Typesetting by {\mylatexfont \LaTeX{}},
 {\uselengthunit{mm}Paper size \rndprintlength{\pdfpagewidth} $ \times $ \rndprintlength{\pdfpageheight}}
+\par
+Font \makeatletter \f@family \makeatother\ \the\fontdimen6\font\the\font\ text,
+scaled \mystretch\ / bold \myboldness,
+line spacing \the\baselineskip,
 \par
 Source repository: https://github.com/derde/kjvtex
 \par
 Source text TEXT-PCE-127.txt, md5sum: d6176dd776234eeaf0944dd0cac24bef
 \par
-No headings, verses continue on same line, justified
+No headings; verses continue on same line; justified; psalm titles; epistles postscripts
 \par
 \vspace{2\baselineskip}%
 

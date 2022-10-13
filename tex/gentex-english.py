@@ -369,6 +369,7 @@ class bibleformatter:
 
     def singular(self, book):
         if book=='Psalms': return 'Psalm'
+        if book=='PSALMS': return 'PSALM'
         return book
 
     def booktoparagraphs(self):
@@ -382,7 +383,7 @@ class bibleformatter:
         newsection=True
         for book,chapter,verse,text in self.booktochapters():
             self.state['book']=book
-            self.state['BOOK']=book.upper()
+            self.state['BOOK']=self.singular(book.upper())
             self.state['short']=self.shortnames[book]
             self.state['chapter']=chapter
             self.state['verse']=verse
