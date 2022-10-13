@@ -77,7 +77,7 @@ ESV soft cover
     text-height=185mm
     line-spacing=185/53mm=9.9pt
     height-of-ph-to-inter-line-spacing=38:49
-    text-height-p-h=7.7pt
+    text-height-p-h=7.7pt (font size)
 
 Christian art large print
     pages=1739 (genesis to revelation)
@@ -95,8 +95,29 @@ Christian art large print
     text-height=182mm
     line-spacing=182/38mm=13.5pt
     height-of-ph-to-inter-line-spacing=40:44
-    text-height-ph=12.2pt
+    text-height-ph=12.2pt (font size)
 
+Holman Gift & Award
+    pages=759
+    page-height=216mm
+    page-width=135mm
+    top-space=10mm (from top of page to main text)
+    top-margin=6mm (from top of page to heading printing)
+    heading-height=2mm (height of heading)
+    outer-margin=5mm
+    inner-margin=10mm
+    bottom-space=8mm
+    bottom-margin=0mm (no footnotes)
+    footnote-height=0mm (no footnotes)
+    psalms-verse-per-line
+    lines-per-page=73
+    text-height=mm
+    line-spacing=193/73mm==7.5pt
+    height-of-ph-to-inter-line-spacing=20:21
+    text-height-ph=7.1pt (font size)
+    justified
+    perfect-binding
+    endless-headings
 
 FEATURES:
     Print table of contents block down outer margin to identify quire errors. This is a nondescript little black block ... a shade of grey might be better ...
