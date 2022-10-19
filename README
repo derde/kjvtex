@@ -119,9 +119,63 @@ Holman Gift & Award
     perfect-binding
     endless-headings
 
+Africa marked edition (generous spacing, large margins)
+    pages=1147=878+269 (OT+NT)
+    page-height=200mm
+    page-width=135mm
+    top-space=15mm (from top of page to main text)
+    top-margin=10mm (from top of page to heading printing)
+    heading-height=3mm (height of heading)
+    outer-margin=13mm
+    inner-margin=15mm
+    bottom-space=15mm
+    bottom-margin=11mm
+    footnote-height=4mm (page number)
+    psalms-verse-per-line
+    lines-per-page=59
+    text-height=167mm
+    line-spacing=167mm/59==8.02pt
+    height-of-ph-to-inter-line-spacing=37:40
+    text-height-ph=7.4pt (font size)
+    justified
+    perfect-binding
+    header-topics
+    ragged-right
+    column-separation=2mm (incl line)
+
+Waterproof bible
+    > For this paper size and similar margins, we can do 707 pages: CharisSIL 9.0pt text, line spacing 9.5pt, scaled 0.86
+    pages=705
+    page-height=221mm
+    page-width=148mm
+    top-space=13mm (from top of page to main text)
+    top-margin=7mm (from top of page to heading printing)
+    heading-height=3mm (height of heading, incl line)
+    outer-margin=7mm 
+    inner-margin=15mm
+    bottom-space=8mm
+    bottom-margin=8mm
+    footnote-height=0mm (no footer)
+    psalms-verse-per-line
+    lines-per-page=74
+    text-height=201mm
+    line-spacing=201mm/74==7.7pt 
+    height-of-ph-to-inter-line-spacing=34:36
+    text-height-ph=7.27pt (font size)
+    justified
+    perfect-binding
+    no-italics
+    column-separation=3mm (no line)
+
 FEATURES:
     Print table of contents block down outer margin to identify quire errors. This is a nondescript little black block ... a shade of grey might be better ...
 
 ERRATA:
     Handling of Psalm 119 ALEPH to TETH to JOD - replace with hebrew letters?  Give own line, italics?
     Handling if 2nd verse indent for PSALMS
+
+
+Checklist:
+    Psalm 119: paragraph breaks and Hebrew names
+    Psalm 121: psalm title and first verse (check italics, indent/ line break)
+    Verse numbering: check for collision with descender (e.g. g and j), or below top of ascender

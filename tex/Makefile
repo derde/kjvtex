@@ -1,7 +1,13 @@
-moo:
-	./english.sh
-default: bibl2.pdf 
-more: bibl.pdf
+PDF=africa.pdf english0.pdf
+
+default: $(PDF)
+
+%.pdf : %.tex english.tex biblayout.tex
+	xelatex $< </dev/null 
+
+english.tex: gentex-english.py
+	./gentex-english.py english.tex
+
 clean:
 	rm *.{aux,log,toc,dvi,ps}
 

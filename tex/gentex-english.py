@@ -7,26 +7,27 @@
 
 import re
 import itertools
-import sys
+import sys,copy
 
-class Renumbering:
-    def __init__(self,file):
-        self.ltor={}
-        self.rtol={}
-        if not file: return
+class Hebrew:
+    hebrew_prefix=r'{\myhebrewfont'
+    hebrew_suffix=r'} '
+    def __init__(self,file='hebrew-words'):
         fd=open(file,'r')
+        self.lookup={}
         for line in fd:
-            m=re.search('(.*) (\d+:\d+) \((\d+:\d+)\)',line)
-            if not m: continue
-            book,L,R=m.group(1),m.group(2),m.group(3)
-            self.ltor[book+' '+L]=book+' '+R
-            self.rtol[book+' '+R]=book+' '+L
-    def tokjv(self,ref):
-        return self.rtol.get(ref,ref)
-    def tomasoretic(self,ref):
-        return self.ltor.get(ref,ref)
+            bits=line.split('\t')
+            ref,NAME,uni,chars=bits[:4]
+            self.lookup[ref]={ 'NAME': NAME, 'ref':ref, 'chars':chars }
+    def adjust(self,text,p):
+        'Zap the "ALEPH." away, and return the character to use'
+        c=''
+        if p['book'] == "Psalms" and p['REFERENCE'] in self.lookup:
+            r=self.lookup[p['REFERENCE']]
+            text=text.replace(r['NAME'],'')
+            c=r['chars']
+        return text,c
 
-            
 class paragraphdivisions:
     def staticdata(self):
         self.paragraphs={}
@@ -98,8 +99,7 @@ JAS      : James           :  Jakobus
 JUDE     : Jude            :  Judas 
 REV      : Revelation      :  Openbaring'''
 
-    def __init__(self,file,renumbering):
-        self.renumbering=renumbering
+    def __init__(self,file):
         self.staticdata()
         self.bookmap=[]
         for line in self.bookmapdata.split('\n'):
@@ -240,23 +240,15 @@ class bibleformatter:
         'Re'   : 'Revelation',
     }
 
-    def __init__(self,file, is_afrikaans=False):
+    def __init__(self,file):
         self.state={
             'book': '',
             'chapter': '',
             'chapter': '', }
-        if is_afrikaans:
-            this_renumbering=Renumbering('afrikaans.renumbering')
-        else:
-            this_renumbering=Renumbering(None)
-        self.paragraphdivisions=paragraphdivisions('1526.Pericopes.csv',this_renumbering)
-        if is_afrikaans:
-            self.reformat=self.reformat_afrikaans
-            self.markheading=r'\markleft';
-        else:
-            self.reformat=self.reformat_english
-            self.markheading=r'\markright';
-        self.fd=open(file,'r')
+        self.paragraphdivisions=paragraphdivisions('1526.Pericopes.csv')
+        self.reformat=self.reformat_english
+        self.markheading=r'\markright';
+        self.fd=file
         self.shortnames={}
         for k,v in self.bookAbbreviations.items():
             self.shortnames[v]=k
@@ -281,16 +273,10 @@ class bibleformatter:
         return o
 
     def verseheading(self,verse):
-        r= self.setverseforheading()
         # r+=  r'\verse{'+verse+'}'  
-        if verse!='1': r+=  r' \verse{'+verse+'}'  
-        return r
-
-    def setverseforheading(self):
-        ref = '%(book)s %(chapter)s:%(verse)s' % self.state
-        # return self.markheading+'{'+ref+'}' ;
-        return '' # r'\markright{%s}' % (ref)
-        # return r'\markboth{%s}{%s}' % (ref,ref)
+        if verse=='1':
+            return ''
+        return r' \verse{'+verse+'}{'+str(self.state['index'])+'}'
 
     def isnewparagraph(self,book,chapter,verse,text):
         # Afrikaans text has capital words indicating new paragraphs
@@ -324,7 +310,7 @@ class bibleformatter:
     def sub_format_sectionsep(self,m):
         return '\par{\em ' + m.group(1) + '}'
     def sub_format_psalmheading(self,m):
-        return '{\em ' + m.group(1) + '}\\biblsyntheticparii%\n'
+        return '{\em ' + m.group(1) + '}\\biblsyntheticparii%\n'+self.verseheading('1')
     def sub_format_italics_bracketquote(self,m):
         # FIXME: for psalms, the <<< >>> is followed by paragraph break
         # FIXME: for NT book notes, the <<[ ]>> is preceded by paragraph break
@@ -336,35 +322,6 @@ class bibleformatter:
         if re.search('|'.join(dontsmallcapsnt),text): 
             return text
         text=re.sub(r"([A-Z]{2,}'?S?)(\s*)", self.sub_format_smallcaps, text)
-        return text
-
-    def afrikaans_titlecase(self,m):
-        indefinitearticle=''
-        if m.group(1): indefinitearticle=m.group(1)
-        word=m.group(2)
-        if word=='HERE':
-            return word
-        return indefinitearticle+word[0]+word[1:].lower()  # .title() does the wrong thing for DRIE-EN-TWINTIG
-
-    def reformat_afrikaans(self,text):
-        # Rewrite paragraph capitalisation
-        for k,v in list(self.af_wordmap.items()):
-            text=text.replace(k,v);
-        utext=text # .decode('utf-8')
-        utext=re.sub(r"(^[’']n )?([A-Z-]{2,})", self.afrikaans_titlecase, utext, 1) # DRIE-EN-TWINTIG VYF-EN-TWINTIG EEN-EN-TWINTIG
-        utext=re.sub(r"([A-Z]{2,})(\s*)", self.sub_format_smallcaps, utext)
-        text=utext # .encode('utf-8')
-        # hyphenate_regexes = (
-        #     re.compile('([a-z])(honderd|duisend|miljoen)') , re.compile(r'(skrif)(geleerde)') )
-        # hyphenwords=('skrif-geleerde', 'ge-reg-tig-heid', 'Goeder-tieren-heid',
-        #     'Egipte-naars', 'eers-ge-borenes', 'goeder-tieren-heid',
-        #     'ver-slaan','ver-plet-ter', 'lank-moedig-heid','lyd-saam-heid',
-        #     'on-der-tussen', 'oop-ge-sny', 'familie-hoofde', 'dubbel-draad',
-        #     'tent-doeke', 'tent-doek', 'purper-rooi', 'bloed-rooi',)
-        # for regex in hyphenate_regexes:
-        #     text=regex.sub(r'\1\\-\2',text)
-        # for word in hyphenwords:
-        #     text=text.replace(word.replace('-',''),word.replace('-','\\-'))
         return text
 
     def singular(self, book):
@@ -379,9 +336,12 @@ class bibleformatter:
         ochapter=''
         chaptertext=[]
         self.state['paragraph']=0
+        self.state['REFERENCE']=''
         newbook=True
         newsection=True
+        hebrew=Hebrew()
         for book,chapter,verse,text in self.booktochapters():
+            self.ostate=copy.copy(self.state)
             self.state['book']=book
             self.state['BOOK']=self.singular(book.upper())
             self.state['short']=self.shortnames[book]
@@ -396,7 +356,7 @@ class bibleformatter:
             if ( chapter!=ochapter or book!=obook ):
                 if ochapter:
                     self.state['paragraph']+=1
-                    yield { 'index': index, 'newsection': newsection, 'newbook': newbook, 'book':obook, 'short': self.shortnames[obook], 'chapter': ochapter, 'paragraph': self.state['paragraph'], 'chaptertext': ''.join(chaptertext), }
+                    yield { 'index': index, 'newsection': newsection, 'newbook': newbook, 'book':obook, 'short': self.shortnames[obook], 'chapter': ochapter, 'paragraph': self.state['paragraph'], 'chaptertext': ''.join(chaptertext), 'REFERENCE': self.state['REFERENCE']}
                     newbook=False
                     newsection=False
                     self.state['paragraph']=0
@@ -407,18 +367,24 @@ class bibleformatter:
                     index=(index+1) % 66
                     self.state['index']=index
                 chaptertext.append(self.chapternumber(book,chapter))
+            text,aleph=hebrew.adjust(text,self.state)
+            if aleph:
+                aleph='{\myhebrewfont '+aleph+'} '
             if verse!='1':
                 if self.isnewparagraph(book,chapter,verse,text):
                     if verse=='2':
                         chaptertext.append(r'\biblsyntheticparii'+'%\n')  # just shove in a synthetic paragraph break, since real \par breaks drop-caps number
                     else:
                         self.state['paragraph']+=1
-                        yield { 'index':index, 'newsection': newsection, 'newbook': newbook, 'book':obook, 'short': self.shortnames[obook], 'chapter': ochapter, 'paragraph': self.state['paragraph'], 'chaptertext': ''.join(chaptertext), }
+                        yield { 'index':index, 'newsection': newsection, 'newbook': newbook, 'book':obook, 'short': self.shortnames[obook], 'chapter': ochapter, 'paragraph': self.state['paragraph'], 'chaptertext': ''.join(chaptertext), 'REFERENCE': self.state['REFERENCE']}
+
                         newbook=False
                         newsection=False
                         chaptertext=[];
                         # chaptertext.append(r'\par'+'\n');
-                chaptertext.append(self.verseheading(verse))
+                chaptertext.append(aleph + self.verseheading(verse))
+            else:
+                chaptertext.append(aleph);
             text=re.sub(r'<<\[(.*?)\]>>*',self.sub_format_epistleattribution,text)
             text=re.sub(r'<<([^a-z]*?)>>',self.sub_format_sectionsep,text)
             text=re.sub(r'<<(.*?)>>',self.sub_format_psalmheading,text)
@@ -428,8 +394,10 @@ class bibleformatter:
             chaptertext.append('\\biblendreference{%(REFERENCE)s}{%(index)s}' % self.state)
             obook = book
             ochapter = chapter
+            self.state['REFERENCE']=versetmpl[self.state['shortbook']] % self.state
         self.state['paragraph']+=1
-        yield { 'index':index, 'newsection': False, 'newbook': newbook, 'book':obook, 'short':self.shortnames[obook], 'chapter': ochapter, 'paragraph': self.state['paragraph'], 'chaptertext': ''.join(chaptertext), }
+        yield { 'index':index, 'newsection': False, 'newbook': newbook, 'book':obook, 'short':self.shortnames[obook], 'chapter': ochapter, 'paragraph': self.state['paragraph'], 'chaptertext': ''.join(chaptertext), 'REFERENCE': self.state['REFERENCE']}
+
         newbook=False
         self.state['paragraph']=0
 
@@ -439,6 +407,7 @@ def iteratechapters(src):
     obook=''
     oparagraph=None
     bookindex=0
+    hebrew=Hebrew();
     for paragraph in en.booktoparagraphs():
         paragraph['book_s']=en.singular(paragraph['book'])  # singular
         if not oparagraph: oparagraph=paragraph
@@ -450,7 +419,7 @@ def iteratechapters(src):
         # End previous book?
         if paragraph['newbook']:
             if obook:
-                o += r'\biblendbook{'+obook+'}{'+str(paragraph['index'])+'}%\n'
+                o += r'\biblendbook{'+obook+'}%\n'
             # yield r'\biblchapter{'+paragraph['book']+' / ' + right['book']+'}\n'  # TeX chapter, which is a book of the Bible
 
         if paragraph['newsection']:
@@ -458,7 +427,7 @@ def iteratechapters(src):
 
         if paragraph['newbook']:
             o+=r'\biblbookheading{'+paragraph['book']+'}%\n';
-            o+= r'\biblnewbook{'+paragraph['book'] + '}{'+paragraph['short']+'}{'+str(bookindex)+'}%\n' 
+            o+= r'\biblnewbook{'+paragraph['book'] + '}{'+paragraph['short']+'}%\n' 
             bookindex+=1
             obook=paragraph['book']
     
@@ -472,17 +441,21 @@ def iteratechapters(src):
         elif (chapter==ochapter):
             o+=r'\biblsyntheticpar'+'%\n'
         o+=paragraph['chaptertext'].strip()+'%\n';  # /par ?
-        yield o
+        yield paragraph,o
         oparagraph=paragraph
 
 outfd=sys.stdout
 if len(sys.argv)>1:
     outfd=open(sys.argv[1],'w')
-src='../1769.txt'
-src='../TEXT-PCE-127.txt'
-for splurge in iteratechapters(src):
+import os
+#src=os.popen('sed 1,23145d < ../TEXT-PCE-127.txt','r')
+#src=os.popen('sed "/^\(Joh\|Ro\) / p; d" < ../TEXT-PCE-127.txt','r')
+#src=open('../1769.txt','r')
+src=open('../TEXT-PCE-127.txt','r')
+#src=os.popen('grep ^Ps < ../TEXT-PCE-127.txt','r')
+books=[]
+for paragraph,splurge in iteratechapters(src):
     outfd.write( splurge )
-
 
 
 # 2 Kings 1:43 And he walked in all the ways of Asa his father; he turned not aside from it, doing that which was right in the eyes of the LORD : nevertheless the high places were not taken away; for the people offered and burnt incense yet in the high places.
