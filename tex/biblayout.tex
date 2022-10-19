@@ -83,9 +83,9 @@
 %\fancyhead[ER]{\begin{textblock}{1}(0,\mythumbindex)\hfill\rule[0em]{4mm}{3mm}\end{textblock}}% This is the chapter marker block
 \fancyhead[ER]{}% This is the chapter marker block
 \fancyhead[OL]{}% This is the chapter marker block
-\fancyhead[OR]{\myheadingfont \textbf{\textemdash\ \leftmark}%}% Top right header
-\fancyhead[EL]{\myheadingfont \textbf{\textemdash\ \rightmark}\biblthumbmark{\mythumbindex}}% Top left header - leading dash is to discourage accidental reading of the heading
- \fancyhead[C]{\myheadingfont \textbf{\thepage}}% Center footer
+\fancyhead[OR]{\myheadingfont \textbf{\textemdash\ \leftmark}\biblthumbmark{\mythumbindex}}% Top right header
+\fancyhead[EL]{\myheadingfont \textbf{\textemdash\ \rightmark}}% Top left header - leading dash is to discourage accidental reading of the heading
+\fancyhead[C]{\myheadingfont \textbf{\thepage}}% Center footer
 \renewcommand{\headrulewidth}{0.0pt}% lines just amplify the skewness of skewly printed pages 
 \renewcommand{\footrulewidth}{0.0pt}%
 %\defaultfontfeatures{Scale=MatchLowercase}
@@ -162,7 +162,7 @@
 %%  \setsecindent{0em}
 %%  \setaftersecskip{0em}
 %%  \setsecheadstyle{\marginhead}
-\renewcommand{\verse}[2]{\raisebox{2pt}[0pt]{\mysuperscriptfont\textbf{#1}\hspace{0.1em}}\gdef\mythumbindex{#2}}%3 points up, count height as 0 points, kern at end
+\renewcommand{\verse}[2]{\raisebox{2pt}[0pt]{\mysuperscriptfont\textbf{#1}\hspace{0.1em}}\def\mythumbindex{#2}}%3 points up, count height as 0 points, kern at end
 %\newcommand{\biblpagetitles}[2]{\lock{#1}{#2}}%
 \newcommand{\bibltwocolumn}{\begin{multicols}{2}}%
 \newcommand{\biblonecolumn}{\end{multicols}}%
@@ -180,8 +180,8 @@
 % * 5\baselineskip means it covers 5 lines
 \def\strutsomelines{\rule[-1\baselineskip]{0pt}{4.0\baselineskip}}%
 % Heading for each book of the Bible: big text
-\newcommand{\biblnewreference}[2]{\markboth{#1}{#1}\gdef\mythumbindex{#2}}%
-\newcommand{\biblendreference}[2]{\markboth{#1}{#1}\gdef\mythumbindex{#2}}%
+\newcommand{\biblnewreference}[2]{\markboth{#1}{#1}\def\mythumbindex{#2}}%
+\newcommand{\biblendreference}[2]{\markboth{#1}{#1}\def\mythumbindex{#2}}%
 \newcommand{\biblbookheading}[1]{
 \needspace{8\baselineskip}%
 {\centering \textbf{\mybooktitlefont #1}\strut\strutsomelines\par} 
