@@ -338,7 +338,7 @@ class bibleformatter:
         self.state['paragraph']=0
         self.state['REFERENCE']=''
         newbook=True
-        newsection=True
+        newsection="OLD TESTAMENT"
         hebrew=Hebrew()
         for book,chapter,verse,text in self.booktochapters():
             self.ostate=copy.copy(self.state)
@@ -362,7 +362,7 @@ class bibleformatter:
                     self.state['paragraph']=0
                     chaptertext=[]
                 if book!=obook:
-                    newsection=newsection or book.startswith('Matthew')
+                    if book.startswith('Matthew'): newsection="NEW TESTAMENT"
                     newbook=True
                     index=(index+1) % 66
                     self.state['index']=index
@@ -379,7 +379,7 @@ class bibleformatter:
                         yield { 'index':index, 'newsection': newsection, 'newbook': newbook, 'book':obook, 'short': self.shortnames[obook], 'chapter': ochapter, 'paragraph': self.state['paragraph'], 'chaptertext': ''.join(chaptertext), 'REFERENCE': self.state['REFERENCE']}
 
                         newbook=False
-                        newsection=False
+                        newsection=''
                         chaptertext=[];
                         # chaptertext.append(r'\par'+'\n');
                 chaptertext.append(aleph + self.verseheading(verse))
@@ -396,7 +396,7 @@ class bibleformatter:
             ochapter = chapter
             self.state['REFERENCE']=versetmpl[self.state['shortbook']] % self.state
         self.state['paragraph']+=1
-        yield { 'index':index, 'newsection': False, 'newbook': newbook, 'book':obook, 'short':self.shortnames[obook], 'chapter': ochapter, 'paragraph': self.state['paragraph'], 'chaptertext': ''.join(chaptertext), 'REFERENCE': self.state['REFERENCE']}
+        yield { 'index':index, 'newsection': '', 'newbook': newbook, 'book':obook, 'short':self.shortnames[obook], 'chapter': ochapter, 'paragraph': self.state['paragraph'], 'chaptertext': ''.join(chaptertext), 'REFERENCE': self.state['REFERENCE']}
 
         newbook=False
         self.state['paragraph']=0
@@ -423,7 +423,7 @@ def iteratechapters(src):
             # yield r'\biblchapter{'+paragraph['book']+' / ' + right['book']+'}\n'  # TeX chapter, which is a book of the Bible
 
         if paragraph['newsection']:
-            o += r'\biblnewsection'+'%\n'
+            o += r'\biblnewsection{%(newsection)s}' % paragraph +'%\n'
 
         if paragraph['newbook']:
             o+=r'\biblbookheading{'+paragraph['book']+'}%\n';

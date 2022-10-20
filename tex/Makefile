@@ -1,4 +1,4 @@
-PDF=africa.pdf english0.pdf
+PDF=giftandaward.pdf africa.pdf english0.pdf
 
 default: $(PDF)
 

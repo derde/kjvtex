@@ -5,19 +5,19 @@
 %\usepackage[utf8]{inputenc}
 % openany says chapters start on either page
 % twoside says it's a real book
-%\usepackage{microtype} % Improves spacing
+%\usepackage{microtype}% Improves spacing
 \usepackage{fontspec}
 % \usepackage{xunicode}
 % \usepackage[margin=0.8in]{geometry}
 %\usepackage[left=1.5cm,top=2.0cm,right=1.5cm,bottom=1.5cm,bindingoffset=0.5cm]{geometry}
 %\geometry{papersize={7.444in,9.681in},total={4.8in,6.8in}}%
 % 235mm x 165mm -
-%\usepackage[utf8]{inputenc} % XeLaTeX is utf-8 or nuts
-%\usepackage[T1]{fontenc}      % Don't do this - it causes pdf fonts not to happen
+%\usepackage[utf8]{inputenc}% XeLaTeX is utf-8 or nuts
+%\usepackage[T1]{fontenc}% Don't do this - it causes pdf fonts not to happen
 %\usepackage{paracol}
 \setlength{\headsep}{0.0em}
 \usepackage{lettrine}
-\usepackage[bf,sf,center]{titlesec} % Required for modifying section titles -   bold, sans-serif, centered
+\usepackage[bf,sf,center]{titlesec}% Required for modifying section titles -   bold, sans-serif, centered
 \usepackage{fancyhdr}
 \usepackage{needspace}
 \usepackage[english]{babel}
@@ -67,19 +67,19 @@
 \setlength{\parindent}{0.0em}
 %\setlength{\parskip}{0cm plus4mm minus1pt}
 \fancypagestyle{noheadings}{%
-    \fancyhead[EL]{} % hush
-    \fancyhead[ER]{} % hush
-    \fancyhead[OL]{} % hush
-    \fancyhead[C]{} % hush
-    \fancyhead[OR]{} % hush
+    \fancyhead[EL]{}% hush
+    \fancyhead[ER]{}% hush
+    \fancyhead[OL]{}% hush
+    \fancyhead[C]{}% hush
+    \fancyhead[OR]{}% hush
 }
 \def\mybookname{GEN}
 \gdef\mythumbindex{0}
 \pagestyle{fancy}
 \fancyhf{}
 % register true is way better ...
-%\fancyhead[L]{\textsf{\leftmark}} % Top left header
-%\fancyhead[EL]{ - \em\textsf{\rightmark} - } % Top left header
+%\fancyhead[L]{\textsf{\leftmark}}% Top left header
+%\fancyhead[EL]{ - \em\textsf{\rightmark} - }% Top left header
 %\fancyhead[ER]{\begin{textblock}{1}(0,\mythumbindex)\hfill\rule[0em]{4mm}{3mm}\end{textblock}}% This is the chapter marker block
 \fancyhead[ER]{}% This is the chapter marker block
 \fancyhead[OL]{}% This is the chapter marker block
@@ -92,28 +92,28 @@
 \defaultfontfeatures{}
 %\setromanfont[Numbers=Uppercase]{New Standard}
 %\setromanfont[Numbers=Uppercase]{DejaVu Sans Condensed}
-%\fontspec{Liberation Serif}              % (TimesNewRoman0)
-%\setmainfont[Numbers=Uppercase]{Liberation Serif} % 1046 pages
+%\fontspec{Liberation Serif}% (TimesNewRoman0)
+%\setmainfont[Numbers=Uppercase]{Liberation Serif}% 1046 pages
 %% New Standard ... but you need fontforge to add semicolon to Old Standar ...
 %% % \def\myfontname{New Standard}
 %% % \fontspec{\myfontname}
 %% % \setmainfont[ItalicFont=Old Standard TT Italic]{\myfontname}% 1006 pages +2
 \fontspec{\myfontname}
 \setmainfont[\myfontopts \myboldness FakeStretch=\myfontstretch,Scale=1.00]{\myfontname}% 1006 pages +2
-\newfontfamily\myheadingfont[\myboldness FakeStretch=\myfontstretch,Scale=0.80]{\mysansfont} % Used for (synthetic) smallcaps
-\newfontfamily\myfootnotefont[\myfontopts\myboldness FakeStretch=\myfontstretch,Scale=0.80]{\myfontname} % Used for (synthetic) smallcaps
-\newfontfamily\mylatexfont[FakeStretch=1.3]{\myfontname} % For saying "Latex" without looking ugly
-\newfontfamily\myhebrewfont[]{Liberation Serif} % For Psalm 119
+\newfontfamily\myheadingfont[\myboldness FakeStretch=\myfontstretch,Scale=0.80]{\mysansfont}% Used for (synthetic) smallcaps
+\newfontfamily\myfootnotefont[\myfontopts\myboldness FakeStretch=\myfontstretch,Scale=0.80]{\myfontname}% Used for (synthetic) smallcaps
+\newfontfamily\mylatexfont[FakeStretch=1.0]{\myfontname}% For saying "Latex" without looking ugly
+\newfontfamily\myhebrewfont[]{Liberation Serif}% For Psalm 119
 %\fontspec{Gentium Book Plus}\setmainfont[Numbers=Uppercase]{Gentium Book Plus}% 947 pages +2
-% \fontspec[Scale=0.8]{Times New Roman}   % (TimesNewRoman1)
+% \fontspec[Scale=0.8]{Times New Roman}% (TimesNewRoman1)
 % map TimesNewRoman(0)/bx/sc (bold smallcaps) to Junicode(1)/m/sc (normal smallcaps of fake bold)
 % \DeclareFontShape{EU1}{TimesNewRoman(0)}{m}{sc}{<->ssub * TimesNewRoman(1)/m/sc}{}
 
-%\setmainfont[Numbers=Uppercase,Ligatures=TeX]{Times New Roman} % Times New Roman is pretty good 996 pages
-%\setmainfont[Numbers=Uppercase,Ligatures=NoCommon]{Times New Roman} % Times New Roman is pretty good 996 pages
+%\setmainfont[Numbers=Uppercase,Ligatures=TeX]{Times New Roman}% Times New Roman is pretty good 996 pages
+%\setmainfont[Numbers=Uppercase,Ligatures=NoCommon]{Times New Roman}% Times New Roman is pretty good 996 pages
 % \setmainfont[Numbers=Uppercase,Ligatures=TeX]{Latin Modern Roman}% Ligatures maybe?
 
-%\setmainfont[Numbers=Uppercase]{New Standard} % 1046 pages
+%\setmainfont[Numbers=Uppercase]{New Standard}% 1046 pages
 % \setmainfont[Numbers=Uppercase]{Latin Modern Roman}
 % \setmonofont[Scale=0.90,Ligatures=NoCommon]{Courier New}
 \newfontfamily\mysuperscriptfont[\myboldness FakeStretch=\myfontstretch,Scale=0.65]{\mysansfont}
@@ -170,7 +170,6 @@
 %\renewcommand{\bibltwocolumn}{\par}%
 %\renewcommand{\biblonecolumn}{\par}%
 \newcommand{\biblendbook}[1]{\biblonecolumn}%
-\newcommand{\biblnewsection}{\par\newpage}%
 \newcommand{\biblenddocument}{\biblonecolumn}%
 %
 %\newcommand{\biblbookheading}[1]{\needspace{7\baselineskip}\begin{center}\textbf{\mybooktitlefont\Huge {#1}}\end{center}\par\vspace{\baselineskip}\bibltwocolumn}%
@@ -186,15 +185,16 @@
 \needspace{8\baselineskip}%
 {\centering \textbf{\mybooktitlefont #1}\strut\strutsomelines\par} 
 \bibltwocolumn}%
-%\newcommand{\biblleftcolumn}[1]{\selectlanguage{#1}\widowpenalty=0\clubpenalty=0} % just make widows, because alignment is more important
-%\newcommand{\biblrightcolumn}[1]{\switchcolumn\selectlanguage{#1}\widowpenalty=0\clubpenalty=0}%
-%\newcommand{\bibldonecolumns}{\biblonecolumn}%
-%\newcommand{\biblendchapter}{\vfill}%
 %\newcommand{\biblnewchapter}[1]{\markboth{#1}{#1}}%
-\newcommand{\markieset}{}%
 \newcommand{\biblnewchapter}[1]{}%
 \newcommand{\biblendchapter}[2]{\gdef\mythumbindex{#2}}%
-\newcommand{\biblnewbook}[2]{\def\mybookshort{#2}\gdef\mythumbindex{#2}}%
+\newcommand{\bibltocendmulticol}{}%
+\newcommand{\biblsectionheader}[1]{%
+    \bibltocendmulticol%
+    \begin{center}{\textbf{#1}}\end{center}%
+    \begin{multicols}{\mytoccolumns}%
+    \renewcommand{\bibltocendmulticol}{\end{multicols}}%
+}%
 %
 %\newcommand{\biblchapter}[2]{\vspace{2cm}\needspace{3\baselineskip}}
 %% %New book in separate paracol
@@ -207,7 +207,7 @@
 %% \setlength{\abnormalparskip{1pt}}
 %%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\bibldropcapschapter}[1]{\needspace{0.5\baselineskip}
-\lettrine[lines=2, lraise=0.0, lhang=0.05, findent=3pt, nindent=0pt, loversize=0.0]{\textbf{\mychapterfont #1}}{}\iffalse\markieset\fi}%
+\lettrine[lines=2, lraise=0.0, lhang=0.05, findent=3pt, nindent=0pt, loversize=0.0]{\textbf{\mychapterfont #1}}{}}%
 % Work around lettrine bug with "Fpar" definition from https://tex.stackexchange.com/questions/369868/using-lettrine-with-short-paragraphs :
 \def\biblsyntheticpar{\par}%
 % Synthetic paragraph that should be used for verse 2, in case it is right net to verse 1 and the dropcaps chapter number
@@ -224,6 +224,16 @@
 %\setlength{\columnseprule}{0.3pt}%
 \setlength{\columnseprule}{0.0pt}%
 %\setlength{\headsep}{3pt}%
+% Make leading dots for the table of contents - extra complex because text is too long sometimes:
+\newcommand*{\mydotfill}[1]{%
+    \noindent%
+    \raggedright
+    {\nobreak
+    \hskip 0pt plus 1em minus 0pt
+    \penalty50\null\nobreak
+     \dotfill#1%
+     \parfillskip=0pt \finalhyphendemerits=0 \par}
+}
 \begin{document}
 %\tableofcontents
 %\raggedright% this is nice in that it makes the central margin seem bigger, but the lack of hypenation adds 5% pages
@@ -233,21 +243,44 @@
 %\addfontfeature{LetterSpace=-2 plus 2 minus 1}% This is around 16 pages longer
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Kerning adjustment: big deal page-count affecter
-\addfontfeature{LetterSpace=0 plus 0 minus 2}% The 3em space is what a good font design uses ... and we trample it
+\addfontfeature{\myletterspace}% The 3em space is what a good font design uses ... and we trample it
 % Big deal don't hypenate rule: we would save pages by hypenating, but it's ugly
-\hyphenpenalty=1300
+\hyphenpenalty=\myhypenpenalty
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%k
 \mainmatter%
 \thispagestyle{noheadings}%
 %\fontsize{10}{10}\selectfont%
 \null
-\strutsomelines\par
+%\strutsomelines\par
+\vfill
 \begin{center}%
 \textbf{\mybooktitlefont{King James Bible}}
-\par\vspace{7\baselineskip}\par
+\par
+\vfill
+\par
 The fruit of the righteous is a tree of life;\par and he that winneth souls is wise.
 \end{center}
 \vfill
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% emit table of contents, if we have it:
+%% \newread\myfiletocread
+%% \immediate\openin\myfiletocread={\jobname.section}
+%% \loop\unless\ifeof\myfiletocread
+%%     \read\myfiletocread to\fileline% Reads a line of the file into \fileline
+%%     \fileline% just emit
+%% \repeat
+%% \closein\myfiletocread
+\InputIfFileExists{\jobname.section}{}{}
+\bibltocendmulticol
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vfill
+%%%%%%%%%%%%%%%%%%%%%
+% Commands that write the table of content later
+\newwrite\mytoc
+\immediate\openout\mytoc=\jobname.section%
+\newcommand{\biblnewsection}[1]{\write\mytoc{\unexpanded{\biblsectionheader}{#1}}\par\newpage}%
+\newcommand{\biblnewbook}[2]{\write\mytoc{#1 \unexpanded{\mydotfill}{\thepage}\par}\gdef\mybookshort{#2}\gdef\mythumbindex{#2}}%
+%%%%%%%%%%%%%
 \par
 Typesetting by {\mylatexfont \LaTeX{}},
 {\uselengthunit{mm}Paper size \rndprintlength{\pdfpagewidth} $ \times $ \rndprintlength{\pdfpageheight}}
@@ -256,18 +289,24 @@ Font \makeatletter \f@family \makeatother\ \the\fontdimen6\font\the\font\ text,
 line spacing \the\baselineskip,
 scaled \myfontstretch/1.00,
 \par
-Source repository: https://github.com/derde/kjvtex
+Source repository: https://github.com/derde/kjvtex, "\jobname"
 \par
 Source text TEXT-PCE-127.txt, md5sum: d6176dd776234eeaf0944dd0cac24bef
 \par
 No headings; verses share lines; justified; psalm titles; epistle postscripts
 \par
-% test {\myhebrewfont א ב ג ד ה ו ז ח ט י כ ל מ נ ס ע פ צ ק ר ש ת }
-\vspace{2\baselineskip}%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \shipout\null\stepcounter{page}%this page intentionally left blank
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \include{english}% Load main content
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \biblenddocument%
 %%\bigskip%%\ldots
 \end{document}
