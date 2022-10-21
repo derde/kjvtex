@@ -180,3 +180,4 @@ Checklist after layout adjustment:
     Psalm 121: psalm title and first verse (check italics, indent/ line break)
     Verse numbering: check for collision with descender (e.g. g and j), or below top of ascender
     Table of contents: did you run twice; does "Song of Solomon" or "2 Thessalonians" wrap?
+    Check for "overfull vbox" in xelatex output, and inspect each page and neighbouring pages

@@ -1,9 +1,10 @@
-PDF=giftandaward.pdf africa.pdf english0.pdf
+PDF=a5x800.pdf english0.pdf waterproof.pdf giftandaward.pdf africa.pdf
 
 default: $(PDF)
 
 %.pdf : %.tex english.tex biblayout.tex
 	xelatex $< </dev/null 
+	xelatex $< </dev/null  # just run it again, for the TOC, because CPU is cheap
 
 english.tex: gentex-english.py
 	./gentex-english.py english.tex
