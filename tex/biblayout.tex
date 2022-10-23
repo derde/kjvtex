@@ -101,9 +101,10 @@
 %% % \setmainfont[ItalicFont=Old Standard TT Italic]{\myfontname}% 1006 pages +2
 \fontspec{\myfontname}
 \setmainfont[\myfontopts \myboldness FakeStretch=\myfontstretch,Scale=1.00]{\myfontname}% 1006 pages +2
+\biblfontcustom
 \newfontfamily\myheadingfont[\myboldness FakeStretch=\myfontstretch,Scale=0.80]{\mysansfont}% Used for (synthetic) smallcaps
 \newfontfamily\myfootnotefont[\myfontopts\myboldness FakeStretch=\myfontstretch,Scale=0.80]{\myfontname}% Used for (synthetic) smallcaps
-\newfontfamily\mylatexfont[FakeStretch=1.0]{\myfontname}% For saying "Latex" without looking ugly
+\newfontfamily\mylatexfont[FakeStretch=1.2]{\myfontname}% For saying "Latex" without looking ugly
 \newfontfamily\myhebrewfont[]{Liberation Serif}% For Psalm 119
 %\fontspec{Gentium Book Plus}\setmainfont[Numbers=Uppercase]{Gentium Book Plus}% 947 pages +2
 % \fontspec[Scale=0.8]{Times New Roman}% (TimesNewRoman1)
@@ -163,14 +164,14 @@
 %%  \setsecindent{0em}
 %%  \setaftersecskip{0em}
 %%  \setsecheadstyle{\marginhead}
-\renewcommand{\verse}[2]{\mybeforeverse\raisebox{\myverseraise}[0pt]{\mysuperscriptfont\textbf{#1}\hspace{0.1em}}\def\mythumbindex{#2}}%3 points up, count height as 0 points, kern at end
+\renewcommand{\verse}[2]{\mybeforeverse\raisebox{\myverseraise}[0pt]{\mysuperscriptfont\textbf{#1}\hspace{0.8pt}}\def\mythumbindex{#2}}%3 points up, count height as 0 points, kern at end
 %\newcommand{\biblpagetitles}[2]{\lock{#1}{#2}}%
 \newcommand{\bibltwocolumn}{\begin{multicols}{2}}%
 \newcommand{\biblonecolumn}{\end{multicols}}%
 \newcommand{\biblthumbmark}[1]{\begin{textblock}{1}(25,#1)\hfill\rule[0em]{1em}{2em}\end{textblock}}
 %\renewcommand{\bibltwocolumn}{\par}%
 %\renewcommand{\biblonecolumn}{\par}%
-\newcommand{\biblendbook}[1]{\biblonecolumn}%
+\newcommand{\biblendbook}[1]{\needspace{3\baselineskip}\biblonecolumn}%
 \newcommand{\biblenddocument}{\biblonecolumn}%
 %
 %\newcommand{\biblbookheading}[1]{\needspace{7\baselineskip}\begin{center}\textbf{\mybooktitlefont\Huge {#1}}\end{center}\par\vspace{\baselineskip}\bibltwocolumn}%
@@ -249,10 +250,19 @@ HOLY BIBLE\par
 King James Bible: kjvtex compact\par
 \copyright\ 2022. Licenced under Creative Commons Attribution 4.0 License. All may copy freely.\par
 \null\par
-Typesetting by {\mylatexfont \LaTeX{}},
-{\uselengthunit{mm}Paper size \rndprintlength{\pdfpagewidth} $ \times $ \rndprintlength{\pdfpageheight}}\myshowpageinfo
+Typesetting by {\mylatexfont \LaTeX{}}%
+\ifdefined\pdfpagewidth
+{, \uselengthunit{mm}Paper size \rndprintlength{\pdfpagewidth} $ \times $ \rndprintlength{\pdfpageheight}}
+\fi
+\myshowpageinfo
 \par
-Font \makeatletter \f@family \makeatother\ \the\fontdimen6\font\the\font\ scaled \myfontstretch/1,
+Font 
+\ifdefined\mydisplayfont
+    \mydisplayfont\ \myfontsize\  
+\else
+    \makeatletter \f@family \makeatother\ \the\fontdimen6\font\the\font\ 
+\fi
+ apect \myfontstretch:1,
 line spacing \the\baselineskip,
 \par
 Source repository: https://github.com/derde/kjvtex, "\jobname"

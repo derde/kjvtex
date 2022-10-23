@@ -58,8 +58,9 @@ KJV Hard cover
     lines-per-page=47
     text-height=157mm
     line-spacing=157/47mm=9.5pt
-    height-of-ph-to-inter-line-spacing=39:27
-    text-height-p-h=9.5pt/39*27=6.5pt (8.5pt declared)
+    # height-of-ph-to-inter-line-spacing=39:27
+    height-of-ph-to-inter-line-spacing=37:44
+    text-height-p-h=9.5pt/44*37=8.0pt (8.5pt declared)
 
 ESV soft cover
     pages=1042 (genesis to revelation)
@@ -194,13 +195,22 @@ FEATURES:
     Print table of contents block down outer margin to identify quire errors. This is a nondescript little black block ... a shade of grey might be better ...
 
 ERRATA:
-    Handling of Psalm 119 ALEPH to TETH to JOD - replace with hebrew letters?  Give own line, italics?
-    Handling if 2nd verse indent for PSALMS
+    DONE: Handling of Psalm 119 ALEPH to TETH to JOD - replace with hebrew letters?  Give own line, italics?
+    Handling if 2nd verse indent for PSALMS (not done: just cancelled indent)
 
 
 Checklist after layout adjustment:
-    Psalm 119: paragraph breaks and Hebrew names
-    Psalm 121: psalm title and first verse (check italics, indent/ line break)
-    Verse numbering: check for collision with descender (e.g. g and j), or below top of ascender
-    Table of contents: did you run twice; does "Song of Solomon" or "2 Thessalonians" wrap?
-    Check for "overfull vbox" in xelatex output, and inspect each page and neighbouring pages
+    Psalm 119: check that paragraph breaks and Hebrew names appear
+    Psalm 121: check psalm title and first verse are distinct (check italics, indent/ line break)
+    Table of contents: check that it appears (run xelatex twice)
+        Check that "Song of Solomon" and "2 Thessalonians" don't look ugly (e.g. wrapped badly)
+    Layout:
+        Verse numbering: check for collision with descender (e.g. g and j), or below top of ascender
+        Check for "overfull vbox" in xelatex log file for the job, and inspect each page and neighbouring pages for every report
+    Fonts:
+        Check font kerning: "Avith" in 1 Chronicles 1:46 - A and V should kern. Charis SIL does not include kerning, unless you edit it!
+        Check that bold fonts do appear (verse numbers, headings)
+        Check that italic fonts do appear (italicised words)
+    Appearance:
+        Check register-true (text on front and back of page should be on the same line)
+

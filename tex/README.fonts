@@ -1,0 +1,33 @@
+The default Charis SIL has the following deficiencies -
+
+ * No kerning (don't know why they didn't bother)
+
+ * Relatively descenders that tend to run into the next line
+
+The "Charis Short" font is derived from the Charis SIL font, with the following
+changes, done manually using FontForge -
+
+ * Descenders (letters pgjqy) are shortened to within the regular baseline
+
+ * Kerning set to 300 for the letters A-Z and a-z
+
+ * Yes, the "g" is ugly
+
+How to do:
+
+    Open CharisSIL.ttf in FontForge
+    Element | Font Info (Ctrl+Shift+F)
+    Change name from CharisSIL to CharisShort and from Charis SIL to Charis Short
+    Lookups tab
+    GPOS sub-tab
+    Add Lookup
+        Type: pair positioning (kerning)
+        Feature: "kern"
+        Default separation: 307, minimum: 30
+        Select from "A" (capital A) to "z" (lower case z)
+    Close and save
+    Export as OTF font
+
+    Font adjustment:
+        Select part below baseline
+        Move it up
