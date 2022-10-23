@@ -16,12 +16,12 @@
 %\usepackage[utf8]{inputenc}% XeLaTeX is utf-8 or nuts
 %\usepackage[T1]{fontenc}% Don't do this - it causes pdf fonts not to happen
 %\usepackage{paracol}
-\setlength{\headsep}{0.0em}
-\usepackage{lettrine}
+\setlength{\headsep}{\myheadsep}% Seperation between text and body
+\usepackage{lettrine}% Drop caps letters
 \usepackage[bf,sf,center]{titlesec}% Required for modifying section titles -   bold, sans-serif, centered
-\usepackage{fancyhdr}
-\usepackage{needspace}
-\usepackage[english]{babel}
+\usepackage{fancyhdr}% Headers on the page, left and right
+\usepackage{needspace}% Don't start new books at the bottom of the page
+\usepackage[english]{babel}% hypenation
 % Grid sets rigid baseline and glue lengths to keep register-true - front and back pages aligned
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -34,7 +34,7 @@
 %\def\myfontstretch{1.00}\def\myboldness{FakeBold=1.00,}\def\myboldness{}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage[fontsize=\myfontsize,baseline=\mybaseline]{grid}%
+\usepackage[fontsize=\myfontsize,baseline=\mybaseline]{grid}% Register-true printing (back and front of page match)
 % Bottom border is 0.7 instead of 1.0, because we're not using the footer, and it's hard to turn off
 %\usepackage[left=0.7cm,top=1.0cm,right=0.7cm,bottom=0.9cm,bindingoffset=0.0cm,headheight=5mm]{geometry}%
 %\usepackage[left=7mm,top=10mm,right=7mm,bottom=7mm,bindingoffset=8mm,headheight=5mm]{geometry}% Waterproof
@@ -42,7 +42,7 @@
 %\usepackage[left=5mm,top=10mm,right=5mm,bottom=5mm,bindingoffset=5mm,headheight=5mm]{geometry}%
 %\geometry{papersize={148mm,221mm}}% Waterproof
 \geometry{papersize={\mypapersize}}
-\usepackage[absolute,overlay]{textpos}
+\usepackage[absolute,overlay]{textpos}% Put things in absolute positions (for thumb marker)
 \TPGrid[0mm,14mm]{26}{66}% defines tiny box down right hand margin for book name - see textblock below
 % 0.3528pt/mm ... 334pt,510pt
 %\usepackage[grid]{mymulticol}
@@ -74,7 +74,7 @@
     \fancyhead[OR]{}% hush
 }
 \def\mybookname{GEN}
-\gdef\mythumbindex{0}
+\gdef\mythumbindex{0}% Where to put the vertical thumb index
 \pagestyle{fancy}
 \fancyhf{}
 % register true is way better ...
@@ -90,6 +90,7 @@
 \renewcommand{\footrulewidth}{0.0pt}%
 %\defaultfontfeatures{Scale=MatchLowercase}
 \defaultfontfeatures{}
+\gdef\myshowpageinfo{}
 %\setromanfont[Numbers=Uppercase]{New Standard}
 %\setromanfont[Numbers=Uppercase]{DejaVu Sans Condensed}
 %\fontspec{Liberation Serif}% (TimesNewRoman0)
@@ -116,11 +117,11 @@
 %\setmainfont[Numbers=Uppercase]{New Standard}% 1046 pages
 % \setmainfont[Numbers=Uppercase]{Latin Modern Roman}
 % \setmonofont[Scale=0.90,Ligatures=NoCommon]{Courier New}
-\newfontfamily\mysuperscriptfont[\myboldness FakeStretch=\myfontstretch,Scale=0.65]{\mysansfont}
+\newfontfamily\mysuperscriptfont[\myboldness FakeStretch=\myfontstretch,Scale=\myversescale]{\mysansfont}
 % Line space = 12pt*4 = 48 , Height = 4*8pt*n+4pt*n = 48pt = n*(24+4)pt=48
 \newfontfamily\mybooktitlefont[\myfontopts \myboldness FakeStretch=\myfontstretch,Scale=2.80]{\myfontname}
 % Chapter numbers would be a little bigger than two lines in double size, so scale them down a bit:
-\newfontfamily\mychapterfont[\myboldness FakeStretch=\myfontstretch,Scale=0.90]{\mysansfont}
+\newfontfamily\mychapterfont[\myboldness FakeStretch=\myfontstretch,Scale=\mychapterscale]{\mysansfont}
 %\usepackage{fontspec}  
 %\setmainfont[Ligatures=TeX]{Linux Libertine O}  
 %\usepackage{metalogo,hyperref}  
@@ -134,7 +135,7 @@
 \setlength{\premulticols}{0\baselineskip}
 \setlength{\postmulticols}{0\baselineskip}
 \setlength{\multicolsep}{0\baselineskip}
-\setlength{\emergencystretch}{0\baselineskip}
+\setlength{\emergencystretch}{0\baselineskip}% we don't care what your emergency is: don't stretch
 %
 %
 %
@@ -162,7 +163,7 @@
 %%  \setsecindent{0em}
 %%  \setaftersecskip{0em}
 %%  \setsecheadstyle{\marginhead}
-\renewcommand{\verse}[2]{\mybeforeverse\raisebox{2pt}[0pt]{\mysuperscriptfont\textbf{#1}\hspace{0.1em}}\def\mythumbindex{#2}}%3 points up, count height as 0 points, kern at end
+\renewcommand{\verse}[2]{\mybeforeverse\raisebox{\myverseraise}[0pt]{\mysuperscriptfont\textbf{#1}\hspace{0.1em}}\def\mythumbindex{#2}}%3 points up, count height as 0 points, kern at end
 %\newcommand{\biblpagetitles}[2]{\lock{#1}{#2}}%
 \newcommand{\bibltwocolumn}{\begin{multicols}{2}}%
 \newcommand{\biblonecolumn}{\end{multicols}}%
@@ -235,26 +236,48 @@
      \parfillskip=0pt \finalhyphendemerits=0 \par}
 }
 \begin{document}
-%\tableofcontents
-%\raggedright% this is nice in that it makes the central margin seem bigger, but the lack of hypenation adds 5% pages
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\addfontfeature{LetterSpace=-2 plus 2 minus 1}% This is around 16 pages longer
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Kerning adjustment: big deal page-count affecter
-\addfontfeature{\myletterspace}% The 3em space is what a good font design uses ... and we trample it
-% Big deal don't hypenate rule: we would save pages by hypenating, but it's ugly
 \hyphenpenalty=\myhypenpenalty
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%k
 \mainmatter%
+\addfontfeature{\myletterspace}% The 3em space is what a good font design uses ... and we trample it
+%%% PAGE 1: BLANK PAGE %%%%%%%%%%%%%%%
+\shipout\null\stepcounter{page}%this page intentionally left blank
+%%% PAGE 2: BOOK INFO PAGE%%%%%%%%%%%%%%%
+\thispagestyle{noheadings}%
+\null\vfill
+\InputIfFileExists{\jobname.pages}{}{}
+HOLY BIBLE\par
+King James Bible: kjvtex compact\par
+\copyright\ 2022. Licenced under Creative Commons Attribution 4.0 License. All may copy freely.\par
+\null\par
+Typesetting by {\mylatexfont \LaTeX{}},
+{\uselengthunit{mm}Paper size \rndprintlength{\pdfpagewidth} $ \times $ \rndprintlength{\pdfpageheight}}\myshowpageinfo
+\par
+Font \makeatletter \f@family \makeatother\ \the\fontdimen6\font\the\font\ scaled \myfontstretch/1,
+line spacing \the\baselineskip,
+\par
+Source repository: https://github.com/derde/kjvtex, "\jobname"
+\par
+Source text TEXT-PCE-127.txt, md5sum: d6176dd776234eeaf0944dd0cac24bef
+\par
+No headings; verses share lines; justified; psalm titles; epistle postscripts
+\par
+\strutsomelines
+\par
+\newpage
+%%% PAGE 3: TITLE PAGE %%%%%%%%%%%%%%%
+% Kerning adjustment: big deal page-count affecter
+% Big deal don't hypenate rule: we would save pages by hypenating, but it's ugly
 \thispagestyle{noheadings}%
 %\fontsize{10}{10}\selectfont%
 \null
 %\strutsomelines\par
 \vfill
 \begin{center}%
+\textsc{HOLY BIBLE}
+\par\null
 \textbf{\mybooktitlefont{King James Bible}}
+\par
+\textsc{kjvtex compact}
 \par
 \vfill
 \par
@@ -276,37 +299,19 @@ The fruit of the righteous is a tree of life;\par and he that winneth souls is w
 \vfill
 %%%%%%%%%%%%%%%%%%%%%
 % Commands that write the table of content later
-\newwrite\mytoc
-\immediate\openout\mytoc=\jobname.section%
 \newcommand{\biblnewsection}[1]{\write\mytoc{\unexpanded{\biblsectionheader}{#1}}\par\newpage}%
 \newcommand{\biblnewbook}[2]{\write\mytoc{#1 \unexpanded{\mydotfill}{\thepage}\par}\gdef\mybookshort{#2}\gdef\mythumbindex{#2}}%
+\newwrite\mytoc\immediate\openout\mytoc=\jobname.section%
 %%%%%%%%%%%%%
-\par
-Typesetting by {\mylatexfont \LaTeX{}},
-{\uselengthunit{mm}Paper size \rndprintlength{\pdfpagewidth} $ \times $ \rndprintlength{\pdfpageheight}} (\pageref{LastPage}\ sides)
-\par
-Font \makeatletter \f@family \makeatother\ \the\fontdimen6\font\the\font\ text,
-line spacing \the\baselineskip,
-scaled \myfontstretch/1.00,
-\par
-Source repository: https://github.com/derde/kjvtex, "\jobname"
-\par
-Source text TEXT-PCE-127.txt, md5sum: d6176dd776234eeaf0944dd0cac24bef
-\par
-No headings; verses share lines; justified; psalm titles; epistle postscripts
-\par
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
+%%% PAGE 4: BLANK PAGE %%%%%%%%%%%%%%%
 \shipout\null\stepcounter{page}%this page intentionally left blank
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% PAGE 5: FIRST PAGE OF CONTENT %%%%%%%%%%%%%%%
 \include{english}% Load main content
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\biblenddocument%
+%%% PAGE n: RECORD PAGE COUNT AND QUIT %%%%
+\newwrite\mypages
+\immediate\openout\mypages=\jobname.pages%
+\immediate\write\mypages{\unexpanded{\gdef\myshowpageinfo}{, \thepage\ pages}}%
+\biblenddocument
 %%\bigskip%%\ldots
 \end{document}

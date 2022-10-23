@@ -81,6 +81,8 @@ ESV soft cover
 
 Christian art large print
     pages=1739 (genesis to revelation)
+    page-height=245mm
+    page-width=132mm
     top-space=16mm (from top of page to main text)
     top-margin=7mm (from top of page to heading printing)
     heading-height=3mm (height of heading)
@@ -96,6 +98,27 @@ Christian art large print
     line-spacing=182/38mm=13.5pt
     height-of-ph-to-inter-line-spacing=40:44
     text-height-ph=12.2pt (font size)
+
+Christian art standard print
+    pages=985 (genesis to revelation)
+    page-height=220mm
+    page-width=133mm
+    top-space=18 (from top of page to main text)
+    top-margin=14mm (from top of page to heading printing)
+    heading-height=3mm (height of heading)
+    outer-margin=6mm
+    inner-margin=9mm
+    bottom-space=14mm (no footnotes)
+    bottom-margin=14mm (no footnotes)
+    footnote-height=0mm 
+    justified
+    verse-per-line
+    lines-per-page=59
+    text-height=177mm
+    line-spacing=177/59=3mm=8.5pt
+    height-of-ph-to-inter-line-spacing=22:24
+    text-height-ph=7.8pt (font size)
+    little-o-aspect-ratio=10:11
 
 Holman Gift & Award
     pages=759

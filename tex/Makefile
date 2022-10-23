@@ -1,4 +1,4 @@
-PDF=a5x800.pdf english0.pdf waterproof.pdf giftandaward.pdf africa.pdf
+PDF=largeprint.pdf a5x800.pdf english0.pdf waterproof.pdf giftandaward.pdf africa.pdf
 
 default: $(PDF)
 

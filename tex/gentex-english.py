@@ -308,7 +308,7 @@ class bibleformatter:
     def sub_format_epistleattribution(self,m):
         return '\par{\em ' + m.group(1) + '}'
     def sub_format_sectionsep(self,m):
-        return '\par{\em ' + m.group(1) + '}'
+        return r'\par\null\par{\em ' + m.group(1) + '}'
     def sub_format_psalmheading(self,m):
         return '{\em ' + m.group(1) + '}\\biblsyntheticparii%\n'+self.verseheading('1')
     def sub_format_italics_bracketquote(self,m):
