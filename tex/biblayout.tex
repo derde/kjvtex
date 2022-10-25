@@ -6,7 +6,8 @@
 % openany says chapters start on either page
 % twoside says it's a real book
 %\usepackage{microtype}% Improves spacing
-\usepackage{lastpage}
+%\usepackage{lastpage}
+\usepackage{calc}
 \usepackage{fontspec}
 % \usepackage{xunicode}
 % \usepackage[margin=0.8in]{geometry}
@@ -34,6 +35,7 @@
 %\def\myfontstretch{1.00}\def\myboldness{FakeBold=1.00,}\def\myboldness{}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcounter{qmylines}
 \usepackage[fontsize=\myfontsize,baseline=\mybaseline]{grid}% Register-true printing (back and front of page match)
 % Bottom border is 0.7 instead of 1.0, because we're not using the footer, and it's hard to turn off
 %\usepackage[left=0.7cm,top=1.0cm,right=0.7cm,bottom=0.9cm,bindingoffset=0.0cm,headheight=5mm]{geometry}%
@@ -74,6 +76,7 @@
     \fancyhead[OR]{}% hush
 }
 \def\mybookname{GEN}
+\def\thelastpage{}%
 \gdef\mythumbindex{0}% Where to put the vertical thumb index
 \pagestyle{fancy}
 \fancyhf{}
@@ -91,48 +94,25 @@
 %\defaultfontfeatures{Scale=MatchLowercase}
 \defaultfontfeatures{}
 \gdef\myshowpageinfo{}
-%\setromanfont[Numbers=Uppercase]{New Standard}
-%\setromanfont[Numbers=Uppercase]{DejaVu Sans Condensed}
-%\fontspec{Liberation Serif}% (TimesNewRoman0)
-%\setmainfont[Numbers=Uppercase]{Liberation Serif}% 1046 pages
-%% New Standard ... but you need fontforge to add semicolon to Old Standar ...
-%% % \def\myfontname{New Standard}
-%% % \fontspec{\myfontname}
-%% % \setmainfont[ItalicFont=Old Standard TT Italic]{\myfontname}% 1006 pages +2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \fontspec{\myfontname}
 \setmainfont[\myfontopts \myboldness FakeStretch=\myfontstretch,Scale=1.00]{\myfontname}% 1006 pages +2
 \biblfontcustom
 \newfontfamily\myheadingfont[\myboldness FakeStretch=\myfontstretch,Scale=0.80]{\mysansfont}% Used for (synthetic) smallcaps
 \newfontfamily\myfootnotefont[\myfontopts\myboldness FakeStretch=\myfontstretch,Scale=0.80]{\myfontname}% Used for (synthetic) smallcaps
-\newfontfamily\mylatexfont[FakeStretch=1.2]{\myfontname}% For saying "Latex" without looking ugly
+\newfontfamily\mylatexfont[FakeStretch=1.0]{Liberation Serif}% For saying "Latex" without looking ugly
 \newfontfamily\myhebrewfont[]{Liberation Serif}% For Psalm 119
 %\fontspec{Gentium Book Plus}\setmainfont[Numbers=Uppercase]{Gentium Book Plus}% 947 pages +2
 % \fontspec[Scale=0.8]{Times New Roman}% (TimesNewRoman1)
 % map TimesNewRoman(0)/bx/sc (bold smallcaps) to Junicode(1)/m/sc (normal smallcaps of fake bold)
 % \DeclareFontShape{EU1}{TimesNewRoman(0)}{m}{sc}{<->ssub * TimesNewRoman(1)/m/sc}{}
 
-%\setmainfont[Numbers=Uppercase,Ligatures=TeX]{Times New Roman}% Times New Roman is pretty good 996 pages
-%\setmainfont[Numbers=Uppercase,Ligatures=NoCommon]{Times New Roman}% Times New Roman is pretty good 996 pages
-% \setmainfont[Numbers=Uppercase,Ligatures=TeX]{Latin Modern Roman}% Ligatures maybe?
-
-%\setmainfont[Numbers=Uppercase]{New Standard}% 1046 pages
-% \setmainfont[Numbers=Uppercase]{Latin Modern Roman}
-% \setmonofont[Scale=0.90,Ligatures=NoCommon]{Courier New}
 \newfontfamily\mysuperscriptfont[\myboldness FakeStretch=\myfontstretch,Scale=\myversescale]{\mysansfont}
-% Line space = 12pt*4 = 48 , Height = 4*8pt*n+4pt*n = 48pt = n*(24+4)pt=48
 \newfontfamily\mybooktitlefont[\myfontopts \myboldness FakeStretch=\myfontstretch,Scale=2.80]{\myfontname}
-% Chapter numbers would be a little bigger than two lines in double size, so scale them down a bit:
 \newfontfamily\mychapterfont[\myboldness FakeStretch=\myfontstretch,Scale=\mychapterscale]{\mysansfont}
-%\usepackage{fontspec}  
-%\setmainfont[Ligatures=TeX]{Linux Libertine O}  
-%\usepackage{metalogo,hyperref}  
-%\usepackage{polyglossia, fontspec, xunicode}  
-%\usepackage[parfill]{parskip}  
-%\usepackage[series={A,B},noend,noledgroup]{reledmac}  
-%\usepackage{reledpar}   
-\usepackage{printlen}% provide \printlength command, and \rndprintlength
+\usepackage{printlen}% provide \printlength command, and \rndprintlength - to print the page size nicely
 \usepackage[grid]{multicol}
-\setlength{\columnsep}{1.0em}
+\setlength{\columnsep}{\mycolumnsep}
 \setlength{\premulticols}{0\baselineskip}
 \setlength{\postmulticols}{0\baselineskip}
 \setlength{\multicolsep}{0\baselineskip}
@@ -164,7 +144,11 @@
 %%  \setsecindent{0em}
 %%  \setaftersecskip{0em}
 %%  \setsecheadstyle{\marginhead}
-\renewcommand{\verse}[2]{\mybeforeverse\raisebox{\myverseraise}[0pt]{\mysuperscriptfont\textbf{#1}\hspace{0.8pt}}\def\mythumbindex{#2}}%3 points up, count height as 0 points, kern at end
+\def\hebrewleader{}%
+\newcommand{\sharedverse}[2]{\raisebox{\myverseraise}[0pt]{\mysuperscriptfont\textbf{#1}\hspace{0.8pt}}\def\mythumbindex{#2}}%3 points up, count height as 0 points, kern at end
+\newcommand{\versei}[2]{\mypreversei\hebrewleader\def\hebrewleader{}}%3 points up, count height as 0 points, kern at end
+\newcommand{\verseii}[2]{\mypreverseii\hebrewleader\sharedverse{#1}{#2}\def\hebrewleader{}}%3 points up, count height as 0 points, kern at end
+\renewcommand{\verse}[2]{\mypreverse\hebrewleader\sharedverse{#1}{#2}\def\hebrewleader{}}%3 points up, count height as 0 points, kern at end
 %\newcommand{\biblpagetitles}[2]{\lock{#1}{#2}}%
 \newcommand{\bibltwocolumn}{\begin{multicols}{2}}%
 \newcommand{\biblonecolumn}{\end{multicols}}%
@@ -172,7 +156,8 @@
 %\renewcommand{\bibltwocolumn}{\par}%
 %\renewcommand{\biblonecolumn}{\par}%
 \newcommand{\biblendbook}[1]{\needspace{3\baselineskip}\biblonecolumn}%
-\newcommand{\biblenddocument}{\biblonecolumn}%
+\newcommand{\biblendlastbook}[1]{\biblonecolumn}%
+\newcommand{\biblenddocument}{}%
 %
 %\newcommand{\biblbookheading}[1]{\needspace{7\baselineskip}\begin{center}\textbf{\mybooktitlefont\Huge {#1}}\end{center}\par\vspace{\baselineskip}\bibltwocolumn}%
 % \strutsomelines:
@@ -211,7 +196,6 @@
 \newcommand{\bibldropcapschapter}[1]{\needspace{0.5\baselineskip}
 \lettrine[lines=2, lraise=0.0, lhang=0.05, findent=3pt, nindent=0pt, loversize=0.0]{\textbf{\mychapterfont #1}}{}}%
 % Work around lettrine bug with "Fpar" definition from https://tex.stackexchange.com/questions/369868/using-lettrine-with-short-paragraphs :
-\def\biblsyntheticpar{\par}%
 % Synthetic paragraph that should be used for verse 2, in case it is right net to verse 1 and the dropcaps chapter number
 \def\biblsyntheticparii{\hfil\vadjust{\vskip\parskip}\break\indent}%
 % Don't warn for slightly overfull hboxen
@@ -222,7 +206,7 @@
 % Try to avoid stranded chapter header at the bottom of the page (this doesn't work)
 %\widowpenalty=0%
 %\clubpenalty=0%
-% Pretty separater
+% Pretty separator
 %\setlength{\columnseprule}{0.3pt}%
 \setlength{\columnseprule}{0.0pt}%
 %\setlength{\headsep}{3pt}%
@@ -248,28 +232,41 @@
 \InputIfFileExists{\jobname.pages}{}{}
 HOLY BIBLE\par
 King James Bible: kjvtex compact\par
-\copyright\ 2022. Licenced under Creative Commons Attribution 4.0 License. All may copy freely.\par
+You may copy freely and republish in whole, or in part.\par
 \null\par
-Typesetting by {\mylatexfont \LaTeX{}}%
-\ifdefined\pdfpagewidth
-{, \uselengthunit{mm}Paper size \rndprintlength{\pdfpagewidth} $ \times $ \rndprintlength{\pdfpageheight}}
-\fi
+Typesetting by {\mylatexfont \LaTeX{}}, %
+\def\myformattinginfoi{%
 \myshowpageinfo
+\ifdefined\paperwidth{\uselengthunit{mm}\rndprintlength{\paperwidth}$\times$\rndprintlength{\paperheight}}, \fi%
+%\newlength\C
+%\setlength\C{1pt * \ratio{\paperheight}{\baselineskip}}
+%lines=\uselengthunit{pt}\rndprintlength{\C},
+}\myformattinginfoi
 \par
-Font 
-\ifdefined\mydisplayfont
-    \mydisplayfont\ \myfontsize\  
-\else
-    \makeatletter \f@family \makeatother\ \the\fontdimen6\font\the\font\ 
+Font%
+\def\myformattinginfoii{%
+\ifdefined\mydisplayfont%
+    \mydisplayfont\ \myfontsize, %
+\else%
+    \makeatletter\f@family \makeatother\ \the\fontdimen6\font\the\font, %
 \fi
- apect \myfontstretch:1,
-line spacing \the\baselineskip,
+aspect \myfontstretch:1,
+line spacing \the\baselineskip}
+\myformattinginfoii
+\def\myformattinginfoiii{\ifdefined\myextradisplay{, \myextradisplay}\fi}\myformattinginfoiii%
 \par
-Source repository: https://github.com/derde/kjvtex, "\jobname"
+Source code: https://github.com/derde/kjvtex, ``\jobname.tex''
 \par
-Source text TEXT-PCE-127.txt, md5sum: d6176dd776234eeaf0944dd0cac24bef
+Source text TEXT-PCE-127.txt, d6176dd776234eeaf0944dd0cac24bef MD5
 \par
-No headings; verses share lines; justified; psalm titles; epistle postscripts
+\newcounter{mylines}
+\setcounter{mylines}{\textheight / \baselineskip}
+\newlength{\mybestlinespace}
+\setlength{\mybestlinespace}{\textheight / \themylines}
+Text area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit{mm}\rndprintlength{\textheight}} 
+ (\arabic{mylines}$\times${\uselengthunit{pt}\rndprintlength{\mybestlinespace}})
+\par
+\mylayoutblurb
 \par
 \strutsomelines
 \par
@@ -292,8 +289,8 @@ No headings; verses share lines; justified; psalm titles; epistle postscripts
 \vfill
 \par
 The fruit of the righteous is a tree of life;\par and he that winneth souls is wise.
-\end{center}
 \vfill
+\end{center}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 % emit table of contents, if we have it:
 %% \newread\myfiletocread
@@ -307,6 +304,9 @@ The fruit of the righteous is a tree of life;\par and he that winneth souls is w
 \bibltocendmulticol
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 \vfill
+\begin{center}
+\myformattinginfoi \myformattinginfoii
+\end{center}
 %%%%%%%%%%%%%%%%%%%%%
 % Commands that write the table of content later
 \newcommand{\biblnewsection}[1]{\write\mytoc{\unexpanded{\biblsectionheader}{#1}}\par\newpage}%
@@ -319,9 +319,11 @@ The fruit of the righteous is a tree of life;\par and he that winneth souls is w
 %%% PAGE 5: FIRST PAGE OF CONTENT %%%%%%%%%%%%%%%
 \include{english}% Load main content
 %%% PAGE n: RECORD PAGE COUNT AND QUIT %%%%
+\biblenddocument
 \newwrite\mypages
 \immediate\openout\mypages=\jobname.pages%
-\immediate\write\mypages{\unexpanded{\gdef\myshowpageinfo}{, \thepage\ pages}}%
-\biblenddocument
+\addtocounter{page}{-1}% adjust for dunno
+\immediate\write\mypages{\unexpanded{\gdef\myshowpageinfo}{\thepage\ pages }}% FIXME: adds one to the page .. weird
+\addtocounter{page}{1}% unadjust for dunno
 %%\bigskip%%\ldots
 \end{document}

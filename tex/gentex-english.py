@@ -10,8 +10,6 @@ import itertools
 import sys,copy
 
 class Hebrew:
-    hebrew_prefix=r'{\myhebrewfont'
-    hebrew_suffix=r'} '
     def __init__(self,file='hebrew-words'):
         fd=open(file,'r')
         self.lookup={}
@@ -246,7 +244,6 @@ class bibleformatter:
             'chapter': '',
             'chapter': '', }
         self.paragraphdivisions=paragraphdivisions('1526.Pericopes.csv')
-        self.reformat=self.reformat_english
         self.markheading=r'\markright';
         self.fd=file
         self.shortnames={}
@@ -254,6 +251,7 @@ class bibleformatter:
             self.shortnames[v]=k
 
     def booktochapters(self):
+        '''Read in the bible file, and parse to book, chapter, verse and text'''
         lineformat_re=re.compile('(.*?) (\d+):(\d+) (.*)')
         for line in self.fd:
             m=lineformat_re.search(line.strip())
@@ -268,15 +266,17 @@ class bibleformatter:
         if chapter=='1':
             if book in ('Obadiah','Philemon','2 John','3 John','Jude'):
                 return o+self.verseheading('1') #  + '\n';
-        o+=self.verseheading('1') +  \
-            r'\bibldropcapschapter{'+chapter+'}' + '%\n' 
+        o+=r'\bibldropcapschapter{'+chapter+'}' + '%\n' 
+        # o+=self.verseheading('1') + '%\n'
         return o
 
     def verseheading(self,verse):
         # r+=  r'\verse{'+verse+'}'  
-        if verse=='1':
-            return ''
-        return r' \verse{'+verse+'}{'+str(self.state['index'])+'}'
+        cmd='\\verse'
+        if verse=='1': cmd=r'\versei'
+        elif verse=='2': cmd=r'\verseii'
+        else: cmd=r'\verse'
+        return r' '+cmd+'{'+verse+'}{'+str(self.state['index'])+'}'
 
     def isnewparagraph(self,book,chapter,verse,text):
         # Afrikaans text has capital words indicating new paragraphs
@@ -310,13 +310,14 @@ class bibleformatter:
     def sub_format_sectionsep(self,m):
         return r'\par\null\par{\em ' + m.group(1) + '}'
     def sub_format_psalmheading(self,m):
-        return '{\em ' + m.group(1) + '}\\biblsyntheticparii%\n'+self.verseheading('1')
+        # FIXME return \biblpsalmheading
+        return '{\em ' + m.group(1) + '}\\biblsyntheticparii%\n'
     def sub_format_italics_bracketquote(self,m):
         # FIXME: for psalms, the <<< >>> is followed by paragraph break
         # FIXME: for NT book notes, the <<[ ]>> is preceded by paragraph break
         return self.sub_format_italics(m)+r'\biblsyntheticparii'+'%\n'
 
-    def reformat_english(self,text):
+    def reformat_smallcaps(self,text):
         # Rewrite CAPITALISED WORDS as smallcaps .. this might do the wrong thing in the new testament and odd places
         dontsmallcapsnt=['AEnas','JESUS','For David himself said by the Holy Ghost','KING OF','TO THE UNKNOWN GOD','MYSTERY'];
         if re.search('|'.join(dontsmallcapsnt),text): 
@@ -329,120 +330,81 @@ class bibleformatter:
         if book=='PSALMS': return 'PSALM'
         return book
 
-    def booktoparagraphs(self):
+    def booktolatex(self):
         '''Parse the book, and return paragraphs'''
-        index=26
-        obook=''
-        ochapter=''
-        chaptertext=[]
         self.state['paragraph']=0
         self.state['REFERENCE']=''
+        self.state['book']=''
+        self.state['BOOK']=''
+        self.state['short']=''
+        self.state['chapter']=''
+        self.state['verse']=''
+        self.state['text']=''
+        self.state['index']=26
+        self.state['shortbook']=''
         newbook=True
-        newsection="OLD TESTAMENT"
         hebrew=Hebrew()
+        yield r'\biblnewsection{OLD TESTAMENT}' % self.state +'%\n'
         for book,chapter,verse,text in self.booktochapters():
-            self.ostate=copy.copy(self.state)
+            ostate=copy.copy(self.state)
+            self.state['isnewparagraph'] = self.isnewparagraph(book,chapter,verse,text)
             self.state['book']=book
+            self.state['book_s']=self.singular(self.state['book'])  # singular
             self.state['BOOK']=self.singular(book.upper())
             self.state['short']=self.shortnames[book]
             self.state['chapter']=chapter
             self.state['verse']=verse
             self.state['text']=text
-            self.state['index']=index
             self.state['shortbook']=( book in ('Obadiah','Philemon','2 John','3 John','Jude') )
             versetmpl = {True: '%(BOOK)s %(verse)s',
                         False: '%(BOOK)s %(chapter)s:%(verse)s' }
             self.state['REFERENCE']=versetmpl[self.state['shortbook']] % self.state
-            if ( chapter!=ochapter or book!=obook ):
-                if ochapter:
-                    self.state['paragraph']+=1
-                    yield { 'index': index, 'newsection': newsection, 'newbook': newbook, 'book':obook, 'short': self.shortnames[obook], 'chapter': ochapter, 'paragraph': self.state['paragraph'], 'chaptertext': ''.join(chaptertext), 'REFERENCE': self.state['REFERENCE']}
-                    newbook=False
-                    newsection=False
-                    self.state['paragraph']=0
-                    chaptertext=[]
-                if book!=obook:
-                    if book.startswith('Matthew'): newsection="NEW TESTAMENT"
-                    newbook=True
-                    index=(index+1) % 66
-                    self.state['index']=index
-                chaptertext.append(self.chapternumber(book,chapter))
+            newbook = ostate['book']!=self.state['book']
+            newchapter = ostate['chapter']!=self.state['chapter'] or newbook
+            if newchapter and ostate['book']:
+                yield ( r'\biblendchapter{%(book_s)s %(chapter)s}{%(index)s}' % ostate ) + '%\n'
+            if newbook and ostate['book']:
+                yield ( r'\biblendbook{%(book)s}' % ostate ) + '%\n'
+            if newbook and book.startswith('Matthew'):
+                yield ( r'\biblnewsection{NEW TESTAMENT}' % self.state ) + '%\n'
+            if newbook:
+                self.state['index']=(self.state['index']+1) % 66
+                yield r'\biblbookheading{%(book)s}' % self.state+'%\n';
+                yield r'\biblnewbook{%(book)s}{%(short)s}' % self.state + '%\n'
+            if newchapter:
+                if self.state['shortbook']:
+                    yield r'\biblnewchapter{%(book_s)s}' % self.state + '%\n' # omit chapter from heading for 1-heading book
+                else:
+                    yield r'\biblnewchapter{%(book_s)s %(chapter)s}' % self.state + '%\n'
+                    yield r'\bibldropcapschapter{%(chapter)s}' % self.state + '%\n' 
+            if self.state['isnewparagraph']:
+                if verse=='1':
+                    pass # meh .. it might be new, but we don't want to print it
+                elif verse=='2':
+                    yield r'\biblsyntheticparii' % self.state + '%\n'
+                else:
+                    yield r'\biblnewparagraph' % self.state + '%\n'
+            t=''
             text,aleph=hebrew.adjust(text,self.state)
             if aleph:
-                aleph='{\myhebrewfont '+aleph+'} '
-            if verse!='1':
-                if self.isnewparagraph(book,chapter,verse,text):
-                    if verse=='2':
-                        chaptertext.append(r'\biblsyntheticparii'+'%\n')  # just shove in a synthetic paragraph break, since real \par breaks drop-caps number
-                    else:
-                        self.state['paragraph']+=1
-                        yield { 'index':index, 'newsection': newsection, 'newbook': newbook, 'book':obook, 'short': self.shortnames[obook], 'chapter': ochapter, 'paragraph': self.state['paragraph'], 'chaptertext': ''.join(chaptertext), 'REFERENCE': self.state['REFERENCE']}
-
-                        newbook=False
-                        newsection=''
-                        chaptertext=[];
-                        # chaptertext.append(r'\par'+'\n');
-                chaptertext.append(aleph + self.verseheading(verse))
-            else:
-                chaptertext.append(aleph);
+                t += '\hebrewprefix{'+aleph+'} '
+            t += self.verseheading(verse)
+            t += r'\biblnewreference{%(REFERENCE)s}{%(index)s}' % self.state
             text=re.sub(r'<<\[(.*?)\]>>*',self.sub_format_epistleattribution,text)
             text=re.sub(r'<<([^a-z]*?)>>',self.sub_format_sectionsep,text)
             text=re.sub(r'<<(.*?)>>',self.sub_format_psalmheading,text)
             text=re.sub(r'\[(.*?)\]',self.sub_format_italics,text)
-            chaptertext.append('\\biblnewreference{%(REFERENCE)s}{%(index)s}' % self.state)
-            chaptertext.append(self.reformat(text)+'');
-            chaptertext.append('\\biblendreference{%(REFERENCE)s}{%(index)s}' % self.state)
-            obook = book
-            ochapter = chapter
-            self.state['REFERENCE']=versetmpl[self.state['shortbook']] % self.state
-        self.state['paragraph']+=1
-        yield { 'index':index, 'newsection': '', 'newbook': newbook, 'book':obook, 'short':self.shortnames[obook], 'chapter': ochapter, 'paragraph': self.state['paragraph'], 'chaptertext': ''.join(chaptertext), 'REFERENCE': self.state['REFERENCE']}
-
-        newbook=False
-        self.state['paragraph']=0
+            t += self.reformat_smallcaps(text)
+            t += r'\biblendreference{%(REFERENCE)s}{%(index)s}' % self.state 
+            t += '\n'
+            yield t
+        yield ( r'\biblendchapter{%(book_s)s %(chapter)s}{%(index)s}' % self.state ) + '%\n'
+        yield ( r'\biblendlastbook{%(book)s}' % self.state ) + '%\n'
 
 def iteratechapters(src):
     en=bibleformatter(src)
-    ochapter=''
-    obook=''
-    oparagraph=None
-    bookindex=0
-    hebrew=Hebrew();
-    for paragraph in en.booktoparagraphs():
-        paragraph['book_s']=en.singular(paragraph['book'])  # singular
-        if not oparagraph: oparagraph=paragraph
-        o = '';
-        # End previous chapter?
-        chapter = '{%(book_s)s %(chapter)s}' % paragraph
-        if ochapter and chapter!=ochapter:
-            o += r'\biblendchapter{%(book_s)s %(chapter)s}{%(index)s}' % oparagraph + '%\n'
-        # End previous book?
-        if paragraph['newbook']:
-            if obook:
-                o += r'\biblendbook{'+obook+'}%\n'
-            # yield r'\biblchapter{'+paragraph['book']+' / ' + right['book']+'}\n'  # TeX chapter, which is a book of the Bible
-
-        if paragraph['newsection']:
-            o += r'\biblnewsection{%(newsection)s}' % paragraph +'%\n'
-
-        if paragraph['newbook']:
-            o+=r'\biblbookheading{'+paragraph['book']+'}%\n';
-            o+= r'\biblnewbook{'+paragraph['book'] + '}{'+paragraph['short']+'}%\n' 
-            bookindex+=1
-            obook=paragraph['book']
-    
-        # Print current chapter
-        if chapter!=ochapter:
-            if paragraph['book'] in ('Obadiah','Philemon','2 John','3 John','Jude'):
-                o += r'\biblnewchapter{%(book_s)s}' % paragraph + '%\n' # omit chapter from heading for 1-heading book
-            else:
-                o += r'\biblnewchapter{%(book_s)s %(chapter)s}' % paragraph + '%\n'
-            ochapter=chapter
-        elif (chapter==ochapter):
-            o+=r'\biblsyntheticpar'+'%\n'
-        o+=paragraph['chaptertext'].strip()+'%\n';  # /par ?
-        yield paragraph,o
-        oparagraph=paragraph
+    for line in en.booktolatex():
+        yield line
 
 outfd=sys.stdout
 if len(sys.argv)>1:
@@ -453,8 +415,7 @@ import os
 #src=open('../1769.txt','r')
 src=open('../TEXT-PCE-127.txt','r')
 #src=os.popen('grep ^Ps < ../TEXT-PCE-127.txt','r')
-books=[]
-for paragraph,splurge in iteratechapters(src):
+for splurge in iteratechapters(src):
     outfd.write( splurge )
 
 

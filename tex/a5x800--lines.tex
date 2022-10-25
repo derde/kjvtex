@@ -1,0 +1,34 @@
+% A5 Bible in 800 pages
+\input{bibldefault.tex}
+
+\def\mymargins{left=5mm,top=9mm,right=5mm,bottom=5mm,bindingoffset=5mm,headheight=5mm}
+\def\mypapersize{138mm,210mm}% A5
+\def\mydisplayfont{Charis Short}
+\def\myfontname{[CharisShort.otf]}
+\def\mysansfont{Liberation Sans}
+\def\myfontsize{8.0pt}
+\def\mybaseline{8.85195pt}
+\def\biblnewparagraph{}% Just do nothing - don't double up paragraphs
+\def\mypreverseii{\biblsyntheticparii\hspace{3pt}}% set this to \par for verse-per-line
+\def\mypreversei{}%
+\def\mypreverse{\par\hspace{3pt}}% set this to \par for verse-per-line
+\def\myfontopts{
+    BoldFont=[CharisShort-Bold.otf],
+    ItalicFont=[CharisShort-Italic.otf],
+}
+% This works, but it seems neater to squash the font, rather than reduce the inter-character spacing:
+\def\myfontstretch{0.93}
+%\def\myletterspace{LetterSpace=-1.45 plus 1.45 minus 0.5}
+%\def\myfontstretch{0.875}
+\def\myletterspace{}
+\def\mylayoutblurb{No headings; line per verse; justified; psalm titles; epistle postscripts}
+\def\myhypenpenalty{1800}%   Lower penalty means more hypenation and fewer pages
+\def\mytoccolumns{4}
+\def\mychapterscale{0.98}
+\def\myversescale{0.90}
+\def\myverseraise{0.7pt}
+\def\mycolumnsep{1.95em}
+% Print the hebrew letter as a little heading
+\renewcommand{\hebrewprefix}[1]{\hfill{\myhebrewfont #1}\hfill\vadjust{\vskip\parskip}}%
+
+\input{biblayout.tex}
