@@ -44,8 +44,9 @@
 %\usepackage[left=5mm,top=10mm,right=5mm,bottom=5mm,bindingoffset=5mm,headheight=5mm]{geometry}%
 %\geometry{papersize={148mm,221mm}}% Waterproof
 \geometry{papersize={\mypapersize}}
-\usepackage[absolute,overlay]{textpos}% Put things in absolute positions (for thumb marker)
-\TPGrid[0mm,14mm]{26}{66}% defines tiny box down right hand margin for book name - see textblock below
+%\usepackage[absolute,overlay]{textpos}% Put things in absolute positions (for thumb marker)
+\usepackage[absolute]{textpos}% Put things in absolute positions (for thumb marker)
+\TPGrid[0mm,7mm]{26}{66}% defines tiny boxes down right hand margin for book name - see textblock below
 % 0.3528pt/mm ... 334pt,510pt
 %\usepackage[grid]{mymulticol}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -86,9 +87,9 @@
 %\fancyhead[ER]{\begin{textblock}{1}(0,\mythumbindex)\hfill\rule[0em]{4mm}{3mm}\end{textblock}}% This is the chapter marker block
 \fancyhead[ER]{}% This is the chapter marker block
 \fancyhead[OL]{}% This is the chapter marker block
-\fancyhead[OR]{\myheadingfont \textbf{\textemdash\ \leftmark}\biblthumbmark{\mythumbindex}}% Top right header
-\fancyhead[EL]{\myheadingfont \textbf{\textemdash\ \rightmark}}% Top left header - leading dash is to discourage accidental reading of the heading
-\fancyhead[C]{\myheadingfont \textbf{\thepage}}% Center footer
+\fancyhead[OR]{\myheadingfont \textbf{\textemdash\ \leftmark}\biblthumbmark{\mythumbindex}\oddbindingmarks}% Top right header
+\fancyhead[EL]{\myheadingfont \textbf{\textemdash\ \rightmark}\evenbindingmarks}% Top left header - leading dash is to discourage accidental reading of the heading
+\fancyhead[C]{\myheadingfont {\thepage}}% Center footer - bold is less readable
 \renewcommand{\headrulewidth}{0.0pt}% lines just amplify the skewness of skewly printed pages 
 \renewcommand{\footrulewidth}{0.0pt}%
 %\defaultfontfeatures{Scale=MatchLowercase}
@@ -98,7 +99,7 @@
 \fontspec{\myfontname}
 \setmainfont[\myfontopts \myboldness FakeStretch=\myfontstretch,Scale=1.00]{\myfontname}% 1006 pages +2
 \biblfontcustom
-\newfontfamily\myheadingfont[\myboldness FakeStretch=\myfontstretch,Scale=0.80]{\mysansfont}% Used for (synthetic) smallcaps
+\newfontfamily\myheadingfont[\myboldness FakeStretch=\myfontstretch,Scale=1.00]{\mysansfont}% Used for page headings
 \newfontfamily\myfootnotefont[\myfontopts\myboldness FakeStretch=\myfontstretch,Scale=0.80]{\myfontname}% Used for (synthetic) smallcaps
 \newfontfamily\mylatexfont[FakeStretch=1.0]{Liberation Serif}% For saying "Latex" without looking ugly
 \newfontfamily\myhebrewfont[]{Liberation Serif}% For Psalm 119
@@ -107,9 +108,10 @@
 % map TimesNewRoman(0)/bx/sc (bold smallcaps) to Junicode(1)/m/sc (normal smallcaps of fake bold)
 % \DeclareFontShape{EU1}{TimesNewRoman(0)}{m}{sc}{<->ssub * TimesNewRoman(1)/m/sc}{}
 
-\newfontfamily\mysuperscriptfont[\myboldness FakeStretch=\myfontstretch,Scale=\myversescale]{\mysansfont}
+\newfontfamily\myversefont[\myboldness FakeStretch=\myfontstretch,Scale=\myversescale]{\mysansfont}
 \newfontfamily\mybooktitlefont[\myfontopts \myboldness FakeStretch=\myfontstretch,Scale=2.80]{\myfontname}
 \newfontfamily\mychapterfont[\myboldness FakeStretch=\myfontstretch,Scale=\mychapterscale]{\mysansfont}
+\newfontfamily\myendnotesfont[\myboldness FakeStretch=\myfontstretch,Scale=\mychapterscale]{\mysansfont}
 \usepackage{printlen}% provide \printlength command, and \rndprintlength - to print the page size nicely
 \usepackage[grid]{multicol}
 \setlength{\columnsep}{\mycolumnsep}
@@ -145,35 +147,42 @@
 %%  \setaftersecskip{0em}
 %%  \setsecheadstyle{\marginhead}
 \def\hebrewleader{}%
-\newcommand{\sharedverse}[2]{\raisebox{\myverseraise}[0pt]{\mysuperscriptfont\textbf{#1}\hspace{0.8pt}}\def\mythumbindex{#2}}%3 points up, count height as 0 points, kern at end
-\newcommand{\versei}[2]{\mypreversei\hebrewleader\def\hebrewleader{}}%3 points up, count height as 0 points, kern at end
-\newcommand{\verseii}[2]{\mypreverseii\hebrewleader\sharedverse{#1}{#2}\def\hebrewleader{}}%3 points up, count height as 0 points, kern at end
-\renewcommand{\verse}[2]{\mypreverse\hebrewleader\sharedverse{#1}{#2}\def\hebrewleader{}}%3 points up, count height as 0 points, kern at end
+\newcommand{\sharedverse}[2]{\raisebox{\myverseraise}[0pt]{\myversefont\textbf{#1}\hspace{0.8pt}}\def\mythumbindex{#2}}%3 points up, count height as 0 points, kern at end
+\newcommand {\versei}[2]{\mypreversei \hebrewleader\def\hebrewleader{}}%3 points up, count height as 0 points, kern at end
+\newcommand{\verseii}[2]{\mypreverseii\hebrewleader\def\hebrewleader{}\sharedverse{#1}{#2}}%3 points up, count height as 0 points, kern at end
+\renewcommand{\verse}[2]{\mypreverse  \hebrewleader\def\hebrewleader{}\sharedverse{#1}{#2}}%3 points up, count height as 0 points, kern at end
 %\newcommand{\biblpagetitles}[2]{\lock{#1}{#2}}%
-\newcommand{\bibltwocolumn}{\begin{multicols}{2}}%
-\newcommand{\biblonecolumn}{\end{multicols}}%
-\newcommand{\biblthumbmark}[1]{\begin{textblock}{1}(25,#1)\hfill\rule[0em]{1em}{2em}\end{textblock}}
+\newcommand{\biblonecolumn}{}%
+\newcommand{\bibltwocolumn}{%
+    \begin{multicols}{2}%
+    \renewcommand{\biblonecolumn}{\end{multicols}\renewcommand{\biblonecolumn}{}}%
+}%
+\newcommand{\biblthumbmark}[1]{\begin{textblock}{1}(25,#1)\hfill\rule[0em]{1em}{0.5em}\end{textblock}}
 %\renewcommand{\bibltwocolumn}{\par}%
 %\renewcommand{\biblonecolumn}{\par}%
 \newcommand{\biblendbook}[1]{\needspace{3\baselineskip}\biblonecolumn}%
 \newcommand{\biblendlastbook}[1]{\biblonecolumn}%
 \newcommand{\biblenddocument}{}%
 %
-%\newcommand{\biblbookheading}[1]{\needspace{7\baselineskip}\begin{center}\textbf{\mybooktitlefont\Huge {#1}}\end{center}\par\vspace{\baselineskip}\bibltwocolumn}%
-% \strutsomelines:
+% \bookheadingstrut:
 % * The 1.3\baselineskip is necessary sinnce the large text has a big baseline
 % * 0pt makes it invisible
-% * 5\baselineskip means it covers 5 lines
-\def\strutsomelines{\rule[-1\baselineskip]{0pt}{4.0\baselineskip}}%
+% * 4\baselineskip means it covers 4 lines
+\def\bookheadingstrut{\rule[-1\baselineskip]{0pt}{4.0\baselineskip}}%
 % Heading for each book of the Bible: big text
 \newcommand{\biblnewreference}[2]{\markboth{#1}{#1}\def\mythumbindex{#2}}%
 \newcommand{\biblendreference}[2]{\markboth{#1}{#1}\def\mythumbindex{#2}}%
-\newcommand{\biblbookheading}[1]{
-\needspace{8\baselineskip}%
-{\centering \textbf{\mybooktitlefont #1}\strut\strutsomelines\par} 
-\bibltwocolumn}%
-%\newcommand{\biblnewchapter}[1]{\markboth{#1}{#1}}%
+\newcommand{\biblbookheading}[1]{%
+    \needspace{8\baselineskip}%
+    {\centering \textbf{\mybooktitlefont #1}%
+        \strut
+        \bookheadingstrut
+        \par}%
+    \bibltwocolumn
+}%
+% New chapter number 
 \newcommand{\biblnewchapter}[1]{}%
+% Move the thumb index (just make sure it doesn't disappear)
 \newcommand{\biblendchapter}[2]{\gdef\mythumbindex{#2}}%
 \newcommand{\bibltocendmulticol}{}%
 \newcommand{\biblsectionheader}[1]{%
@@ -225,35 +234,45 @@
 \mainmatter%
 \addfontfeature{\myletterspace}% The 3em space is what a good font design uses ... and we trample it
 %%% PAGE 1: BLANK PAGE %%%%%%%%%%%%%%%
-\shipout\null\stepcounter{page}%this page intentionally left blank
+\def\mypagei{%
+    \shipout\null\stepcounter{page}%this page intentionally left blank
+}
 %%% PAGE 2: BOOK INFO PAGE%%%%%%%%%%%%%%%
+\def\myformattinginfoi{%
+    \myshowpageinfo
+    \ifdefined\paperwidth{%
+        \uselengthunit{mm}\rndprintlength{\paperwidth}%
+        $\times$%
+        \rndprintlength{\paperheight}%
+    }, \fi%
+}
+\def\myformattinginfoii{%
+    \ifdefined\mydisplayfont%
+        \mydisplayfont\ \myfontsize, %
+    \else%
+        \makeatletter\f@family \makeatother\ \the\fontdimen6\font\the\font, %
+    \fi
+    aspect \myfontstretch:1,
+    line spacing \the\baselineskip
+}
+\def\myformattinginfoiii{%
+    \ifdefined\myextradisplay{, \myextradisplay}\fi
+}
+
+\def\mypageii{
 \thispagestyle{noheadings}%
 \null\vfill
 \InputIfFileExists{\jobname.pages}{}{}
 HOLY BIBLE\par
-King James Bible: kjvtex compact\par
+King James Bible: \textsc{kjvtex compact}\par
 You may copy freely and republish in whole, or in part.\par
 \null\par
 Typesetting by {\mylatexfont \LaTeX{}}, %
-\def\myformattinginfoi{%
-\myshowpageinfo
-\ifdefined\paperwidth{\uselengthunit{mm}\rndprintlength{\paperwidth}$\times$\rndprintlength{\paperheight}}, \fi%
-%\newlength\C
-%\setlength\C{1pt * \ratio{\paperheight}{\baselineskip}}
-%lines=\uselengthunit{pt}\rndprintlength{\C},
-}\myformattinginfoi
+\myformattinginfoi
 \par
 Font%
-\def\myformattinginfoii{%
-\ifdefined\mydisplayfont%
-    \mydisplayfont\ \myfontsize, %
-\else%
-    \makeatletter\f@family \makeatother\ \the\fontdimen6\font\the\font, %
-\fi
-aspect \myfontstretch:1,
-line spacing \the\baselineskip}
 \myformattinginfoii
-\def\myformattinginfoiii{\ifdefined\myextradisplay{, \myextradisplay}\fi}\myformattinginfoiii%
+\myformattinginfoiii%
 \par
 Source code: https://github.com/derde/kjvtex, ``\jobname.tex''
 \par
@@ -268,16 +287,18 @@ Text area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit
 \par
 \mylayoutblurb
 \par
-\strutsomelines
+\bookheadingstrut
 \par
 \newpage
+}
 %%% PAGE 3: TITLE PAGE %%%%%%%%%%%%%%%
 % Kerning adjustment: big deal page-count affecter
 % Big deal don't hypenate rule: we would save pages by hypenating, but it's ugly
+\def\mypageiii{
 \thispagestyle{noheadings}%
 %\fontsize{10}{10}\selectfont%
 \null
-%\strutsomelines\par
+%\bookheadingstrut\par
 \vfill
 \begin{center}%
 \textsc{HOLY BIBLE}
@@ -309,15 +330,22 @@ The fruit of the righteous is a tree of life;\par and he that winneth souls is w
 \end{center}
 %%%%%%%%%%%%%%%%%%%%%
 % Commands that write the table of content later
+%%%%%%%%%%%%%
+\newpage
+}
+%%% PAGE 4: BLANK PAGE %%%%%%%%%%%%%%%
+\def\mypageiv{%
+    \shipout\null\stepcounter{page}%this page intentionally left blank
+}
+%%%%
+\myfrontmatter
+%\mypageiv%blank again
+%%% PAGE 5: FIRST PAGE OF CONTENT %%%%%%%%%%%%%%%
 \newcommand{\biblnewsection}[1]{\write\mytoc{\unexpanded{\biblsectionheader}{#1}}\par\newpage}%
 \newcommand{\biblnewbook}[2]{\write\mytoc{#1 \unexpanded{\mydotfill}{\thepage}\par}\gdef\mybookshort{#2}\gdef\mythumbindex{#2}}%
 \newwrite\mytoc\immediate\openout\mytoc=\jobname.section%
-%%%%%%%%%%%%%
-\newpage
-%%% PAGE 4: BLANK PAGE %%%%%%%%%%%%%%%
-\shipout\null\stepcounter{page}%this page intentionally left blank
-%%% PAGE 5: FIRST PAGE OF CONTENT %%%%%%%%%%%%%%%
 \include{english}% Load main content
+\myrearmatter
 %%% PAGE n: RECORD PAGE COUNT AND QUIT %%%%
 \biblenddocument
 \newwrite\mypages

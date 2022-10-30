@@ -21,3 +21,20 @@ bibl2.pdf: bibl2.tex generated.tex
 bibl.pdf: bibl.tex
 	xelatex bibl.tex < /dev/null
 
+# Make book signatures - the 28 here is 28 x 1/72" ≅ 10mm
+# See also https://softwarerecs.stackexchange.com/questions/438/software-to-put-pages-of-a-pdf-file-in-book-order
+%-book.pdf: %.pdf
+	pdfbook2 --no-crop --paper=a4paper --outer-margin=28 --inner-margin=0 --top-margin=0 --bottom-margin=0 --signature=32 $<
+
+# Make book signatures - but move the 1st four pages to the tail first
+%-u-book.pdf: %.pdf
+	# Take off 4 page header from the front, and put it at the back, to get proper signatures
+	pdfseparate $< tmp/$(basename $<)-%04d.pdf
+	mv tmp/$(basename $<)-0001.pdf tmp/$(basename $<)-z0001.pdf
+	mv tmp/$(basename $<)-0002.pdf tmp/$(basename $<)-z0002.pdf
+	mv tmp/$(basename $<)-0003.pdf tmp/$(basename $<)-z0003.pdf
+	mv tmp/$(basename $<)-0004.pdf tmp/$(basename $<)-z0004.pdf
+	pdfunite tmp/$(basename $<)-*.pdf $(basename $<)-u.pdf
+	rm tmp/$(basename $<)-*.pdf
+	pdfbook2 --no-crop --paper=a4paper --outer-margin=28 --inner-margin=0 --top-margin=0 --bottom-margin=0 --signature=32 $(basename $<)-u.pdf
+

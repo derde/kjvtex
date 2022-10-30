@@ -306,19 +306,20 @@ class bibleformatter:
         smallcapsd='{\em ' + m.group(1) + '}'
         return smallcapsd
     def sub_format_epistleattribution(self,m):
-        return '\par{\em ' + m.group(1) + '}'
+        'Written to folks by writer'
+        # return '\par{\em ' + m.group(1) + '}'
+        return r'\biblepistleattribution{em ' + m.group(1) + '}'
     def sub_format_sectionsep(self,m):
-        return r'\par\null\par{\em ' + m.group(1) + '}'
+        'END OF THE PROPHETS. stuff'
+        # return r'\par\null\par{\em ' + m.group(1) + '}'
+        return r'\biblsectionseparator{' + m.group(1) + '}'
     def sub_format_psalmheading(self,m):
         # FIXME return \biblpsalmheading
-        return '{\em ' + m.group(1) + '}\\biblsyntheticparii%\n'
-    def sub_format_italics_bracketquote(self,m):
-        # FIXME: for psalms, the <<< >>> is followed by paragraph break
-        # FIXME: for NT book notes, the <<[ ]>> is preceded by paragraph break
-        return self.sub_format_italics(m)+r'\biblsyntheticparii'+'%\n'
+        return r'\biblpsalmheading{' + m.group(1) + '}%\n'
 
     def reformat_smallcaps(self,text):
-        # Rewrite CAPITALISED WORDS as smallcaps .. this might do the wrong thing in the new testament and odd places
+        # Rewrite CAPITALISED WORDS as smallcaps .. 
+        # This might do the wrong thing in the new testament and odd places, so exceptions apply:
         dontsmallcapsnt=['AEnas','JESUS','For David himself said by the Holy Ghost','KING OF','TO THE UNKNOWN GOD','MYSTERY'];
         if re.search('|'.join(dontsmallcapsnt),text): 
             return text
@@ -344,6 +345,7 @@ class bibleformatter:
         self.state['shortbook']=''
         newbook=True
         hebrew=Hebrew()
+        yield r'\biblbeforeoldtestament' % self.state +'%\n'
         yield r'\biblnewsection{OLD TESTAMENT}' % self.state +'%\n'
         for book,chapter,verse,text in self.booktochapters():
             ostate=copy.copy(self.state)
@@ -366,6 +368,7 @@ class bibleformatter:
             if newbook and ostate['book']:
                 yield ( r'\biblendbook{%(book)s}' % ostate ) + '%\n'
             if newbook and book.startswith('Matthew'):
+                yield ( r'\biblbeforenewtestament' % self.state ) + '%\n'
                 yield ( r'\biblnewsection{NEW TESTAMENT}' % self.state ) + '%\n'
             if newbook:
                 self.state['index']=(self.state['index']+1) % 66
@@ -400,6 +403,7 @@ class bibleformatter:
             yield t
         yield ( r'\biblendchapter{%(book_s)s %(chapter)s}{%(index)s}' % self.state ) + '%\n'
         yield ( r'\biblendlastbook{%(book)s}' % self.state ) + '%\n'
+        yield ( r'\biblafternewtestament' % self.state ) + '%\n'
 
 def iteratechapters(src):
     en=bibleformatter(src)
@@ -409,7 +413,7 @@ def iteratechapters(src):
 outfd=sys.stdout
 if len(sys.argv)>1:
     outfd=open(sys.argv[1],'w')
-import os
+#import os
 #src=os.popen('sed 1,23145d < ../TEXT-PCE-127.txt','r')
 #src=os.popen('sed "/^\(Joh\|Ro\) / p; d" < ../TEXT-PCE-127.txt','r')
 #src=open('../1769.txt','r')

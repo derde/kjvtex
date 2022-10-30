@@ -13,8 +13,8 @@
     ItalicFont=[CharisShort-Italic.otf],
 }
 % This works, but it seems neater to squash the font, rather than reduce the inter-character spacing:
-\def\myfontstretch{0.860}
-%\def\myletterspace{LetterSpace=-1.45 plus 1.45 minus 0.5}
+\def\myfontstretch{0.90}
+\def\myletterspace{LetterSpace=0 plus 0 minus 1.5}
 %\def\myfontstretch{0.875}
 %\def\myletterspace{}
 \def\myextradisplay{}
@@ -24,4 +24,15 @@
 \def\myversescale{0.80}
 \def\myverseraise{2pt}
 
+\renewcommand\myfrontmatter{%
+    %\mypagei%   blank
+    \mypageiii%  title page
+    \mypageii%   print info page
+    %\mypageiv%  blank again
+}
+
+\def\myrearmatter{
+    \kjvwordlist
+}
 \input{biblayout.tex}
+
