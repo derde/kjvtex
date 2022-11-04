@@ -22,7 +22,7 @@
 \usepackage[bf,sf,center]{titlesec}% Required for modifying section titles -   bold, sans-serif, centered
 \usepackage{fancyhdr}% Headers on the page, left and right
 \usepackage{needspace}% Don't start new books at the bottom of the page
-\usepackage[english]{babel}% hypenation
+\usepackage[\mytexlanguage]{babel}% hypenation
 % Grid sets rigid baseline and glue lengths to keep register-true - front and back pages aligned
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -229,6 +229,7 @@
      \dotfill#1%
      \parfillskip=0pt \finalhyphendemerits=0 \par}
 }
+\mypredocument
 \begin{document}
 \hyphenpenalty=\myhypenpenalty
 \mainmatter%
@@ -252,14 +253,15 @@
     \else%
         \makeatletter\f@family \makeatother\ \the\fontdimen6\font\the\font, %
     \fi
-    aspect \myfontstretch:1,
-    line spacing \the\baselineskip
+    \ENaspect\ \myfontstretch:1,
+    \ENlinespacing\ \the\baselineskip
 }
 \def\myformattinginfoiii{%
     \ifdefined\myextradisplay{, \myextradisplay}\fi
 }
 
-\def\mypageii{
+\ifdefined\mypageii{}\else{
+\gdef\mypageii{
 \thispagestyle{noheadings}%
 \null\vfill
 \InputIfFileExists{\jobname.pages}{}{}
@@ -290,7 +292,7 @@ Text area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit
 \bookheadingstrut
 \par
 \newpage
-}
+}}\fi
 %%% PAGE 3: TITLE PAGE %%%%%%%%%%%%%%%
 % Kerning adjustment: big deal page-count affecter
 % Big deal don't hypenate rule: we would save pages by hypenating, but it's ugly
@@ -301,15 +303,15 @@ Text area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit
 %\bookheadingstrut\par
 \vfill
 \begin{center}%
-\textsc{HOLY BIBLE}
+\textsc{\ENpretitle}%HOLY BIBLE
 \par\null
-\textbf{\mybooktitlefont{King James Bible}}
+\textbf{\mybooktitlefont{\ENtitle}}% King James Bible
 \par
-\textsc{kjvtex compact}
+\textsc{\ENsubtitle}% kjvtex compactt
 \par
 \vfill
 \par
-The fruit of the righteous is a tree of life;\par and he that winneth souls is wise.
+\ENmotto
 \vfill
 \end{center}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -344,14 +346,14 @@ The fruit of the righteous is a tree of life;\par and he that winneth souls is w
 \newcommand{\biblnewsection}[1]{\write\mytoc{\unexpanded{\biblsectionheader}{#1}}\par\newpage}%
 \newcommand{\biblnewbook}[2]{\write\mytoc{#1 \unexpanded{\mydotfill}{\thepage}\par}\gdef\mybookshort{#2}\gdef\mythumbindex{#2}}%
 \newwrite\mytoc\immediate\openout\mytoc=\jobname.section%
-\include{english}% Load main content
+\include{\mysourcetext}% Load main content
 \myrearmatter
 %%% PAGE n: RECORD PAGE COUNT AND QUIT %%%%
 \biblenddocument
 \newwrite\mypages
 \immediate\openout\mypages=\jobname.pages%
 \addtocounter{page}{-1}% adjust for dunno
-\immediate\write\mypages{\unexpanded{\gdef\myshowpageinfo}{\thepage\ pages }}% FIXME: adds one to the page .. weird
+\immediate\write\mypages{\unexpanded{\gdef\myshowpageinfo}{\thepage\ \ENpages\ }}% FIXME: adds one to the page .. weird
 \addtocounter{page}{1}% unadjust for dunno
 %%\bigskip%%\ldots
 \end{document}

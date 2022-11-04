@@ -1,0 +1,84 @@
+% A5 Bible in 640 pages
+\input{bibldefault.tex}
+\def\mysourcetext{afrikaans}
+\def\mytexlanguage{english}
+\def\ENpages{bladsye}%
+\def\ENaspect{verleng}%
+\def\ENlinespacing{lyne}%
+\def\ENpretitle{Die Bybel in Afrikaans}
+\def\ENtitle{DIE BYBEL}
+\def\ENsubtitle{Grootdruk beknop}
+\def\ENmotto{Die vrug van die regverdige is ’n boom van die lewe, en hy wat siele win, is wys.}
+\def\mymargins{left=10mm,top=13mm,right=10mm,bottom=10mm,bindingoffset=10mm,headheight=8mm}
+\def\myheadsep{3mm}
+\def\mypapersize{210mm,297mm}% A4
+\def\mydisplayfont{Charis Shorter}
+\def\myfontname{[CharisShorter.otf]}
+\def\mysansfont{Liberation Sans}
+\def\myfontsize{13.00pt}
+\def\mybaseline{13.588pt}
+\def\myfontopts{
+    BoldFont=[CharisShort-Bold.otf],
+    ItalicFont=[CharisShort-Italic.otf],
+}
+% This works, but it seems neater to squash the font, rather than reduce the inter-character spacing:
+\def\myfontstretch{0.90}
+\def\myletterspace{LetterSpace=0 plus 0 minus 0.5}
+%\def\myfontstretch{0.875}
+%\def\myletterspace{}
+\def\myextradisplay{}
+\def\myhypenpenalty{1000}%   Lower penalty means more hypenation and fewer pages
+\def\mytoccolumns{3}
+\def\mychapterscale{0.98}
+\def\myversescale{0.80}
+\def\myverseraise{2pt}
+\def\mylayoutblurb{}
+
+\renewcommand\myfrontmatter{%
+    %\mypagei%   blank
+    \mypageiii%  title page
+    \mypageii%   print info page
+    %\mypageiv%  blank again
+}
+\def\biblbeforeoldtestament{\newpage\thispagestyle{noheadings}\null\vfill\begin{center}DIE OU TESTAMENT\end{center}\vfill\null\vfill}
+\def\biblbeforenewtestament{\newpage\thispagestyle{noheadings}\null\vfill\begin{center}DIE NUWE TESTAMENT\end{center}\vfill\null\vfill}
+\def\myrearmatter{
+%    \kjvwordlist
+}
+
+\def\mypageii{
+\thispagestyle{noheadings}%
+\null\vfill
+\InputIfFileExists{\jobname.pages}{}{}
+DIE BYBEL, OU VERTALING\par
+DIE BYBEL IN AFRIKAANS, 1933, hersien 1953\par
+\null\par
+Bladuitleg deur {\mylatexfont \LaTeX{}}, %
+\myformattinginfoi
+\par
+Skrif \myformattinginfoii
+\myformattinginfoiii%
+\par
+Bron kode: https://github.com/derde/kjvtex, ``\jobname.tex''
+\par
+Bron lêer: af1953.txt, c6dc3a4326871399677271a60128dae4 MD5
+\par
+\newcounter{mylines}
+\setcounter{mylines}{\textheight / \baselineskip}
+\newlength{\mybestlinespace}
+\setlength{\mybestlinespace}{\textheight / \themylines}
+Teks area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit{mm}\rndprintlength{\textheight}} 
+ (\arabic{mylines}$\times${\uselengthunit{pt}\rndprintlength{\mybestlinespace}})
+\par
+\mylayoutblurb
+\par
+\bookheadingstrut
+\par
+\newpage
+}
+
+\def\mypredocument{
+\selectlanguage{afrikaans}
+}
+\input{biblayout.tex}
+

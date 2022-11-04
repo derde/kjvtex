@@ -9,6 +9,10 @@ import re
 import itertools
 import sys,copy
 
+
+english='en'
+afrikaans='af'
+
 class Hebrew:
     def __init__(self,file='hebrew-words'):
         fd=open(file,'r')
@@ -131,13 +135,20 @@ REV      : Revelation      :  Openbaring'''
     def addparagraph(self,refs):
         '''Add to the list'''
         m=re.search('(\S+) (\d+:\d+)',refs)
-        chapverse = m.group(2)
-        ref1 = self.bookmaplookup(0,1,m.group(1))+' '+chapverse
+        chapterandverse = m.group(2)
+        book = self.bookmaplookup(0,1,m.group(1))
+        ref1 = book+' '+chapterandverse
         #if ref1.startswith('Psalms'): ref1='Psalm '+ref1.split()[-1]
         self.paragraphs[ref1] = True
+        # Make it a paragraph for all the other forms and languages too:
+        for mapentry in self.bookmapdata:
+            if book in (mapentry):
+                for b in mapentry:
+                    self.paragraphs[book+' '+chapterandverse] = True
+
         # if nref1!=ref1 or nref2!=ref2: print(ref1,ref2,"=>",nref1,nref2)
 
-    def isnewparagraph(self,ref):
+    def isparagraphdivision(self,ref):
         return ref in self.paragraphs
         
 
@@ -169,7 +180,7 @@ class bibleformatter:
     'SJIGGAJŌN'  :   'Sjiggajōn',
     'VANWEË'     :   'Vanweë',
     }
-    bookAbbreviations = {
+    bookAbbreviationsEN = {
         'Ge'   : 'Genesis',
         'Ex'   : 'Exodus',
         'Le'   : 'Leviticus',
@@ -237,12 +248,90 @@ class bibleformatter:
         'Jude' : 'Jude',
         'Re'   : 'Revelation',
     }
+    bookAbbreviationsAF={
+        'Genesis':           'Genesis',
+        'Exodus':            'Exodus',
+        'Levitikus':         'Levitikus',
+        'Numeri':            'Numeri',
+        'Deuteronomium':     'Deuteronomium',
+        'Josua':             'Josua',
+        'Rigters':           'Rigters',
+        'Rut':               'Rut',
+        '1 Samuel':          '1 Samuel',
+        '2 Samuel':          '2 Samuel',
+        '1 Konings':         '1 Konings',
+        '2 Konings':         '2 Konings',
+        '1 Kronieke':        '1 Kronieke',
+        '2 Kronieke':        '2 Kronieke',
+        'Esra':              'Esra',
+        'Nehemia':           'Nehemia',
+        'Ester':             'Ester',
+        'Job':               'Job',
+        'Psalms':            'Psalms',
+        'Spreuke':           'Spreuke',
+        'Prediker':          'Prediker',
+        'Hooglied':          'Hooglied',
+        'Jesaja':            'Jesaja',
+        'Jeremia':           'Jeremia',
+        'Klaagliedere':      'Klaagliedere',
+        'Esegiel':           'Esegiel',
+        'Daniel':            'Daniel',
+        'Hosea':             'Hosea',
+        'Joel':              'Joel',
+        'Amos':              'Amos',
+        'Obadja':            'Obadja',
+        'Jona':              'Jona',
+        'Miga':              'Miga',
+        'Nahum':             'Nahum',
+        'Habakuk':           'Habakuk',
+        'Sefanja':           'Sefanja',
+        'Haggai':            'Haggai',
+        'Sagaria':           'Sagaria',
+        'Maleagi':           'Maleagi',
+        'Mattheus':          'Mattheus',
+        'Markus':            'Markus',
+        'Lukas':             'Lukas',
+        'Johannes':          'Johannes',
+        'Handelinge':        'Handelinge',
+        'Romeine':           'Romeine',
+        '1 Korinthiers':     '1 Korinthiers',
+        '2 Korinthiers':     '2 Korinthiers',
+        'Galasiers':         'Galasiers',
+        'Efesiers':          'Efesiers',
+        'Filippense':        'Filippense',
+        'Kolossense':        'Kolossense',
+        '1 Thessalonicense': '1 Thessalonicense',
+        '2 Thessalonicense': '2 Thessalonicense',
+        '1 Timotheus':       '1 Timotheus',
+        '2 Timotheus':       '2 Timotheus',
+        'Titus':             'Titus',
+        'Filemon':           'Filemon',
+        'Hebreers':          'Hebreers',
+        'Jakobus':           'Jakobus',
+        '1 Petrus':          '1 Petrus',
+        '2 Petrus':          '2 Petrus',
+        '1 Johannes':        '1 Johannes',
+        '2 Johannes':        '2 Johannes',
+        '3 Johannes':        '3 Johannes',
+        'Judas':             'Judas',
+        'Openbaring':        'Openbaring',
+    }
 
-    def __init__(self,file):
+    def __init__(self,language,file):
+        self.language=language;
         self.state={
             'book': '',
             'chapter': '',
             'chapter': '', }
+        self.language=language
+        if language==english:
+            self.bookAbbreviations=self.bookAbbreviationsEN
+            self.oldtestament="OLD TESTAMENT"
+            self.newtestament="NEW TESTAMENT"
+        elif language==afrikaans:
+            self.bookAbbreviations=self.bookAbbreviationsAF
+            self.oldtestament="OU TESTAMENT"
+            self.newtestament="NUWE TESTAMENT"
         self.paragraphdivisions=paragraphdivisions('1526.Pericopes.csv')
         self.markheading=r'\markright';
         self.fd=file
@@ -282,11 +371,14 @@ class bibleformatter:
         # Afrikaans text has capital words indicating new paragraphs
         #if book.startswith('Psa'):
         #    return True;
-        #isnew = self.paragraph_wl_re.search(text) and not self.paragraph_bl_re.search(text)
         # FIXME: Afrikaans books need verse number adjustments
         # if book.startswith("Psalm"): return True
         ref = book+' '+chapter+':'+verse
-        isnew = verse!='2' and verse!='3' and self.paragraphdivisions.isnewparagraph(ref)
+        if verse in ('1','2','3'): return False
+        isnew=False
+        if self.language==afrikaans:
+            isnew = isnew or (self.paragraph_wl_re.search(text) and not self.paragraph_bl_re.search(text))
+        isnew = isnew or self.paragraphdivisions.isparagraphdivision(ref)
         if isnew:
             # print("DEBUG: NEW PARAGRAPH: "+ref)
             pass
@@ -346,10 +438,9 @@ class bibleformatter:
         newbook=True
         hebrew=Hebrew()
         yield r'\biblbeforeoldtestament' % self.state +'%\n'
-        yield r'\biblnewsection{OLD TESTAMENT}' % self.state +'%\n'
+        yield (r'\biblnewsection{'+self.oldtestament+'}') % self.state +'%\n'
         for book,chapter,verse,text in self.booktochapters():
             ostate=copy.copy(self.state)
-            self.state['isnewparagraph'] = self.isnewparagraph(book,chapter,verse,text)
             self.state['book']=book
             self.state['book_s']=self.singular(self.state['book'])  # singular
             self.state['BOOK']=self.singular(book.upper())
@@ -358,6 +449,7 @@ class bibleformatter:
             self.state['verse']=verse
             self.state['text']=text
             self.state['shortbook']=( book in ('Obadiah','Philemon','2 John','3 John','Jude') )
+            self.state['isnewparagraph'] = self.isnewparagraph(book,chapter,verse,text)
             versetmpl = {True: '%(BOOK)s %(verse)s',
                         False: '%(BOOK)s %(chapter)s:%(verse)s' }
             self.state['REFERENCE']=versetmpl[self.state['shortbook']] % self.state
@@ -367,9 +459,9 @@ class bibleformatter:
                 yield ( r'\biblendchapter{%(book_s)s %(chapter)s}{%(index)s}' % ostate ) + '%\n'
             if newbook and ostate['book']:
                 yield ( r'\biblendbook{%(book)s}' % ostate ) + '%\n'
-            if newbook and book.startswith('Matthew'):
+            if newbook and book.startswith('Matthe'): # matthew/matteus
                 yield ( r'\biblbeforenewtestament' % self.state ) + '%\n'
-                yield ( r'\biblnewsection{NEW TESTAMENT}' % self.state ) + '%\n'
+                yield ( (r'\biblnewsection{'+self.newtestament+'}') % self.state ) + '%\n'
             if newbook:
                 self.state['index']=(self.state['index']+1) % 66
                 yield r'\biblbookheading{%(book)s}' % self.state+'%\n';
@@ -405,22 +497,26 @@ class bibleformatter:
         yield ( r'\biblendlastbook{%(book)s}' % self.state ) + '%\n'
         yield ( r'\biblafternewtestament' % self.state ) + '%\n'
 
-def iteratechapters(src):
-    en=bibleformatter(src)
+def iteratechapters(language,src):
+    en=bibleformatter(language,src)
     for line in en.booktolatex():
         yield line
 
-outfd=sys.stdout
-if len(sys.argv)>1:
-    outfd=open(sys.argv[1],'w')
 #import os
 #src=os.popen('sed 1,23145d < ../TEXT-PCE-127.txt','r')
 #src=os.popen('sed "/^\(Joh\|Ro\) / p; d" < ../TEXT-PCE-127.txt','r')
 #src=open('../1769.txt','r')
-src=open('../TEXT-PCE-127.txt','r')
-#src=os.popen('grep ^Ps < ../TEXT-PCE-127.txt','r')
-for splurge in iteratechapters(src):
-    outfd.write( splurge )
+src_dst = [
+    (english,   '../TEXT-PCE-127.txt', 'english.tex'),
+    (afrikaans, '../af1953.txt', 'afrikaans.tex'), ]
+
+for language,srcfile,dstfile in src_dst:
+    src=open(srcfile,'r')
+    outfd=open(dstfile,'w')
+    #src=os.popen('grep ^Ps < ../TEXT-PCE-127.txt','r')
+    for splurge in iteratechapters(language,src):
+        outfd.write( splurge )
+    outfd.close()
 
 
 # 2 Kings 1:43 And he walked in all the ways of Asa his father; he turned not aside from it, doing that which was right in the eyes of the LORD : nevertheless the high places were not taken away; for the people offered and burnt incense yet in the high places.

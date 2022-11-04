@@ -1,7 +1,17 @@
 % default definitions that you might override per file
+\def\ENpretitle{HOLY BIBLE}
+\def\ENtitle{King James Bible}
+\def\ENsubtitle{kjvtex compact}
+\def\ENmotto{The fruit of the righteous is a tree of life;\par and he that winneth souls is wise.}
+\def\ENpages{pages}%
+\def\ENaspect{aspect}%
+\def\ENlinespacing{line spacing}%
+\def\mytexlanguage{english}%
+\def\mysourcetext{english}%
 \def\mypreverse{}% set this to \par for verse-per-line
 \def\mypreversei{}% set this to \par for verse-per-line
 \def\mypreverseii{}% set this to \par for verse-per-line
+\def\mypredocument{}
 \def\myheadsep{0.0em}
 \def\myversescale{0.65}
 \def\mychapterscale{0.90}
@@ -27,27 +37,26 @@
 %\newcommand{\hebrewprefix}[1]{{\myhebrewfont #1}\ }%
 %
 % 
-\newcommand\showbindingmarksi[1]{%
+\newcommand\showbindingmarks[1]{%
 \AddToHookNext{shipout/background}{%
     \put(#1,-0.11\paperheight){\rule{1pt}{1pt}}%
     \put(#1,-0.22\paperheight){\rule{1pt}{1pt}}%
     \put(#1,-0.33\paperheight){\rule{1pt}{1pt}}%
     \put(#1,-0.44\paperheight){\rule{1pt}{1pt}}%
-}}
-\newcommand\showbindingmarksii[1]{%
-\AddToHookNext{shipout/background}{%
     \put(#1,-0.55\paperheight){\rule{1pt}{1pt}}%
     \put(#1,-0.66\paperheight){\rule{1pt}{1pt}}%
     \put(#1,-0.77\paperheight){\rule{1pt}{1pt}}%
     \put(#1,-0.88\paperheight){\rule{1pt}{1pt}}%
 }}
-\newcommand\showbindingmarks[1]{%
-    \showbindingmarksi{#1}
-    \showbindingmarksii{#1}
-}
+% \showchaptermark{0.#1}
+\newcommand\showchaptermark[1]{%
+\AddToHookNext{shipout/background}{%
+    \put(\paperwidth-\oddsidemargin+2.5mm,#1\paperheight){\rule{\oddsidemargin-2.5mm}{2pt}}%
+}}
 \newcommand\oddbindingmarks{\showbindingmarks{0pt}}
 \newcommand\evenbindingmarks{\showbindingmarks{\paperwidth-1pt}}
 
+% Pages before Genesis
 \newcommand\myfrontmatter{%
     \mypagei%    blank
     \mypageii%   print info page
