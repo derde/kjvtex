@@ -1,8 +1,13 @@
+CHARIS SIL
+
 The default Charis SIL has the following deficiencies -
 
  * No kerning (don't know why they didn't bother)
 
  * Relatively descenders that tend to run into the next line
+
+
+CHARIS SHORT
 
 The "Charis Short" font is derived from the Charis SIL font, with the following
 changes, done manually using FontForge -
@@ -31,3 +36,15 @@ How to do:
     Font adjustment:
         Select part below baseline
         Move it up
+
+CHARIS SHORTER
+
+Same as charis short, but ...
+
+ * Ascenders and capitals are also chopped down
+
+ * Numbers are scaled down by 10%
+
+ * Font metrics is set, so that the font size is not overly optimistic
+
+
