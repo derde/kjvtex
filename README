@@ -214,3 +214,10 @@ Checklist after layout adjustment:
     Appearance:
         Check register-true (text on front and back of page should be on the same line)
 
+Afrikaans checklist:
+    Font overruns on accented letters, especially capitals in 1 Chronicles
+    Font kerning, for words like "Kyk"
+    Handling of CAPITAL leading verse
+    Psalm titles in italics
+    Alef. Bet. rewritten (or handled) in Lamentations, Proverbs and Psalms
+

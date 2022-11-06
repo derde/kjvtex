@@ -4,31 +4,244 @@
 # DISCLAIMER: this code is torturous, because it is hacked from code for making
 # a side-by-side parallel Bible, which needs a lot of bad hacks.  I'm sorry.
 # Don't write your own code like this.  Be better.
+# 
+# And although it's called English, it seems to be doing Afrikaans too now.
+# Weird.
+#
+# Inputs:
+#   ../af1953.txt, ../TEXT-PCE-127.txt : source text
+#   1526.Pericopes.csv : paragrah division list
+#   afrikaans.renumbering: list of verses with variant numbering
+#   hebrew-words: list of hebrew words in the text; to replace things like ALEPH. wih the character
+#   afrikaans.psalmtitles: list of substrings that represent the psalm titles
+# Outputs:
+#   english.tex
+#   afrikaans.tex
+# Processing:
+#   Section headings (OT, NT)
+#   Chapter headings
+#   Afrikaans: lowercase paragraphs
+#   Verse numbers
+#   Paragraph breaks
+#   Italics for [ .. ]  text
+#   End notes for books processing
+#   Smallcaps for "LORD" (and HERE)
 
 import re
 import itertools
 import sys,copy
 
-
-english='en'
-afrikaans='af'
-
 class Hebrew:
-    def __init__(self,file='hebrew-words'):
+    "Hebrew rewrites"
+    def __init__(self,language,file='hebrew-words'):
         fd=open(file,'r')
         self.lookup={}
+        self.latin2utf8={}
         for line in fd:
-            bits=line.split('\t')
-            ref,NAME,uni,chars=bits[:4]
-            self.lookup[ref]={ 'NAME': NAME, 'ref':ref, 'chars':chars }
+            bits=line.strip().split('\t')
+            if len(bits)<4:
+                ref=bits[0]
+                self.lookup[ref]=None
+            else:
+                ref,heLatin,uni,heUtf8=bits[:4]
+                self.lookup[ref]={ 'heLatin': heLatin, 'ref':ref, 'heUtf8':heUtf8 }
+                self.latin2utf8[heLatin]=heUtf8
+        if language!=english: # FIXME ... this is 'orrible
+            self.adjust= self.adjustaf
     def adjust(self,text,p):
         'Zap the "ALEPH." away, and return the character to use'
-        c=''
+        prefix=''
         if p['book'] == "Psalms" and p['REFERENCE'] in self.lookup:
             r=self.lookup[p['REFERENCE']]
-            text=text.replace(r['NAME'],'')
-            c=r['chars']
-        return text,c
+            text=text.replace(r.get('heLatin',''),'')
+            prefix=r['heUtf8']
+        return prefix,text
+    def adjustaf(self,text,p):
+        "Afrikaans style: substitute hebrew letters in place"
+        if p['book'] in ( "Psalms", "Spreuke", "Klaagliedere"):
+            if p['sourcereference'] in self.lookup:
+                for heLatin,heUtf8 in self.latin2utf8.items():
+                    if text.find(heLatin)>=0:
+                        text=text.replace(heLatin,r'\hebrewinfix{%s}' % heUtf8)
+        return '',text
+
+class English:
+    bookfullnamesEn = {
+        'Ge'   : 'Genesis',
+        'Ex'   : 'Exodus',
+        'Le'   : 'Leviticus',
+        'Nu'   : 'Numbers',
+        'De'   : 'Deuteronomy',
+        'Jos'  : 'Joshua',
+        'Jg'   : 'Judges',
+        'Ru'   : 'Ruth',
+        '1Sa'  : '1 Samuel',
+        '2Sa'  : '2 Samuel',
+        '1Ki'  : '1 Kings',
+        '2Ki'  : '2 Kings',
+        '1Ch'  : '1 Chronicles',
+        '2Ch'  : '2 Chronicles',
+        'Ezr'  : 'Ezra',
+        'Ne'   : 'Nehemiah',
+        'Es'   : 'Esther',
+        'Job'  : 'Job',
+        'Ps'   : 'Psalms',
+        'Pr'   : 'Proverbs',
+        'Ec'   : 'Ecclesiastes',
+        'Song' : 'Song of Solomon',
+        'Isa'  : 'Isaiah',
+        'Jer'  : 'Jeremiah',
+        'La'   : 'Lamentations',
+        'Eze'  : 'Ezekiel',
+        'Da'   : 'Daniel',
+        'Ho'   : 'Hosea',
+        'Joe'  : 'Joel',
+        'Am'   : 'Amos',
+        'Ob'   : 'Obadiah',
+        'Jon'  : 'Jonah',
+        'Mic'  : 'Micah',
+        'Na'   : 'Nahum',
+        'Hab'  : 'Habakkuk',
+        'Zep'  : 'Zephaniah',
+        'Hag'  : 'Haggai',
+        'Zec'  : 'Zechariah',
+        'Mal'  : 'Malachi',
+        'Mt'   : 'Matthew',
+        'Mr'   : 'Mark',
+        'Lu'   : 'Luke',
+        'Joh'  : 'John',
+        'Ac'   : 'Acts',
+        'Ro'   : 'Romans',
+        '1Co'  : '1 Corinthians',
+        '2Co'  : '2 Corinthians',
+        'Ga'   : 'Galatians',
+        'Eph'  : 'Ephesians',
+        'Php'  : 'Philippians',
+        'Col'  : 'Colossians',
+        '1Th'  : '1 Thessalonians',
+        '2Th'  : '2 Thessalonians',
+        '1Ti'  : '1 Timothy',
+        '2Ti'  : '2 Timothy',
+        'Tit'  : 'Titus',
+        'Phm'  : 'Philemon',
+        'Heb'  : 'Hebrews',
+        'Jas'  : 'James',
+        '1Pe'  : '1 Peter',
+        '2Pe'  : '2 Peter',
+        '1Jo'  : '1 John',
+        '2Jo'  : '2 John',
+        '3Jo'  : '3 John',
+        'Jude' : 'Jude',
+        'Re'   : 'Revelation',
+    }
+    def __init__(self,file='english.psalmtitles', numberfile='english.renumbering'):
+        self.bookFullnames=self.bookfullnamesEn
+        self.oldtestament="OLD TESTAMENT"
+        self.newtestament="NEW TESTAMENT"
+        pass
+    def renumberreference(self,ref):
+        return ref
+    def markuppsalmheadings(self,text,state):
+        return text
+
+class Afrikaans:
+    bookFullnamesAf={
+        'Gn'   :  'Genesis',
+        'Ex'   :  'Exodus',
+        'Lv'   :  'Levitikus',
+        'Nu'   :  'Numeri',
+        'Dt'   :  'Deuteronomium',
+        'Jos'  :  'Josua',
+        'Rgt'  :  'Rigters',
+        'Rut'  :  'Rut',
+        '1Sa'  :  '1 Samuel',
+        '2Sa'  :  '2 Samuel',
+        '1Ko'  :  '1 Konings',
+        '2Ko'  :  '2 Konings',
+        '1Kr'  :  '1 Kronieke',
+        '2Kr'  :  '2 Kronieke',
+        'Esr'  :  'Esra',
+        'Neh'  :  'Nehemia',
+        'Est'  :  'Ester',
+        'Job'  :  'Job',
+        'Ps'   :  'Psalms',
+        'Spr'  :  'Spreuke',
+        'Prd'  :  'Prediker',
+        'Hgl'  :  'Hooglied',
+        'Js'   :  'Jesaja',
+        'Je'   :  'Jeremia',
+        'Klg'  :  'Klaagliedere',
+        'Es'   :  'Esegiel',
+        'Dn'   :  'Daniel',
+        'Hs'   :  'Hosea',
+        'Jl'   :  'Joel',
+        'Am'   :  'Amos',
+        'Ob'   :  'Obadja',
+        'Jna'  :  'Jona',
+        'Mg'   :  'Miga',
+        'Nh'   :  'Nahum',
+        'Hb'   :  'Habakuk',
+        'Sf'   :  'Sefanja',
+        'Hg'   :  'Haggai',
+        'Sg'   :  'Sagaria',
+        'Ml'   :  'Maleagi',
+        'Mt'   :  'Mattheus',
+        'Mk'   :  'Markus',
+        'Lk'   :  'Lukas',
+        'Jo'   :  'Johannes',
+        'Hnd'  :  'Handelinge',
+        'Rom'  :  'Romeine',
+        '1Ko'  :  '1 Korinthiers',
+        '2Ko'  :  '2 Korinthiers',
+        'Gal'  :  'Galasiers',
+        'Ef'   :  'Efesiers',
+        'Fil'  :  'Filippense',
+        'Kol'  :  'Kolossense',
+        '1Th'  :  '1 Thessalonicense',
+        '2Th'  :  '2 Thessalonicense',
+        '1Ti'  :  '1 Timotheus',
+        '2Ti'  :  '2 Timotheus',
+        'Tit'  :  'Titus',
+        'Flm'  :  'Filemon',
+        'Heb'  :  'Hebreers',
+        'Jak'  :  'Jakobus',
+        '1Pt'  :  '1 Petrus',
+        '2Pt'  :  '2 Petrus',
+        '1Jo'  :  '1 Johannes',
+        '2Jo'  :  '2 Johannes',
+        '3Jo'  :  '3 Johannes',
+        'Jud'  :  'Judas',
+        'Opn'  :  'Openbaring',
+    }
+
+    def __init__(self,file='afrikaans.psalmtitles', numberfile='afrikaans.renumbering'):
+        self.bookFullnames=self.bookFullnamesAf
+        self.oldtestament="OU TESTAMENT"
+        self.newtestament="NUWE TESTAMENT"
+        fd=open(file,'r')
+        splitreftext_re=re.compile('(^[^:]*:[^ ]*) (.*)')
+        self.titles={}
+        for line in fd:
+            m=splitreftext_re.search(line)
+            if not m: continue
+            self.titles[m.group(1)]=m.group(2)
+
+        self.aftoen={}
+        self.entoaf={}
+        fd=open(numberfile,'r')
+        for line in fd:
+            en,af=line.strip().split('\t',1)
+            self.aftoen[af]=en
+            self.aftoen[en]=af
+    def renumberreference(self,ref):
+        # Rewrite references
+        return self.aftoen.get(ref,ref)
+    def markuppsalmheadings(self,text,state):
+        ref=state['sourcereference'];
+        if ref in self.titles:
+            heading=self.titles[ref]
+            text=text.replace(heading,r'\biblepsalmheading{'+heading+'}')
+        return text
 
 class paragraphdivisions:
     def staticdata(self):
@@ -101,7 +314,8 @@ JAS      : James           :  Jakobus
 JUDE     : Jude            :  Judas 
 REV      : Revelation      :  Openbaring'''
 
-    def __init__(self,file):
+    def __init__(self,file,language):
+        self.language=language
         self.staticdata()
         self.bookmap=[]
         for line in self.bookmapdata.split('\n'):
@@ -139,8 +353,10 @@ REV      : Revelation      :  Openbaring'''
         book = self.bookmaplookup(0,1,m.group(1))
         ref1 = book+' '+chapterandverse
         #if ref1.startswith('Psalms'): ref1='Psalm '+ref1.split()[-1]
+        ref1 = self.language.renumberreference(ref1)
         self.paragraphs[ref1] = True
         # Make it a paragraph for all the other forms and languages too:
+        
         for mapentry in self.bookmapdata:
             if book in (mapentry):
                 for b in mapentry:
@@ -155,7 +371,8 @@ REV      : Revelation      :  Openbaring'''
 class bibleformatter:
     paragraph_wl_re=re.compile("^('n )?[A-Z]{2,}")
     paragraph_bl_re=re.compile("^HERE ")
-    # These are the particular things that appear in the AFrikaans
+    # These are the particular things that appear in the AFrikaans: we don't actually like that leading capital
+    # python seems to have these already ... not sure what we're doing here ...
     af_lowercase={
         'Á': 'á',
         'É': 'é',
@@ -180,163 +397,18 @@ class bibleformatter:
     'SJIGGAJŌN'  :   'Sjiggajōn',
     'VANWEË'     :   'Vanweë',
     }
-    bookAbbreviationsEN = {
-        'Ge'   : 'Genesis',
-        'Ex'   : 'Exodus',
-        'Le'   : 'Leviticus',
-        'Nu'   : 'Numbers',
-        'De'   : 'Deuteronomy',
-        'Jos'  : 'Joshua',
-        'Jg'   : 'Judges',
-        'Ru'   : 'Ruth',
-        '1Sa'  : '1 Samuel',
-        '2Sa'  : '2 Samuel',
-        '1Ki'  : '1 Kings',
-        '2Ki'  : '2 Kings',
-        '1Ch'  : '1 Chronicles',
-        '2Ch'  : '2 Chronicles',
-        'Ezr'  : 'Ezra',
-        'Ne'   : 'Nehemiah',
-        'Es'   : 'Esther',
-        'Job'  : 'Job',
-        'Ps'   : 'Psalms',
-        'Pr'   : 'Proverbs',
-        'Ec'   : 'Ecclesiastes',
-        'Song' : 'Song of Solomon',
-        'Isa'  : 'Isaiah',
-        'Jer'  : 'Jeremiah',
-        'La'   : 'Lamentations',
-        'Eze'  : 'Ezekiel',
-        'Da'   : 'Daniel',
-        'Ho'   : 'Hosea',
-        'Joe'  : 'Joel',
-        'Am'   : 'Amos',
-        'Ob'   : 'Obadiah',
-        'Jon'  : 'Jonah',
-        'Mic'  : 'Micah',
-        'Na'   : 'Nahum',
-        'Hab'  : 'Habakkuk',
-        'Zep'  : 'Zephaniah',
-        'Hag'  : 'Haggai',
-        'Zec'  : 'Zechariah',
-        'Mal'  : 'Malachi',
-        'Mt'   : 'Matthew',
-        'Mr'   : 'Mark',
-        'Lu'   : 'Luke',
-        'Joh'  : 'John',
-        'Ac'   : 'Acts',
-        'Ro'   : 'Romans',
-        '1Co'  : '1 Corinthians',
-        '2Co'  : '2 Corinthians',
-        'Ga'   : 'Galatians',
-        'Eph'  : 'Ephesians',
-        'Php'  : 'Philippians',
-        'Col'  : 'Colossians',
-        '1Th'  : '1 Thessalonians',
-        '2Th'  : '2 Thessalonians',
-        '1Ti'  : '1 Timothy',
-        '2Ti'  : '2 Timothy',
-        'Tit'  : 'Titus',
-        'Phm'  : 'Philemon',
-        'Heb'  : 'Hebrews',
-        'Jas'  : 'James',
-        '1Pe'  : '1 Peter',
-        '2Pe'  : '2 Peter',
-        '1Jo'  : '1 John',
-        '2Jo'  : '2 John',
-        '3Jo'  : '3 John',
-        'Jude' : 'Jude',
-        'Re'   : 'Revelation',
-    }
-    bookAbbreviationsAF={
-        'Genesis':           'Genesis',
-        'Exodus':            'Exodus',
-        'Levitikus':         'Levitikus',
-        'Numeri':            'Numeri',
-        'Deuteronomium':     'Deuteronomium',
-        'Josua':             'Josua',
-        'Rigters':           'Rigters',
-        'Rut':               'Rut',
-        '1 Samuel':          '1 Samuel',
-        '2 Samuel':          '2 Samuel',
-        '1 Konings':         '1 Konings',
-        '2 Konings':         '2 Konings',
-        '1 Kronieke':        '1 Kronieke',
-        '2 Kronieke':        '2 Kronieke',
-        'Esra':              'Esra',
-        'Nehemia':           'Nehemia',
-        'Ester':             'Ester',
-        'Job':               'Job',
-        'Psalms':            'Psalms',
-        'Spreuke':           'Spreuke',
-        'Prediker':          'Prediker',
-        'Hooglied':          'Hooglied',
-        'Jesaja':            'Jesaja',
-        'Jeremia':           'Jeremia',
-        'Klaagliedere':      'Klaagliedere',
-        'Esegiel':           'Esegiel',
-        'Daniel':            'Daniel',
-        'Hosea':             'Hosea',
-        'Joel':              'Joel',
-        'Amos':              'Amos',
-        'Obadja':            'Obadja',
-        'Jona':              'Jona',
-        'Miga':              'Miga',
-        'Nahum':             'Nahum',
-        'Habakuk':           'Habakuk',
-        'Sefanja':           'Sefanja',
-        'Haggai':            'Haggai',
-        'Sagaria':           'Sagaria',
-        'Maleagi':           'Maleagi',
-        'Mattheus':          'Mattheus',
-        'Markus':            'Markus',
-        'Lukas':             'Lukas',
-        'Johannes':          'Johannes',
-        'Handelinge':        'Handelinge',
-        'Romeine':           'Romeine',
-        '1 Korinthiers':     '1 Korinthiers',
-        '2 Korinthiers':     '2 Korinthiers',
-        'Galasiers':         'Galasiers',
-        'Efesiers':          'Efesiers',
-        'Filippense':        'Filippense',
-        'Kolossense':        'Kolossense',
-        '1 Thessalonicense': '1 Thessalonicense',
-        '2 Thessalonicense': '2 Thessalonicense',
-        '1 Timotheus':       '1 Timotheus',
-        '2 Timotheus':       '2 Timotheus',
-        'Titus':             'Titus',
-        'Filemon':           'Filemon',
-        'Hebreers':          'Hebreers',
-        'Jakobus':           'Jakobus',
-        '1 Petrus':          '1 Petrus',
-        '2 Petrus':          '2 Petrus',
-        '1 Johannes':        '1 Johannes',
-        '2 Johannes':        '2 Johannes',
-        '3 Johannes':        '3 Johannes',
-        'Judas':             'Judas',
-        'Openbaring':        'Openbaring',
-    }
-
     def __init__(self,language,file):
         self.language=language;
+        self.hebrew=Hebrew(language)
         self.state={
             'book': '',
             'chapter': '',
             'chapter': '', }
-        self.language=language
-        if language==english:
-            self.bookAbbreviations=self.bookAbbreviationsEN
-            self.oldtestament="OLD TESTAMENT"
-            self.newtestament="NEW TESTAMENT"
-        elif language==afrikaans:
-            self.bookAbbreviations=self.bookAbbreviationsAF
-            self.oldtestament="OU TESTAMENT"
-            self.newtestament="NUWE TESTAMENT"
-        self.paragraphdivisions=paragraphdivisions('1526.Pericopes.csv')
+        self.paragraphdivisions=paragraphdivisions('1526.Pericopes.csv', self.language)
         self.markheading=r'\markright';
         self.fd=file
         self.shortnames={}
-        for k,v in self.bookAbbreviations.items():
+        for k,v in self.language.bookFullnames.items():
             self.shortnames[v]=k
 
     def booktochapters(self):
@@ -345,8 +417,7 @@ class bibleformatter:
         for line in self.fd:
             m=lineformat_re.search(line.strip())
             book,chapter,verse,text=m.groups()
-            book=self.bookAbbreviations.get(book,book)
-            text=text.replace('’',"'")
+            book=self.language.bookFullnames.get(book,book)
             yield book,chapter,verse,text
 
     def chapternumber(self,book,chapter, one_chapter=False):
@@ -415,7 +486,8 @@ class bibleformatter:
         dontsmallcapsnt=['AEnas','JESUS','For David himself said by the Holy Ghost','KING OF','TO THE UNKNOWN GOD','MYSTERY'];
         if re.search('|'.join(dontsmallcapsnt),text): 
             return text
-        text=re.sub(r"([A-Z]{2,}'?S?)(\s*)", self.sub_format_smallcaps, text)
+
+        text=re.sub(r"([A-ZÁÉÊËÍÓŌÚ]{2,}'?S?)(\s*)", self.sub_format_smallcaps, text)
         return text
 
     def singular(self, book):
@@ -436,15 +508,15 @@ class bibleformatter:
         self.state['index']=26
         self.state['shortbook']=''
         newbook=True
-        hebrew=Hebrew()
         yield r'\biblbeforeoldtestament' % self.state +'%\n'
-        yield (r'\biblnewsection{'+self.oldtestament+'}') % self.state +'%\n'
+        yield (r'\biblnewsection{'+self.language.oldtestament+'}') % self.state +'%\n'
         for book,chapter,verse,text in self.booktochapters():
             ostate=copy.copy(self.state)
+            self.state['sourcereference']=book+' '+chapter+':'+verse
             self.state['book']=book
             self.state['book_s']=self.singular(self.state['book'])  # singular
             self.state['BOOK']=self.singular(book.upper())
-            self.state['short']=self.shortnames[book]
+            self.state['short']=self.shortnames.get(book,book)
             self.state['chapter']=chapter
             self.state['verse']=verse
             self.state['text']=text
@@ -461,7 +533,7 @@ class bibleformatter:
                 yield ( r'\biblendbook{%(book)s}' % ostate ) + '%\n'
             if newbook and book.startswith('Matthe'): # matthew/matteus
                 yield ( r'\biblbeforenewtestament' % self.state ) + '%\n'
-                yield ( (r'\biblnewsection{'+self.newtestament+'}') % self.state ) + '%\n'
+                yield ( (r'\biblnewsection{'+self.language.newtestament+'}') % self.state ) + '%\n'
             if newbook:
                 self.state['index']=(self.state['index']+1) % 66
                 yield r'\biblbookheading{%(book)s}' % self.state+'%\n';
@@ -480,7 +552,9 @@ class bibleformatter:
                 else:
                     yield r'\biblnewparagraph' % self.state + '%\n'
             t=''
-            text,aleph=hebrew.adjust(text,self.state)
+            text = self.language.markuppsalmheadings(text,self.state)
+            text=text.replace('’',"'") # weird unicode is weird
+            aleph,text = self.hebrew.adjust(text,self.state)
             if aleph:
                 t += '\hebrewprefix{'+aleph+'} '
             t += self.verseheading(verse)
@@ -506,6 +580,8 @@ def iteratechapters(language,src):
 #src=os.popen('sed 1,23145d < ../TEXT-PCE-127.txt','r')
 #src=os.popen('sed "/^\(Joh\|Ro\) / p; d" < ../TEXT-PCE-127.txt','r')
 #src=open('../1769.txt','r')
+english=English()
+afrikaans=Afrikaans()
 src_dst = [
     (english,   '../TEXT-PCE-127.txt', 'english.tex'),
     (afrikaans, '../af1953.txt', 'afrikaans.tex'), ]

@@ -1,4 +1,6 @@
 PDF=largeprint.pdf a5x800.pdf english0.pdf waterproof.pdf giftandaward.pdf africa.pdf
+FONTS=CharisShort-Bold.otf    CharisShorter-Bold.otf    CharisShorter-Italic.otf    CharisShorter.otf    CharisShort-Italic.otf    CharisShort.otf \
+      CharisShort-Bold.woff2  CharisShorter-Bold.woff2  CharisShorter-Italic.woff2  CharisShorter.woff2  CharisShort-Italic.woff2  CharisShort.woff2
 
 default: $(PDF)
 
@@ -37,4 +39,12 @@ bibl.pdf: bibl.tex
 	pdfunite tmp/$(basename $<)-*.pdf $(basename $<)-u.pdf
 	rm tmp/$(basename $<)-*.pdf
 	pdfbook2 --no-crop --paper=a4paper --outer-margin=28 --inner-margin=0 --top-margin=0 --bottom-margin=0 --signature=32 $(basename $<)-u.pdf
+
+
+fonts: $(FONTS)
+
+%.woff2: %.sfd
+	fontforge -c 'open(argv[1]).generate(argv[2])' $< $@
+%.otf: %.sfd
+	fontforge -c 'open(argv[1]).generate(argv[2])' $< $@
 

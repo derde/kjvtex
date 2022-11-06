@@ -147,6 +147,7 @@
 %%  \setaftersecskip{0em}
 %%  \setsecheadstyle{\marginhead}
 \def\hebrewleader{}%
+\newcommand{\biblepsalmheading}[1]{{\em #1}}%
 \newcommand{\sharedverse}[2]{\raisebox{\myverseraise}[0pt]{\myversefont\textbf{#1}\hspace{0.8pt}}\def\mythumbindex{#2}}%3 points up, count height as 0 points, kern at end
 \newcommand {\versei}[2]{\mypreversei \hebrewleader\def\hebrewleader{}}%3 points up, count height as 0 points, kern at end
 \newcommand{\verseii}[2]{\mypreverseii\hebrewleader\def\hebrewleader{}\sharedverse{#1}{#2}}%3 points up, count height as 0 points, kern at end
@@ -173,10 +174,10 @@
 \newcommand{\biblnewreference}[2]{\markboth{#1}{#1}\def\mythumbindex{#2}}%
 \newcommand{\biblendreference}[2]{\markboth{#1}{#1}\def\mythumbindex{#2}}%
 \newcommand{\biblbookheading}[1]{%
-    \needspace{8\baselineskip}%
-    {\centering \textbf{\mybooktitlefont #1}%
-        \strut
-        \bookheadingstrut
+    \needspace{8\baselineskip}\null% This causes the leading space at the top of a space not to be "consumed" - Genesis and Matthew ... still not exactly right though
+    {\centering \textbf{\mybooktitlefont #1}
+        \strut% standard strut, probably doesn't make any difference
+        \bookheadingstrut% A multi-line strut for the big text
         \par}%
     \bibltwocolumn
 }%
@@ -251,7 +252,7 @@
     \ifdefined\mydisplayfont%
         \mydisplayfont\ \myfontsize, %
     \else%
-        \makeatletter\f@family \makeatother\ \the\fontdimen6\font\the\font, %
+        \makeatletter\ifdefined\f@family\f@family\fi \makeatother\ \the\fontdimen6\font\the\font, %
     \fi
     \ENaspect\ \myfontstretch:1,
     \ENlinespacing\ \the\baselineskip

@@ -43,8 +43,15 @@ Same as charis short, but ...
 
  * Ascenders and capitals are also chopped down
 
+ * Capitals are scaled to a little shorter than the tall lower-case letters (except ASOQ)
+
  * Numbers are scaled down by 10%
 
  * Font metrics is set, so that the font size is not overly optimistic
 
+ * Vertical on capitals are shortened a little
+
+ * Kerning is set to 280 dots for letters a-z A-Z on left, and a-z A-z and punctuation on right hand side.
+
+ * Special kerning consideration: Ty (and T-everything), "y,"
 
