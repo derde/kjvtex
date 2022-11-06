@@ -44,6 +44,7 @@ class Hebrew:
                 self.lookup[ref]=None
             else:
                 ref,heLatin,uni,heUtf8=bits[:4]
+                if not heLatin.endswith(' '): heLatin+=' ';
                 self.lookup[ref]={ 'heLatin': heLatin, 'ref':ref, 'heUtf8':heUtf8 }
                 self.latin2utf8[heLatin]=heUtf8
         if language!=english: # FIXME ... this is 'orrible
