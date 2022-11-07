@@ -133,6 +133,8 @@ class English:
         return ref
     def markuppsalmheadings(self,text,state):
         return text
+    def getbookprettyname(self,book):
+        return book
 
 class Afrikaans:
     af_lowercase={
@@ -227,6 +229,74 @@ class Afrikaans:
         'Jud'  :  'Judas',
         'Opn'  :  'Openbaring',
     }
+    booknamesAccented ={
+        'Genesis'              : ['GÉNESIS'            ,'Génesis'             ],
+        'Exodus'               : ['EXODUS'             ,'Exodus'              ],
+        'Levitikus'            : ['LEVÍTIKUS'          ,'Levítikus'           ],
+        'Numeri'               : ['NÚMERI'             ,'Númeri'              ],
+        'Deuteronomium'        : ['DEUTERONÓMIUM'      ,'Deuteronómium'       ],
+        'Josua'                : ['JOSUA'              ,'Josua'               ],
+        'Rigters'              : ['RIGTERS'            ,'Rigters'             ],
+        'Rut'                  : ['RUT'                ,'Rut'                 ],
+        '1 Samuel'             : ['I SAMUEL'           ,'I Samuel'            ],
+        '2 Samuel'             : ['II SAMUEL'          ,'II Samuel'           ],
+        '1 Konings'            : ['I KONINGS'          ,'I Konings'           ],
+        '2 Konings'            : ['II KONINGS'         ,'II Konings'          ],
+        '1 Kronieke'           : ['I KRONIEKE'         ,'I Kronieke'          ],
+        '2 Kronieke'           : ['II KRONIEKE'        ,'II Kronieke'         ],
+        'Esra'                 : ['ESRA'               ,'Esra'                ],
+        'Nehemia'              : ['NEHEMÍA'            ,'Nehemía'             ],
+        'Ester'                : ['ESTER'              ,'Ester'               ],
+        'Job'                  : ['JOB'                ,'Job'                 ],
+        'Psalms'               : ['PSALMS'             ,'Psalms'              ],
+        'Spreuke'              : ['SPREUKE'            ,'Spreuke'             ],
+        'Prediker'             : ['PREDIKER'           ,'Prediker'            ],
+        'Hooglied'             : ['HOOGLIED'           ,'Hooglied'            ],
+        'Jesaja'               : ['JESAJA'             ,'Jesaja'              ],
+        'Jeremia'              : ['JEREMIA'            ,'Jeremia'             ],
+        'Klaagliedere'         : ['KLAAGLIEDERE'       ,'Klaagliedere'        ],
+        'Esegiel'              : ['ESÉGIËL'            ,'Eségiël'             ],
+        'Daniel'               : ['DANIËL'             ,'Daniël'              ],
+        'Hosea'                : ['HOSÉA'              ,'Hoséa'               ],
+        'Joel'                 : ['JOËL'               ,'Joël'                ],
+        'Amos'                 : ['AMOS'               ,'Amos'                ],
+        'Obadja'               : ['OBÁDJA'             ,'Obádja'              ],
+        'Jona'                 : ['JONA'               ,'Jona'                ],
+        'Miga'                 : ['MIGA'               ,'Miga'                ],
+        'Nahum'                : ['NAHUM'              ,'Nahum'               ],
+        'Habakuk'              : ['HÁBAKUK'            ,'Hábakuk'             ],
+        'Sefanja'              : ['SEFÁNJA'            ,'Sefánja'             ],
+        'Haggai'               : ['HAGGAI'             ,'Haggai'              ],
+        'Sagaria'              : ['SAGARÍA'            ,'Sagaría'             ],
+        'Maleagi'              : ['MALEÁGI'            ,'Maleági'             ],
+        'Mattheus'             : ['MATTHÉÜS'           ,'Matthéüs'            ],
+        'Markus'               : ['MARKUS'             ,'Markus'              ],
+        'Lukas'                : ['LUKAS'              ,'Lukas'               ],
+        'Johannes'             : ['JOHANNES'           ,'Johannes'            ],
+        'Handelinge'           : ['HANDELINGE'         ,'Handelinge'          ],
+        'Romeine'              : ['ROMEINE'            ,'Romeine'             ],
+        '1 Korinthiers'        : ['I KORINTHIËRS'      ,'I Korinthiërs'       ],
+        '2 Korinthiers'        : ['II KORINTHIËRS'     ,'II Korinthiërs'      ],
+        'Galasiers'            : ['GALÁSIËRS'          ,'Galásiërs'           ],
+        'Efesiers'             : ['EFÉSIËRS'           ,'Efésiërs'            ],
+        'Filippense'           : ['FILIPPENSE'         ,'Filippense'          ],
+        'Kolossense'           : ['KOLOSSENSE'         ,'Kolossense'          ],
+        '1 Thessalonicense'    : ['I THESSALONICENSE'  ,'I Thessalonicense'   ],
+        '2 Thessalonicense'    : ['II THESSALONICENSE' ,'II Thessalonicense'  ],
+        '1 Timotheus'          : ['I TIMÓTHEÜS        ','I Timótheüs         '],
+        '2 Timotheus'          : ['II TIMÓTHEÜS'       ,'II Timótheüs'        ],
+        'Titus'                : ['TITUS'              ,'Titus'               ],
+        'Filemon'              : ['FILÉMON'            ,'Filémon'             ],
+        'Hebreers'             : ['HEBREËRS'           ,'Hebreërs'            ],
+        'Jakobus'              : ['JAKOBUS'            ,'Jakobus'             ],
+        '1 Petrus'             : ['I PETRUS'           ,'I Petrus'            ],
+        '2 Petrus'             : ['II PETRUS'          ,'II Petrus'           ],
+        '1 Johannes'           : ['I JOHANNES'         ,'I Johannes'          ],
+        '2 Johannes'           : ['II JOHANNES'        ,'II Johannes'         ],
+        '3 Johannes'           : ['III JOHANNES'       ,'III Johannes'        ],
+        'Judas'                : ['JUDAS'              ,'Judas'               ],
+        'Openbaring'           : ['OPENBARING'         ,'Openbaring'          ],
+    }
 
     def __init__(self,file='afrikaans.psalmtitles', numberfile='afrikaans.renumbering'):
         # Hebrew letter, prefix, capitalised-word
@@ -250,11 +320,13 @@ class Afrikaans:
             en,af=line.strip().split('\t',1)
             self.aftoen[af]=en
             self.aftoen[en]=af
+    def getbookprettyname(self,book):
+        return self.booknamesAccented[book][1]
     def renumberreference(self,ref):
         # Rewrite references
         ref= self.aftoen.get(ref,ref)
         return ref
-    def fixcaps(self,text):
+    def paragraphcapstotitlecase(self,text):
         '''Convert capitals to titlecase'''
         m=self.titlecasewl.search(text)
         if m and not self.titlecasebl.search(text):
@@ -268,9 +340,9 @@ class Afrikaans:
         ref=state['sourcereference'];
         if ref in self.titles:
             heading=self.titles[ref]
-            text=text.replace(heading,r'\biblepsalmheading{'+self.fixcaps(heading)+'}')
+            text=text.replace(heading,r'\biblepsalmheading{'+self.paragraphcapstotitlecase(heading)+'}')
         else:
-            text=self.fixcaps(text)
+            text=self.paragraphcapstotitlecase(text)
         return text
 
 class paragraphdivisions:
@@ -543,7 +615,8 @@ class bibleformatter:
                 yield ( (r'\biblnewsection{'+self.language.newtestament+'}') % self.state ) + '%\n'
             if newbook:
                 self.state['index']=(self.state['index']+1) % 66
-                yield r'\biblbookheading{%(book)s}' % self.state+'%\n';
+                self.state['prettyname']=self.language.getbookprettyname(self.state['book'])
+                yield r'\biblbookheading{%(prettyname)s}' % self.state+'%\n';
                 yield r'\biblnewbook{%(book)s}{%(short)s}' % self.state + '%\n'
             if newchapter:
                 if self.state['shortbook']:
