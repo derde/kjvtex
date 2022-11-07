@@ -230,7 +230,7 @@ class Afrikaans:
 
     def __init__(self,file='afrikaans.psalmtitles', numberfile='afrikaans.renumbering'):
         # Hebrew letter, prefix, capitalised-word
-        self.titlecasewl=re.compile(r"^([A-Z][a-z]+\. )?(’n |O, )?([-A-ZÁÉÊËÍÓŌÚ]{2,})(.*)")
+        self.titlecasewl=re.compile(r"^([A-Z][a-z]+\. )?(’n |O |O, )?([-A-ZÁÉÊËÍÓŌÚ]{2,})(.*)")
         self.titlecasebl=re.compile(r"^([A-Z][a-z]+\. )?(’n |O, )?(HERE)")
         self.bookFullnames=self.bookFullnamesAf
         self.oldtestament="OU TESTAMENT"
@@ -399,7 +399,7 @@ REV      : Revelation      :  Openbaring'''
         
 
 class bibleformatter:
-    paragraph_wl_re=re.compile("^('n |’n |O, |)?[A-Z]{2,}")
+    paragraph_wl_re=re.compile(r"^([A-Z][a-z]+\. )?(’n |O |O, )?([-A-ZÁÉÊËÍÓŌÚ]{2,})(.*)")
     paragraph_bl_re=re.compile(r"\bHERE\b")
     # These are the particular things that appear in the AFrikaans: we don't actually like that leading capital
     # python seems to have these already ... not sure what we're doing here ...

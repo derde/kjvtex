@@ -207,6 +207,7 @@
 \lettrine[lines=2, lraise=0.0, lhang=0.05, findent=3pt, nindent=0pt, loversize=0.0]{\textbf{\mychapterfont #1}}{}}%
 % Work around lettrine bug with "Fpar" definition from https://tex.stackexchange.com/questions/369868/using-lettrine-with-short-paragraphs :
 % Synthetic paragraph that should be used for verse 2, in case it is right net to verse 1 and the dropcaps chapter number
+\def\bibleparnoindent{\hfil\vadjust{\vskip\parskip}\break}%
 \def\biblsyntheticparii{\hfil\vadjust{\vskip\parskip}\break\indent}%
 % Don't warn for slightly overfull hboxen
 \hfuzz=2pt%
