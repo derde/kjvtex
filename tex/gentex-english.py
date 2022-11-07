@@ -135,6 +135,30 @@ class English:
         return text
 
 class Afrikaans:
+    af_lowercase={
+        'Á': 'á',
+        'É': 'é',
+        'Ê': 'ê',
+        'Ë': 'ë',
+        'Í': 'í',
+        'Ó': 'ó',
+        'Ú': 'ú',
+        'Ō': 'ō',
+    }
+    af_wordmap={
+        'DÍT'        :   'Dít',
+        'GESEËND'    :   'Geseënd',
+        'JEHISKÍA'   :   'Jehiskía',
+        'JOSÍA'      :   'Josía',
+        'LÊ'         :   'Lê',
+        'NÁ'         :   'Ná',
+        'NASARÉNER'  :   'Nasaréner',
+        'SAMARÍA'    :   'Samaría',
+        'SEDEKÍA'    :   'Sedekía',
+        'SÍMEON'     :   'Símeon',
+        'SJIGGAJŌN'  :   'Sjiggajōn',
+        'VANWEË'     :   'Vanweë',
+    }
     bookFullnamesAf={
         'Gn'   :  'Genesis',
         'Ex'   :  'Exodus',
@@ -205,6 +229,9 @@ class Afrikaans:
     }
 
     def __init__(self,file='afrikaans.psalmtitles', numberfile='afrikaans.renumbering'):
+        # Hebrew letter, prefix, capitalised-word
+        self.titlecasewl=re.compile(r"^([A-Z][a-z]+\. )?(’n |O, )?([-A-ZÁÉÊËÍÓŌÚ]{2,})(.*)")
+        self.titlecasebl=re.compile(r"^([A-Z][a-z]+\. )?(’n |O, )?(HERE)")
         self.bookFullnames=self.bookFullnamesAf
         self.oldtestament="OU TESTAMENT"
         self.newtestament="NUWE TESTAMENT"
@@ -225,12 +252,25 @@ class Afrikaans:
             self.aftoen[en]=af
     def renumberreference(self,ref):
         # Rewrite references
-        return self.aftoen.get(ref,ref)
+        ref= self.aftoen.get(ref,ref)
+        return ref
+    def fixcaps(self,text):
+        '''Convert capitals to titlecase'''
+        m=self.titlecasewl.search(text)
+        if m and not self.titlecasebl.search(text):
+            # Change to titlecase - UTF8 stuff just works, it seems:
+            text=''
+            if m.group(1): text+=m.group(1)
+            if m.group(2): text+=m.group(2)
+            text+=m.group(3).title()+m.group(4)
+        return text
     def markuppsalmheadings(self,text,state):
         ref=state['sourcereference'];
         if ref in self.titles:
             heading=self.titles[ref]
-            text=text.replace(heading,r'\biblepsalmheading{'+heading+'}')
+            text=text.replace(heading,r'\biblepsalmheading{'+self.fixcaps(heading)+'}')
+        else:
+            text=self.fixcaps(text)
         return text
 
 class paragraphdivisions:
@@ -359,34 +399,10 @@ REV      : Revelation      :  Openbaring'''
         
 
 class bibleformatter:
-    paragraph_wl_re=re.compile("^('n )?[A-Z]{2,}")
-    paragraph_bl_re=re.compile("^HERE ")
+    paragraph_wl_re=re.compile("^('n |’n |O, |)?[A-Z]{2,}")
+    paragraph_bl_re=re.compile(r"\bHERE\b")
     # These are the particular things that appear in the AFrikaans: we don't actually like that leading capital
     # python seems to have these already ... not sure what we're doing here ...
-    af_lowercase={
-        'Á': 'á',
-        'É': 'é',
-        'Ê': 'ê',
-        'Ë': 'ë',
-        'Í': 'í',
-        'Ó': 'ó',
-        'Ú': 'ú',
-        'Ō': 'ō',
-    }
-    af_wordmap={
-    'DÍT'        :   'Dít',
-    'GESEËND'    :   'Geseënd',
-    'JEHISKÍA'   :   'Jehiskía',
-    'JOSÍA'      :   'Josía',
-    'LÊ'         :   'Lê',
-    'NÁ'         :   'Ná',
-    'NASARÉNER'  :   'Nasaréner',
-    'SAMARÍA'    :   'Samaría',
-    'SEDEKÍA'    :   'Sedekía',
-    'SÍMEON'     :   'Símeon',
-    'SJIGGAJŌN'  :   'Sjiggajōn',
-    'VANWEË'     :   'Vanweë',
-    }
     def __init__(self,language,file):
         self.language=language;
         self.hebrew=Hebrew()
@@ -446,10 +462,11 @@ class bibleformatter:
         return isnew
 
     def sub_format_smallcaps(self,m):
-        if m.span(1)[0]==0:
-            return m.group(1)+m.group(2)
+        # This would exclude matches as the first word in the text:
+        #if m.span(1)[0]==0:
+        #    return m.group(1)+m.group(2)
         word=m.group(1)
-        smallcapsd=word[0]+r'{\myfootnotefont '+word[1:]+'}'
+        smallcapsd=word[0]+r'{\mysmallcapsfont '+word[1:]+'}'
         # smallcapsd= r'\textsc{'+m.group(1).title()+'}'
         whitespace=m.group(2)
         # if not whitespace: whitespace='%\n'
@@ -551,7 +568,8 @@ class bibleformatter:
             text=re.sub(r'<<([^a-z]*?)>>',self.sub_format_sectionsep,text)
             text=re.sub(r'<<(.*?)>>',self.sub_format_psalmheading,text)
             text=re.sub(r'\[(.*?)\]',self.sub_format_italics,text)
-            t += self.reformat_smallcaps(text)
+            text= self.reformat_smallcaps(text)
+            t += text
             t += r'\biblendreference{%(REFERENCE)s}{%(index)s}' % self.state 
             t += '\n'
             yield t
