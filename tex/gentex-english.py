@@ -33,7 +33,7 @@ import sys,copy
 
 class Hebrew:
     "Hebrew rewrites"
-    def __init__(self,language,file='hebrew-words'):
+    def __init__(self,file='hebrew-words'):
         fd=open(file,'r')
         self.lookup={}
         self.latin2utf8={}
@@ -47,24 +47,13 @@ class Hebrew:
                 if not heLatin.endswith(' '): heLatin+=' ';
                 self.lookup[ref]={ 'heLatin': heLatin, 'ref':ref, 'heUtf8':heUtf8 }
                 self.latin2utf8[heLatin]=heUtf8
-        if language!=english: # FIXME ... this is 'orrible
-            self.adjust= self.adjustaf
     def adjust(self,text,p):
-        'Zap the "ALEPH." away, and return the character to use'
-        prefix=''
-        if p['book'] == "Psalms" and p['REFERENCE'] in self.lookup:
-            r=self.lookup[p['REFERENCE']]
-            text=text.replace(r.get('heLatin',''),'')
-            prefix=r['heUtf8']
-        return prefix,text
-    def adjustaf(self,text,p):
-        "Afrikaans style: substitute hebrew letters in place"
         if p['book'] in ( "Psalms", "Spreuke", "Klaagliedere"):
             if p['sourcereference'] in self.lookup:
                 for heLatin,heUtf8 in self.latin2utf8.items():
                     if text.find(heLatin)>=0:
                         text=text.replace(heLatin,r'\hebrewinfix{%s}' % heUtf8)
-        return '',text
+        return text
 
 class English:
     bookfullnamesEn = {
@@ -400,7 +389,7 @@ class bibleformatter:
     }
     def __init__(self,language,file):
         self.language=language;
-        self.hebrew=Hebrew(language)
+        self.hebrew=Hebrew()
         self.state={
             'book': '',
             'chapter': '',
@@ -555,9 +544,7 @@ class bibleformatter:
             t=''
             text = self.language.markuppsalmheadings(text,self.state)
             text=text.replace('’',"'") # weird unicode is weird
-            aleph,text = self.hebrew.adjust(text,self.state)
-            if aleph:
-                t += '\hebrewprefix{'+aleph+'} '
+            text = self.hebrew.adjust(text,self.state)
             t += self.verseheading(verse)
             t += r'\biblnewreference{%(REFERENCE)s}{%(index)s}' % self.state
             text=re.sub(r'<<\[(.*?)\]>>*',self.sub_format_epistleattribution,text)
