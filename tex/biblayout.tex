@@ -204,7 +204,7 @@
 %% \setlength{\abnormalparskip{1pt}}
 %%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\bibldropcapschapter}[1]{\needspace{0.5\baselineskip}
-\lettrine[lines=2, lraise=0.0, lhang=0.05, findent=3pt, nindent=0pt, loversize=0.0]{\textbf{\mychapterfont #1}}{}}%
+\lettrine[lines=2, lraise=0.05, lhang=0.00, findent=3pt, nindent=0pt, loversize=0.0]{\hspace{2pt}\textbf{\mychapterfont #1}}{}}%
 % Work around lettrine bug with "Fpar" definition from https://tex.stackexchange.com/questions/369868/using-lettrine-with-short-paragraphs :
 % Synthetic paragraph that should be used for verse 2, in case it is right net to verse 1 and the dropcaps chapter number
 \def\bibleparnoindent{\hfil\vadjust{\vskip\parskip}\break}%
@@ -346,7 +346,7 @@ Text area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit
 %\mypageiv%blank again
 %%% PAGE 5: FIRST PAGE OF CONTENT %%%%%%%%%%%%%%%
 \newcommand{\biblnewsection}[1]{\write\mytoc{\unexpanded{\biblsectionheader}{#1}}\par\newpage}%
-\newcommand{\biblnewbook}[2]{\write\mytoc{#1 \unexpanded{\mydotfill}{\thepage}\par}\gdef\mybookshort{#2}\gdef\mythumbindex{#2}}%
+\newcommand{\biblnewbook}[2]{\write\mytoc{\noindent #1 \unexpanded{\mydotfill}{\thepage}\par}\gdef\mybookshort{#2}\gdef\mythumbindex{#2}}%
 \newwrite\mytoc\immediate\openout\mytoc=\jobname.section%
 \include{\mysourcetext}% Load main content
 \myrearmatter

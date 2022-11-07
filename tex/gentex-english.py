@@ -478,7 +478,7 @@ class bibleformatter:
     def sub_format_epistleattribution(self,m):
         'Written to folks by writer'
         # return '\par{\em ' + m.group(1) + '}'
-        return r'\biblepistleattribution{em ' + m.group(1) + '}'
+        return r'\biblepistleattribution{\em ' + m.group(1) + '}'
     def sub_format_sectionsep(self,m):
         'END OF THE PROPHETS. stuff'
         # return r'\par\null\par{\em ' + m.group(1) + '}'
