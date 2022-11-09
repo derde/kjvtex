@@ -55,3 +55,8 @@ Same as charis short, but ...
 
  * Special kerning consideration: Ty (and T-everything), "y,"
 
+
+TODO:
+    When using the shorter font on computer screens, it looks too high in the
+    text block. Some "free" space must be moved from the descender to above the
+    ascenders.
