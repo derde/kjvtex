@@ -169,15 +169,19 @@
 % * The 1.3\baselineskip is necessary sinnce the large text has a big baseline
 % * 0pt makes it invisible
 % * 4\baselineskip means it covers 4 lines
-\def\bookheadingstrut{\rule[-1\baselineskip]{0pt}{4.0\baselineskip}}%
+\def\bookheadingstrut{%
+\ifdim\lastskip=0pt * \fi
+%\vskip\baselineskip% disappearing space when at the top of the page? don't work :(
+\rule[-1\baselineskip]{0pt}{4.0\baselineskip}%
+}%
 % Heading for each book of the Bible: big text
 \newcommand{\biblnewreference}[2]{\markboth{#1}{#1}\def\mythumbindex{#2}}%
 \newcommand{\biblendreference}[2]{\markboth{#1}{#1}\def\mythumbindex{#2}}%
 \newcommand{\biblbookheading}[1]{%
     \needspace{8\baselineskip}\null% This causes the leading space at the top of a space not to be "consumed" - Genesis and Matthew ... still not exactly right though
-    {\centering \textbf{\mybooktitlefont #1}
-        \strut% standard strut, probably doesn't make any difference
-        \bookheadingstrut% A multi-line strut for the big text
+    {
+\bookheadingstrut% A multi-line strut for the big text
+\centering \textbf{\mybooktitlefont #1}
         \par}%
     \bibltwocolumn
 }%

@@ -1,6 +1,6 @@
 PDF=largeprint.pdf a5x800.pdf english0.pdf waterproof.pdf giftandaward.pdf africa.pdf
-FONTS=CharisShort-Bold.otf    CharisShorter-Bold.otf    CharisShorter-Italic.otf    CharisShorter.otf    CharisShort-Italic.otf    CharisShort.otf \
-      CharisShort-Bold.woff2  CharisShorter-Bold.woff2  CharisShorter-Italic.woff2  CharisShorter.woff2  CharisShort-Italic.woff2  CharisShort.woff2
+FONTS=GrazeShort-Bold.otf    GrazeShorter-BoldItalic.otf    GrazeShorter-Italic.otf    GrazeShorter.otf  \
+      GrazeShort-Bold.woff2  GrazeShorter-BoldItalic.woff2  GrazeShorter-Italic.woff2  GrazeShorter.woff2 \
 
 default: $(PDF)
 
@@ -47,4 +47,9 @@ fonts: $(FONTS)
 	fontforge -c 'open(argv[1]).generate(argv[2])' $< $@
 %.otf: %.sfd
 	fontforge -c 'open(argv[1]).generate(argv[2])' $< $@
+
+# Deploy the font on the X server (cool way to crash programs)
+livefontdeploy:
+	cp GrazeShorter*otf $(HOME)/.fonts/ 
+	fc-cache -f $(HOME)/.fonts
 
