@@ -1,16 +1,42 @@
+GRAZE
+
+This font is hacked from a better font with the narrow goal of having short
+descenders and ascenders, and slightly more squat capitals (and numbers).  The
+intent is that it can be used for compact printing, while still presenting
+large shapes to the reader.  Additionally, the inter-line space is set to
+ridiculously low, such that the descenders and ascenders almost touch.
+
+Once the ascenders and descenders are shorter, compressing the font
+horizontally stil yields a compact font.  
+
+
 CHARIS SIL
 
 The default Charis SIL has the following deficiencies -
 
  * No kerning (don't know why they didn't bother)
 
- * Relatively descenders that tend to run into the next line
+ * Relatively long descenders that tend to run into the next line when line
+   spacing is reduced. Okay, I wasn't supposed to reduce the spacing, but I
+   did.
+
+It has the following strength, which we are completely neglecting in order to
+cure those minor deficiencies -
+
+ * Full unicode support for all sorts of languages
+
+Those unicode items are pretty mangled, which is why this 
 
 
-CHARIS SHORT
+GRAZE SHORT
 
-The "Charis Short" font is derived from the Charis SIL font, with the following
-changes, done manually using FontForge -
+The "Graze Short" font is derived from the Charis SIL font, with the following
+changes, done manually using FontForge.  "Charis" is a Latinisation of the
+Greek χαρις, which is grace (a gift).  This font is shorter, so that the top
+and the bottom lines "graze" against each other.  And it's not nice to besmirch
+the good work that SIL did by putting their names on this corrupted version.
+
+The changes are:
 
  * Descenders (letters pgjqy) are shortened to within the regular baseline
 
@@ -22,7 +48,7 @@ How to do:
 
     Open CharisSIL.ttf in FontForge
     Element | Font Info (Ctrl+Shift+F)
-    Change name from CharisSIL to CharisShort and from Charis SIL to Charis Short
+    Change name from CharisSIL to CharisShort and from Charis SIL to Graze Short
     Lookups tab
     GPOS sub-tab
     Add Lookup
@@ -37,9 +63,9 @@ How to do:
         Select part below baseline
         Move it up
 
-CHARIS SHORTER
+GRAZE SHORTER
 
-Same as charis short, but ...
+Same as "Graze Short", but both ascenders and descenders are chopped:
 
  * Ascenders and capitals are also chopped down
 
@@ -59,4 +85,4 @@ Same as charis short, but ...
 TODO:
     When using the shorter font on computer screens, it looks too high in the
     text block. Some "free" space must be moved from the descender to above the
-    ascenders.
+    ascenders. (DONE)
