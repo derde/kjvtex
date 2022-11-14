@@ -1,37 +1,50 @@
-Printable KJV
+# Printable KJV
 
 Goals:
  * all text and no commentary (no tendentious notes, etc)
  * made for reading: i.e. 
  * minimum cost: ie. most efficient use of page space, fewest number of pages
 
-Wrapped text, embedded line numbers
-No headings, no maps
+Specific features to reduce length and print cost:
+* Verses continue on the same line.  This reflects the form of the original (no verse divisions), and encourages regular reading over proof-texting.
+*  Over 31k verses with random lengths, this shortens the print by around 14k lines, and at 110 lines per page, that's 127 pages or so saved. * Embedded verse numbers (these are printed in a smaller font, and raised, so that they are visually distinct.
+* No paragraph headings: these both tend to be tendentious (adj. having or showing a definite tendency, bias, or purpose), and take up print space
+* Chapter numbers use drop-caps
+* New books of the Bible start on same page as the previous book ended (66 books that don't start on a new page should save around 30 pages)
+*  no maps (yes, those are indeed on the end papers, but you don't have to print them, you know, and not printing saves)
+* Acrostic psalms (ps 119) has just the Hebrew letter.
 
-Errata:
-    Psalm 24:3 pericope - no effect?!
+Other features:
+* No paragraph titles (same as headings: they tend to be wrong and unhelpfil)
+* Print table of contents block down outer margin to identify signature selection errors. This is a nondescript little black block ... a shade of grey might be better ...
 
-
-Tradeoffs in printing:
+## Tradeoffs in printing:
 
 Margins
  * 7mm all around is about as small as you can go.
  * The inner margin must be bigger if the binding is not flat
- * TODO It would be nice to make the inner margin 7mm on the left page, and the inner margin 10mm on the left page, to make use of the ragged right, which generally does not reach the end of the block
+ * TODO: It would be nice to make the inner margin 7mm on the left page, and the inner margin 10mm on the left page, to make use of the ragged right, which generally does not reach the end of the block
 
 Page size
  * Larger page size means fewer pages, therefore less binding, fewer headers
  * Larger page size means longer line, therefore more efficiency in wrapping
  * Wider than A5 page size starts to become unwieldy
- > The largest practical paper size should be used
+> The largest practical paper size should be used
+
+
+
+
+
+
+
 
 Text size
  * 10pt seems nice, but it seems that 8.5pt might be an acceptable minimum
- > Dunno
+ > This is very subjective
 
 Inter-line spacing
- * Reducing the inter-line spacing to 90% of the point size makes the capitals run into the letters ypjq that hang down from the line
- * Generally having the point size the same as the line spacing works best. (That's at least with the Charis SIL font)
+ * For the Charis SIL font, reducing the inter-line spacing to 90% of the point size makes the capitals run into the descenders of the letters **ypjq** that hang down from the line
+ * Generally having the point size the same as the line spacing works best. (That's at least with the Charis SIL font).  
  * Generally the space between the words should be the same as the height of the letters with no tails, acemnorsuvwxz
  > Minimum line spacing
 
@@ -41,12 +54,12 @@ Ragged vs justified
  > Ragged seems nicer
 
 Kerning
- * The kerning is set to -3 to -2 to 0 em (I think that's a different em to latex \em).  This is slightly on-top-of each other, but it's a big saving
+ * If the font is not kerned for lower case letters, then it's best to edit the font.  Adjusting the inter-character space is crude, and it works, but it's not ideal.
 
 
-METRICS OF OTHER BIBLES
+## METRICS OF OTHER BIBLES
 
-KJV Hard cover
+### KJV Hard cover
     pages=1357 (genesis to revelation)
     top-margin=14mm 
     heading-height=3mm
@@ -62,7 +75,7 @@ KJV Hard cover
     height-of-ph-to-inter-line-spacing=37:44
     text-height-p-h=9.5pt/44*37=8.0pt (8.5pt declared)
 
-ESV soft cover
+### ESV soft cover
     pages=1042 (genesis to revelation)
     top-space=16mm (from top of page to main text)
     top-margin=9mm (from top of page to heading printing)
@@ -80,7 +93,7 @@ ESV soft cover
     height-of-ph-to-inter-line-spacing=38:49
     text-height-p-h=7.7pt (font size)
 
-Christian art large print
+### Christian art large print
     pages=1739 (genesis to revelation)
     page-height=245mm
     page-width=132mm
@@ -100,7 +113,7 @@ Christian art large print
     height-of-ph-to-inter-line-spacing=40:44
     text-height-ph=12.2pt (font size)
 
-Christian art standard print
+### Christian art standard print
     pages=985 (genesis to revelation)
     page-height=220mm
     page-width=133mm
@@ -121,7 +134,7 @@ Christian art standard print
     text-height-ph=7.8pt (font size)
     little-o-aspect-ratio=10:11
 
-Holman Gift & Award
+### Holman Gift & Award
     pages=759
     page-height=216mm
     page-width=135mm
@@ -143,7 +156,8 @@ Holman Gift & Award
     perfect-binding
     endless-headings
 
-Africa marked edition (generous spacing, large margins)
+### Africa marked edition 
+(generous spacing, large margins)
     pages=1147=878+269 (OT+NT)
     page-height=200mm
     page-width=135mm
@@ -167,8 +181,9 @@ Africa marked edition (generous spacing, large margins)
     ragged-right
     column-separation=2mm (incl line)
 
-Waterproof bible
-    > For this paper size and similar margins, we can do 707 pages: CharisSIL 9.0pt text, line spacing 9.5pt, scaled 0.86
+### Waterproof bible
+For this paper size and similar margins, we can do 707 pages: CharisSIL 9.0pt text, line spacing 9.5pt, scaled 0.86
+
     pages=705
     page-height=221mm
     page-width=148mm
@@ -191,36 +206,32 @@ Waterproof bible
     no-italics
     column-separation=3mm (no line)
 
-FEATURES:
-    Print table of contents block down outer margin to identify quire errors. This is a nondescript little black block ... a shade of grey might be better ...
-
-ERRATA:
-    DONE: Handling of Psalm 119 ALEPH to TETH to JOD - replace with hebrew letters?  Give own line, italics?
-    Handling if 2nd verse indent for PSALMS (not done: just cancelled indent)
+## ERRATA:
+ * DONE: Handling of Psalm 119 ALEPH to TETH to JOD - replace with hebrew letters?  Give own line, italics?
+ * Handling if 2nd verse indent for PSALMS (not done: just cancelled indent) (DONE)
 
 
-Checklist after layout adjustment:
-    Psalm 119: check that paragraph breaks and Hebrew names appear
-    Psalm 121: check psalm title and first verse are distinct (check italics, indent/ line break)
-    Table of contents: check that it appears (run xelatex twice)
-        Check that "Song of Solomon" and "2 Thessalonians" don't look ugly (e.g. wrapped badly)
-    Layout:
-        Verse numbering: check for collision with descender (e.g. g and j), or below top of ascender
-        Check for "overfull vbox" in xelatex log file for the job, and inspect each page and neighbouring pages for every report
-    Fonts:
-        Check font kerning: "Avith" in 1 Chronicles 1:46 - A and V should kern. Charis SIL does not include kerning, unless you edit it!
-        Check that bold fonts do appear (verse numbers, headings)
-        Check that italic fonts do appear (italicised words)
-    Appearance:
-        Check register-true (text on front and back of page should be on the same line)
+## Checklist after layout adjustment:
+*    Psalm 119: check that paragraph breaks and Hebrew names appear
+*    Psalm 121: check psalm title and first verse are distinct (check italics, indent/ line break)
+*    Table of contents: check that it appears (run xelatex twice)
+*        Check that "Song of Solomon" and "2 Thessalonians" don't look ugly (e.g. wrapped badly)
+### Layout:
+* Verse numbering: check for collision with descender (e.g. g and j), or below top of ascender
+* Check for "overfull vbox" in xelatex log file for the job, and inspect each page and neighbouring pages for every report
+### Fonts:
+*        Check font kerning: "Avith" in 1 Chronicles 1:46 - A and V should kern. Charis SIL does not include kerning, unless you edit it!
+*        Check that bold fonts do appear (verse numbers, headings)
+*        Check that italic fonts do appear (italicised words)
+### Appearance:
+* Check register-true (text on front and back of page should be on the same line)
+### Layout:
+* After psalm title indentation
+* Verse 2 of psalms indentation
 
-Afrikaans checklist:
-    Font overruns on accented letters, especially capitals in 1 Chronicles
-    Font kerning, for words like "Kyk"
-    Handling of CAPITAL leading verse
-    Psalm titles in italics
-    Alef. Bet. rewritten (or handled) in Lamentations, Proverbs and Psalms
-
-Layout:
-    After psalm title indentation
-    Verse 2 of psalms indentation
+### Afrikaans-specific checklist:
+* Font overruns on accented letters, especially capitals in 1 Chronicles.  Add 0.5pt to 1pt to line spacing to resolve.
+* Font kerning, for words like "Kyk"
+* Handling of CAPITAL leading verse
+* Psalm titles in italics
+* Alef. Bet. rewritten (or handled) in Lamentations, Proverbs and Psalms

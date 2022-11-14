@@ -5,9 +5,10 @@
 \def\mypapersize{138mm,210mm}% A5
 \def\mydisplayfont{Graze Shorter}
 \def\myfontname{[GrazeShorter.otf]}
-\def\mysansfont{Liberation Sans}
-\def\myfontsize{8.0pt}
-\def\mybaseline{8.0pt}
+%\def\mysansfont{Liberation Sans}
+\def\mysansfont{[GrazeShorter.otf]}
+\def\myfontsize{9.0pt}
+\def\mybaseline{9.0pt}
 \def\myfontopts{
     BoldFont=[GrazeShorter-Bold.otf],
     ItalicFont=[GrazeShorter-Italic.otf],
@@ -19,10 +20,10 @@
 %\def\myletterspace{}
 \def\myextradisplay{}
 \def\myhypenpenalty{1000}%   Lower penalty means more hypenation and fewer pages
-\def\mytoccolumns{4}
+\def\mytoccolumns{3}
 \def\mychapterscale{0.98}
-\def\myversescale{0.90}
-\def\myverseraise{1.3pt}
+\def\myversescale{0.80}
+\def\myverseraise{2pt}% =~ (\baselineskip+\fontsize)/2 - \fontsize*\myversescale)
 
 \renewcommand\myfrontmatter{%
     %\mypagei%   blank
@@ -30,10 +31,10 @@
     \mypageii%   print info page
     %\mypageiv%  blank again
 }
-\def\biblbeforeoldtestament{\newpage\thispagestyle{noheadings}\null\vfill\begin{center}THE OLD TESTAMENT\end{center}\vfill\null\vfill}
-\def\biblbeforenewtestament{\newpage\thispagestyle{noheadings}\null\vfill\begin{center}THE NEW TESTAMENT\end{center}\vfill\null\vfill}
+%\def\biblbeforeoldtestament{\newpage\thispagestyle{noheadings}\null\vfill\begin{center}THE OLD TESTAMENT\end{center}\vfill\null\vfill}
+%\def\biblbeforenewtestament{\newpage\thispagestyle{noheadings}\null\vfill\begin{center}THE NEW TESTAMENT\end{center}\vfill\null\vfill}
 \def\myrearmatter{
-%    \kjvwordlist
+    \kjvwordlist
 }
 \input{biblayout.tex}
 

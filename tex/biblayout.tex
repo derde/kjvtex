@@ -115,6 +115,7 @@
 \usepackage{printlen}% provide \printlength command, and \rndprintlength - to print the page size nicely
 \usepackage[grid]{multicol}
 \setlength{\columnsep}{\mycolumnsep}
+\setlength{\columnseprule}{\mycolumnseprule}%
 \setlength{\premulticols}{0\baselineskip}
 \setlength{\postmulticols}{0\baselineskip}
 \setlength{\multicolsep}{0\baselineskip}
@@ -222,7 +223,6 @@
 %\clubpenalty=0%
 % Pretty separator
 %\setlength{\columnseprule}{0.3pt}%
-\setlength{\columnseprule}{0.0pt}%
 %\setlength{\headsep}{3pt}%
 % Make leading dots for the table of contents - extra complex because text is too long sometimes:
 \newcommand*{\mydotfill}[1]{%

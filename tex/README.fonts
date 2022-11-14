@@ -1,18 +1,21 @@
 GRAZE
 
-This font is hacked from a better font with the narrow goal of having short
-descenders and ascenders, and slightly more squat capitals (and numbers).  The
-intent is that it can be used for compact printing, while still presenting
+This font is hacked from a better font, with the narrow goals of ...
+
+ * having short descenders and ascenders, and
+ * slightly more squat capitals (and numbers).
+
+The intent is that it can be used for compact printing, while still presenting
 large shapes to the reader.  Additionally, the inter-line space is set to
 ridiculously low, such that the descenders and ascenders almost touch.
 
 Once the ascenders and descenders are shorter, compressing the font
-horizontally stil yields a compact font.  
+horizontally by 85% is still a compact font, which is "Graze Shorter Narrow".
 
 
 CHARIS SIL
 
-The default Charis SIL has the following deficiencies -
+The default Charis SIL has the following "deficiencies" -
 
  * No kerning (don't know why they didn't bother)
 
@@ -32,7 +35,7 @@ GRAZE SHORT
 
 The "Graze Short" font is derived from the Charis SIL font, with the following
 changes, done manually using FontForge.  "Charis" is a Latinisation of the
-Greek χαρις, which is grace (a gift).  This font is shorter, so that the top
+Greek χαρις, which is grace (a gift).  Graze Short is shorter, so that the top
 and the bottom lines "graze" against each other.  And it's not nice to besmirch
 the good work that SIL did by putting their names on this corrupted version.
 
