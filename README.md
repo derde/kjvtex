@@ -1,9 +1,19 @@
 # Printable KJV
 
+The general goal of this project is to provide a framework for a compact printed KJV.  Having the framework allows various printings of the Bible, tuned for economy and printing constraints (e.g. larger margin for perfect binding).  
+
+The project consists of these components:
+
+* xelatex layout files
+* python script to parse Bible text and add latex markup.
+* custom fonts (Graze Shorter, based on Charis SIL)
+* Makefile
+* Downloadable PDFs
+
 Goals:
  * all text and no commentary (no tendentious notes, etc)
- * made for reading: i.e. 
  * minimum cost: ie. most efficient use of page space, fewest number of pages
+ * made for reading: i.e. the fewest possible intrusions into the text.
 
 Specific features to reduce length and print cost:
 * Verses continue on the same line.  This reflects the form of the original (no verse divisions), and encourages regular reading over proof-texting.
@@ -210,7 +220,6 @@ For this paper size and similar margins, we can do 707 pages: CharisSIL 9.0pt te
  * DONE: Handling of Psalm 119 ALEPH to TETH to JOD - replace with hebrew letters?  Give own line, italics?
  * Handling if 2nd verse indent for PSALMS (not done: just cancelled indent) (DONE)
 
-
 ## Checklist after layout adjustment:
 *    Psalm 119: check that paragraph breaks and Hebrew names appear
 *    Psalm 121: check psalm title and first verse are distinct (check italics, indent/ line break)
@@ -229,9 +238,17 @@ For this paper size and similar margins, we can do 707 pages: CharisSIL 9.0pt te
 * After psalm title indentation
 * Verse 2 of psalms indentation
 
-### Afrikaans-specific checklist:
+# Afrikaans
+
+The 1953 edition of the Afrikaans Bible is derived from the Dutch Staatenvertaling, and thereby on the received text.  While it does include some poor original scholarship, it is currently the best Afrikaans translation.  Also, it is out of copyright.  **af.tex** and **af.pdf** are an 800 page large print (giant print?) Bible that you can print on a duplex printer with spiral binding.
+
+## Afrikaans-specific checklist:
+
+These are the specific additional check items for Afrikaans:
+
 * Font overruns on accented letters, especially capitals in 1 Chronicles.  Add 0.5pt to 1pt to line spacing to resolve.
 * Font kerning, for words like "Kyk"
 * Handling of CAPITAL leading verse
 * Psalm titles in italics
 * Alef. Bet. rewritten (or handled) in Lamentations, Proverbs and Psalms
+
