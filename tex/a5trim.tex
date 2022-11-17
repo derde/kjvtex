@@ -1,0 +1,47 @@
+% A5 Bible in 640 pages: 8 point
+\input{bibldefault.tex}
+
+\def\mymargins{left=5mm,top=9mm,right=5mm,bottom=5mm,bindingoffset=5mm,headheight=5mm}
+\def\mypapersize{135mm,195mm}% A5, less 10mm right, and 7.5mm top and bottom
+\def\mydisplayfont{Graze Shorter}
+\def\myfontname{[GrazeShorter.otf]}
+%\def\mysansfont{Liberation Sans}
+\def\mysansfont{[GrazeShorter.otf]}
+\def\myfontsize{8.0pt}
+\def\mybaseline{8.57pt}
+\def\myfontopts{
+    BoldFont=[GrazeShorter-Bold.otf],
+    ItalicFont=[GrazeShorter-Italic.otf],
+}
+% This works, but it seems neater to squash the font, rather than reduce the inter-character spacing:
+\def\myfontstretch{0.904}
+%\def\myletterspace{LetterSpace=0 plus 0 minus 0}
+%\def\myfontstretch{0.875}
+%\def\myletterspace{}
+\def\myextradisplay{}
+\def\myhypenpenalty{1000}%   Lower penalty means more hypenation and fewer pages
+\def\mytoccolumns{3}
+\def\mychapterscale{0.98}
+\def\myversescale{0.80}
+\def\myverseraise{2pt}% =~ (\baselineskip+\fontsize)/2 - \fontsize*\myversescale)
+
+\renewcommand\myfrontmatter{%
+    %\mypagei%   blank
+    %\mypageiii%  title page
+    %\mypageii%   print info page
+    %\mypageiv%  blank again
+}
+%\def\biblbeforeoldtestament{\newpage\thispagestyle{noheadings}\null\vfill\begin{center}THE OLD TESTAMENT\end{center}\vfill\null\vfill}
+%\def\biblbeforenewtestament{\newpage\thispagestyle{noheadings}\null\vfill\begin{center}THE NEW TESTAMENT\end{center}\vfill\null\vfill}
+\def\myrearmatter{
+    \mypageiii%  title page with toc
+    \mypageii%   print info page
+    \kjvwordlist
+}
+%To omit manuscript titles:
+\renewcommand{\biblepistleattribution}[1]{}
+\renewcommand{\biblpsalmheading}[1]{}
+\def\mylayoutblurb{No headings; verses share lines; justified; no psalm titles; no epistle postscripts}
+
+\input{biblayout.tex}
+

@@ -6,7 +6,7 @@ The project consists of these components:
 
 * xelatex layout files
 * python script to parse Bible text and add latex markup.
-* custom fonts (Graze Shorter, based on Charis SIL)
+* custom fonts (Graze Shorter, based on Charis SIL, with shorter ascenders and descenders)
 * Makefile
 * Downloadable PDFs
 
@@ -17,18 +17,20 @@ Goals:
 
 Specific features to reduce length and print cost:
 * Verses continue on the same line.  This reflects the form of the original (no verse divisions), and encourages regular reading over proof-texting.
-*  Over 31k verses with random lengths, this shortens the print by around 14k lines, and at 110 lines per page, that's 127 pages or so saved. * Embedded verse numbers (these are printed in a smaller font, and raised, so that they are visually distinct.
+* Over 31k verses with random lengths, this shortens the print by around 14k lines, and at 110 lines per page, that's 127 pages or so saved.
+* Embedded verse numbers (these are printed in a smaller font, and raised, so that they are visually distinct.
 * No paragraph headings: these both tend to be tendentious (adj. having or showing a definite tendency, bias, or purpose), and take up print space
 * Chapter numbers use drop-caps
 * New books of the Bible start on same page as the previous book ended (66 books that don't start on a new page should save around 30 pages)
-*  no maps (yes, those are indeed on the end papers, but you don't have to print them, you know, and not printing saves)
+* No maps (yes, those are indeed on the end papers, but you don't have to print them, you know, and not printing saves)
 * Acrostic psalms (ps 119) has just the Hebrew letter.
 
 Other features:
-* No paragraph titles (same as headings: they tend to be wrong and unhelpfil)
+* No paragraph titles (same as headings, but at the top of the page: they tend to be wrong and unhelpful)
 * Print table of contents block down outer margin to identify signature selection errors. This is a nondescript little black block ... a shade of grey might be better ...
 
 ## Tradeoffs in printing:
+Some general ideas about the tradeoffs to print in good quality using the least physical material:
 
 Margins
  * 7mm all around is about as small as you can go.
@@ -39,6 +41,7 @@ Page size
  * Larger page size means fewer pages, therefore less binding, fewer headers
  * Larger page size means longer line, therefore more efficiency in wrapping
  * Wider than A5 page size starts to become unwieldy
+ * A taller-than-a5 form factor is acceptable
 > The largest practical paper size should be used
 
 
@@ -168,6 +171,7 @@ Kerning
 
 ### Africa marked edition 
 (generous spacing, large margins)
+
     pages=1147=878+269 (OT+NT)
     page-height=200mm
     page-width=135mm
@@ -218,7 +222,7 @@ For this paper size and similar margins, we can do 707 pages: CharisSIL 9.0pt te
 
 ## ERRATA:
  * DONE: Handling of Psalm 119 ALEPH to TETH to JOD - replace with hebrew letters?  Give own line, italics?
- * Handling if 2nd verse indent for PSALMS (not done: just cancelled indent) (DONE)
+ * DONE: Handling if 2nd verse indent for PSALMS (not done: just cancelled indent)
 
 ## Checklist after layout adjustment:
 *    Psalm 119: check that paragraph breaks and Hebrew names appear

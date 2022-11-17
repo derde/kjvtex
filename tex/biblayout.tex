@@ -267,9 +267,9 @@
 
 \ifdefined\mypageii{}\else{
 \gdef\mypageii{
-\thispagestyle{noheadings}%
 \null\vfill
 \InputIfFileExists{\jobname.pages}{}{}
+\thispagestyle{noheadings}%
 HOLY BIBLE\par
 King James Bible: \textsc{kjvtex compact}\par
 You may copy freely and republish in whole, or in part.\par
@@ -352,13 +352,18 @@ Text area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit
 \newcommand{\biblnewbook}[2]{\write\mytoc{\noindent #1 \unexpanded{\mydotfill}{\thepage}\par}\gdef\mybookshort{#2}\gdef\mythumbindex{#2}}%
 \newwrite\mytoc\immediate\openout\mytoc=\jobname.section%
 \include{\mysourcetext}% Load main content
-\myrearmatter
-%%% PAGE n: RECORD PAGE COUNT AND QUIT %%%%
-\biblenddocument
+%% Write out stats and stuff for laters
 \newwrite\mypages
 \immediate\openout\mypages=\jobname.pages%
 \addtocounter{page}{-1}% adjust for dunno
 \immediate\write\mypages{\unexpanded{\gdef\myshowpageinfo}{\thepage\ \ENpages\ }}% FIXME: adds one to the page .. weird
 \addtocounter{page}{1}% unadjust for dunno
+% I think we're done here ...
+\immediate\closeout\mytoc%
+\immediate\closeout\mypages%
+%% Oh wait, we might write out something more here
+\myrearmatter% print the rear matter pages (not counted above!)
+%%% PAGE n: RECORD PAGE COUNT AND QUIT %%%%
+\biblenddocument
 %%\bigskip%%\ldots
 \end{document}
