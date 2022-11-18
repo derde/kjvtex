@@ -1,16 +1,29 @@
 % A5 Bible in 640 pages: 8 point
 \input{bibldefault.tex}
 
-%\def\mymargins{left=5mm,top=9mm,right=5mm,bottom=5mm,bindingoffset=5mm,headheight=5mm}
-\def\mymargins{left=5mm,top=7.5mm+9mm,right=13mm+5mm,bottom=7.5mm+5mm,bindingoffset=5mm,headheight=5mm}
-%\def\mypapersize{135mm,195mm}% A5, less 10mm right, and 7.5mm top and bottom
-\def\mypapersize{148mm,210mm}% A5, less 10mm right, and 7.5mm top and bottom
+\def\mymargins{left=5mm,top=10mm,right=7mm,bottom=7mm,bindingoffset=3mm,headheight=7mm}
+\def\mypapersize{135mm,195mm}% A5, less 10mm right, and 7.5mm top and bottom
+%\def\mymargins{left=5mm,top=5mm+9mm,right=13mm+5mm,bottom=7.5mm+5mm,bindingoffset=5mm,headheight=5mm}
+%\def\mypapersize{148mm,210mm}% A5, less 10mm right, and 7.5mm top and bottom
+\def\mypageadjustments{
+    \usepackage[
+      % set width and height to a4 width and height + 6mm
+      width=148truemm, height=210truemm,
+      % use any combination of these options to add different cut markings
+      % cam, axes, frame, cross,
+      cam, % frame, % frame is good for checking margins visually
+      % set the type of TeX renderer you use
+      pdftex,
+      % center the contents
+      center
+    ]{crop}
+}% Any other page adjustments - crop package goes here
 \def\mydisplayfont{Graze Shorter}
 \def\myfontname{[GrazeShorter.otf]}
 %\def\mysansfont{Liberation Sans}
 \def\mysansfont{[GrazeShorter.otf]}
 \def\myfontsize{8.0pt}
-\def\mybaseline{8.57pt}
+\def\mybaseline{8.43pt}
 \def\myfontopts{
     BoldFont=[GrazeShorter-Bold.otf],
     ItalicFont=[GrazeShorter-Italic.otf],
@@ -43,6 +56,8 @@
 %To omit manuscript titles:
 \renewcommand{\biblepistleattribution}[1]{}
 \renewcommand{\biblpsalmheading}[1]{}
+\renewcommand{\oddbindingmarks}{}
+\renewcommand{\evenbindingmarks}{}
 \def\mylayoutblurb{No headings; verses share lines; justified; no psalm titles; no epistle postscripts}
 
 \input{biblayout.tex}

@@ -25,7 +25,11 @@ default: $(PDF)
 
 %.pdf : %.tex english.tex biblayout.tex
 	xelatex $< </dev/null 
-	xelatex $< </dev/null  # just run it again, for the TOC, because CPU is cheap
+	cat $< | grep myrearmatter -A3  | grep mypageiii -w || xelatex $< </dev/null  # just run it again, for the TOC, because CPU is cheap
+
+%.txt : %.pdf
+	pdftotext $<
+	@grep -5 LATEX $@
 
 english.tex: gentex-english.py
 	./gentex-english.py english.tex
