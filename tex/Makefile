@@ -3,19 +3,19 @@ FONTS=GrazeShort-Bold.otf    GrazeShorter-BoldItalic.otf    GrazeShorter-Italic.
       GrazeShort-Bold.woff2  GrazeShorter-BoldItalic.woff2  GrazeShorter-Italic.woff2  GrazeShorter.woff2 \
 
 FONTS_GRAZESHORTER=\
-	GrazeShorter.ttf \
-	GrazeShorter-Bold.ttf \
-	GrazeShorter-BoldItalic.ttf \
-	GrazeShorter-Italic.ttf \
+	GrazeShorter.otf \
+	GrazeShorter-Bold.otf \
+	GrazeShorter-BoldItalic.otf \
+	GrazeShorter-Italic.otf \
 	GrazeShorter.woff2 \
 	GrazeShorter-Bold.woff2 \
 	GrazeShorter-BoldItalic.woff2 \
 	GrazeShorter-Italic.woff2 
 FONTS_GRAZESHORTERNARROW=\
-	GrazeShorterNarrow.ttf \
-	GrazeShorterNarrow-Bold.ttf \
-	GrazeShorterNarrow-BoldItalic.ttf \
-	GrazeShorterNarrow-Italic.ttf \
+	GrazeShorterNarrow.otf \
+	GrazeShorterNarrow-Bold.otf \
+	GrazeShorterNarrow-BoldItalic.otf \
+	GrazeShorterNarrow-Italic.otf \
 	GrazeShorterNarrow.woff2 \
 	GrazeShorterNarrow-Bold.woff2 \
 	GrazeShorterNarrow-BoldItalic.woff2 \
@@ -79,7 +79,7 @@ livefontdeploy:
 	cp GrazeShorter*otf $(HOME)/.fonts/ 
 	fc-cache -f $(HOME)/.fonts
 
-ttf: $(FONTS_GRAZESHORTER) $(FONTS_GRAZESHORTERNARROW)
+otf: $(FONTS_GRAZESHORTER) $(FONTS_GRAZESHORTERNARROW)
 
 fontzip: GrazeShorter.zip GrazeShorterNarrow.zip
 

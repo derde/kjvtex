@@ -13,6 +13,10 @@
 \def\mypreversei{}% set this to \par for verse-per-line
 \def\mypreverseii{}% set this to \par for verse-per-line
 \def\mypredocument{}
+\def\mydocumentsettings{
+  \rightskip=0pt plus 0.5em  % slightly ragged right - really improves readability, at the cost of 1.5% pages (12 pages over 800)
+}
+\def\myhypenpenalty{1000}% We are really quite willing to hyphenate
 \def\myheadsep{0.0em}
 \def\myversescale{0.65}
 \def\mychapterscale{0.90}
@@ -21,12 +25,12 @@
 \def\myboldness{FakeBold=1.01,}\def\myboldness{}%FakeBold is binary on/off, it seems
 \def\myletterspace{}
 \def\myextradisplay{}% extra formatting notes, e.g. if you squash kerning
-\def\mylayoutblurb{No headings; verses share lines; justified; psalm titles; epistle postscripts}
+\def\mylayoutblurb{No headings; verses share lines; ragged; psalm titles; epistle postscripts}
 \def\mycolumnsep{1em}
 \def\mycolumnseprule{0em}
 \def\biblnewparagraph{\par}% Paragraph break instruction
-\def\biblbeforeoldtestament{}% Pages before old testament
-\def\biblbeforenewtestament{}% Pages before new testament
+\def\biblbeforeoldtestament{\par\newpage}% NEW PAGE before old testament
+\def\biblbeforenewtestament{\par\newpage}% NEW PAGE before new testament
 \def\biblafternewtestament{}% Pages after new testament
 \newcommand{\biblpsalmheading}[1]{{\em #1}\bibleparnoindent}% A psalm of psalmist
 \newcommand{\biblsectionseparator}[1]{% END OF THE PROPHETS. or THE END.
@@ -74,6 +78,7 @@
 \newcommand\kjvwordlist{
     \newpage
 \myendnotesfont
+\thispagestyle{noheadings}
     \markboth{WORD LIST}{WORD LIST}
 The Authorised Version of the Bible was translated into modern English from
 printed editions of the Hebrew and Greek received text.  It was published

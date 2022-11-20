@@ -5,6 +5,13 @@
 \def\mypapersize{135mm,195mm}% A5, less 10mm right, and 7.5mm top and bottom
 %\def\mymargins{left=5mm,top=5mm+9mm,right=13mm+5mm,bottom=7.5mm+5mm,bindingoffset=5mm,headheight=5mm}
 %\def\mypapersize{148mm,210mm}% A5, less 10mm right, and 7.5mm top and bottom
+\def\mycolumnsep{0.8em}
+\def\mycolumnseprule{0.6pt}
+\def\mydocumentsettings{
+  \rightskip=0pt plus 0.0em  % slightly ragged right - really improves readability, at the cost of 1.5% pages (12 pages over 800)
+%  \rightskip=0pt plus 1pt  % slightly ragged right - really improves readability, at the cost of 1.5% pages (12 pages over 800)
+}
+\def\myhypenpenalty{900}%   Lower penalty means more hypenation and fewer pages
 \def\mypageadjustments{
     \usepackage[
       % set width and height to a4 width and height + 6mm
@@ -29,12 +36,11 @@
     ItalicFont=[GrazeShorter-Italic.otf],
 }
 % This works, but it seems neater to squash the font, rather than reduce the inter-character spacing:
-\def\myfontstretch{0.904}
+\def\myfontstretch{0.91}
 %\def\myletterspace{LetterSpace=0 plus 0 minus 0}
 %\def\myfontstretch{0.875}
 %\def\myletterspace{}
 \def\myextradisplay{}
-\def\myhypenpenalty{1000}%   Lower penalty means more hypenation and fewer pages
 \def\mytoccolumns{3}
 \def\mychapterscale{0.98}
 \def\myversescale{0.80}
@@ -53,12 +59,21 @@
     \mypageii%   print info page
     \kjvwordlist
 }
-%To omit manuscript titles:
-\renewcommand{\biblepistleattribution}[1]{}
+%To omit manuscript titles (and save a page!)
 \renewcommand{\biblpsalmheading}[1]{}
+\renewcommand{\biblepistleattribution}[1]{}
+\def\mylayoutblurb{No headings; verses share lines; ragged; no psalm titles; no epistle postscripts\par
+}
+% To omit binding marks
 \renewcommand{\oddbindingmarks}{}
 \renewcommand{\evenbindingmarks}{}
-\def\mylayoutblurb{No headings; verses share lines; justified; no psalm titles; no epistle postscripts}
+
+\def\biblbeforeoldtestament{\par\newpage
+%\gdef\mycurrentsection{THE OLD TESTAMENT}\thispagestyle{sectionheadings}%\begin{center}{\textbf{THE OLD TESTAMENT}}\end{center}\par
+}%
+\def\biblbeforenewtestament{\par\newpage
+%\gdef\mycurrentsection{THE NEW TESTAMENT}\thispagestyle{sectionheadings}%\begin{center}{\textbf{THE OLD TESTAMENT}}\end{center}\par
+}%
 
 \input{biblayout.tex}
 

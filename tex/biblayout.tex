@@ -77,6 +77,13 @@
     \fancyhead[C]{}% hush
     \fancyhead[OR]{}% hush
 }
+\fancypagestyle{sectionheadings}{%
+    \fancyhead[EL]{\thepage}% hush
+    \fancyhead[ER]{}% hush
+    \fancyhead[OL]{}% hush
+    \fancyhead[C]{\myheadingfont \textbf{\mycurrentsection}}% hush
+    \fancyhead[OR]{\thepage}% hush
+}
 \def\mybookname{GEN}
 \def\thelastpage{}%
 \gdef\mythumbindex{0}% Where to put the vertical thumb index
@@ -173,13 +180,13 @@
 % * 4\baselineskip means it covers 4 lines
 \def\bookheadingstrut{%
 %\vskip\baselineskip% disappearing space when at the top of the page? don't work :(
-\rule[-1\baselineskip]{0pt}{4.0\baselineskip}%
+\rule[-1\baselineskip]{0pt}{3.0\baselineskip}%
 }%
 % Heading for each book of the Bible: big text
 \newcommand{\biblnewreference}[2]{\markboth{#1}{#1}\def\mythumbindex{#2}}%
 \newcommand{\biblendreference}[2]{\markboth{#1}{#1}\def\mythumbindex{#2}}%
 \newcommand{\biblbookheading}[1]{%
-    \needspace{8\baselineskip}\null% This causes the leading space at the top of a space not to be "consumed" - Genesis and Matthew ... still not exactly right though
+    \needspace{6\baselineskip}\null% This causes the leading space at the top of a space not to be "consumed" - Genesis and Matthew ... still not exactly right though
     {
 \bookheadingstrut% A multi-line strut for the big text
 \centering \textbf{\mybooktitlefont #1}
@@ -191,7 +198,7 @@
 % Move the thumb index (just make sure it doesn't disappear)
 \newcommand{\biblendchapter}[2]{\gdef\mythumbindex{#2}}%
 \newcommand{\bibltocendmulticol}{}%
-\newcommand{\biblsectionheader}[1]{%
+\newcommand{\bibltocsectionheader}[1]{%
     \bibltocendmulticol%
     \begin{center}{\textbf{#1}}\end{center}%
     \begin{multicols}{\mytoccolumns}%
@@ -240,6 +247,7 @@
 \hyphenpenalty=\myhypenpenalty
 \mainmatter%
 \addfontfeature{\myletterspace}% The 3em space is what a good font design uses ... and we trample it
+\mydocumentsettings
 %%% PAGE 1: BLANK PAGE %%%%%%%%%%%%%%%
 \def\mypagei{%
     \shipout\null\stepcounter{page}%this page intentionally left blank
@@ -349,7 +357,10 @@ Text area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit
 \myfrontmatter
 %\mypageiv%blank again
 %%% PAGE 5: FIRST PAGE OF CONTENT %%%%%%%%%%%%%%%
-\newcommand{\biblnewsection}[1]{\write\mytoc{\unexpanded{\biblsectionheader}{#1}}\par\newpage}%
+\newcommand{\biblnewsection}[1]{
+    \write\mytoc{\unexpanded{\bibltocsectionheader}{#1}}
+    \gdef\mycurrentsection{#1}\thispagestyle{sectionheadings}
+}%
 \newcommand{\biblnewbook}[2]{\write\mytoc{\noindent #1 \unexpanded{\mydotfill}{\thepage}\par}\gdef\mybookshort{#2}\gdef\mythumbindex{#2}}%
 \newwrite\mytoc\immediate\openout\mytoc=\jobname.section%
 \include{\mysourcetext}% Load main content

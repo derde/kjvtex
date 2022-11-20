@@ -126,8 +126,8 @@ class English:
     }
     def __init__(self,file='english.psalmtitles', numberfile='english.renumbering'):
         self.bookFullnames=self.bookfullnamesEn
-        self.oldtestament="OLD TESTAMENT"
-        self.newtestament="NEW TESTAMENT"
+        self.oldtestament="THE OLD TESTAMENT"
+        self.newtestament="THE NEW TESTAMENT"
         pass
     def renumberreference(self,ref):
         return ref
@@ -303,8 +303,8 @@ class Afrikaans:
         self.titlecasewl=re.compile(r"^([A-Z][a-z]+\. )?(’n |O |O, )?([-A-ZÁÉÊËÍÓŌÚ]{2,})(.*)")
         self.titlecasebl=re.compile(r"^([A-Z][a-z]+\. )?(’n |O, )?(HERE)")
         self.bookFullnames=self.bookFullnamesAf
-        self.oldtestament="OU TESTAMENT"
-        self.newtestament="NUWE TESTAMENT"
+        self.oldtestament="DIE OU TESTAMENT"
+        self.newtestament="DIE NUWE TESTAMENT"
         fd=open(file,'r')
         splitreftext_re=re.compile('(^[^:]*:[^ ]*) (.*)')
         self.titles={}
