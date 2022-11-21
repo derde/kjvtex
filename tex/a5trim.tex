@@ -9,24 +9,24 @@
 %\def\mycolumnseprule{0.6pt}
 \def\mydocumentsettings{
   %\rightskip=0pt plus 0.5em\relax
-  \spaceskip=0.26em plus 0.005em minus 0.05em\relax% space between words
-  \rightskip=0pt plus 1em\relax%                     space on right hand margin
-  \parfillskip=0.5em plus 0.5em minus 0.5em\relax%     last line of paragraph space
+  \spaceskip=0.26em plus 0.005em minus 0.05em\relax% space between words: keep it constant, with tiny changes
+  \rightskip=0pt plus 1em\relax%                     space on right hand margin: very stretchy
+  \parfillskip=0.5em plus 0.5em minus 0.5em\relax%   last line of paragraph space: keep it small
   \hbadness=18000%                                   don't whine
 %  \rightskip=0pt plus 1pt  % slightly ragged right - really improves readability, at the cost of 1.5% pages (12 pages over 800)
 }
 \def\mybooktitlesettings{\spaceskip=0.33em\relax}% "Song of Solomon" title seems to use undersized spacing without this!
-\def\myhypenpenalty{900}%   Lower penalty means more hypenation and fewer pages
+\def\myhypenpenalty{1800}%   Lower penalty means more hypenation and fewer pages
 \def\mypageadjustments{
     \usepackage[
-      % set width and height to a4 width and height + 6mm
+      % set width and height to a5 width and height + 6mm
       width=148truemm, height=210truemm,
       % use any combination of these options to add different cut markings
-      % cam, axes, frame, cross,
-      cam, % frame, % frame is good for checking margins visually
+      % cam, axes, frame, cross, % frame is good for checking margins visually
+      cam, 
       % set the type of TeX renderer you use
       pdftex,
-      % center the contents
+      % center the contents of the page
       center
     ]{crop}
 }% Any other page adjustments - crop package goes here
