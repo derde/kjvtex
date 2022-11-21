@@ -117,7 +117,7 @@
 % \DeclareFontShape{EU1}{TimesNewRoman(0)}{m}{sc}{<->ssub * TimesNewRoman(1)/m/sc}{}
 
 \newfontfamily\myversefont[\myboldness FakeStretch=\myfontstretch,Scale=\myversescale]{\mysansfont}
-\newfontfamily\mybooktitlefont[\myfontopts \myboldness FakeStretch=\myfontstretch,Scale=2.80]{\myfontname}
+\newfontfamily\mybooktitlefont[\myfontopts \myboldness FakeStretch=\myfontstretch,Scale=2.8]{\myfontname}
 \newfontfamily\mychapterfont[\myboldness FakeStretch=\myfontstretch,Scale=\mychapterscale]{\mysansfont}
 \newfontfamily\myendnotesfont[\myboldness FakeStretch=\myfontstretch,Scale=\mychapterscale]{\mysansfont}
 \usepackage{printlen}% provide \printlength command, and \rndprintlength - to print the page size nicely
@@ -180,17 +180,19 @@
 % * 4\baselineskip means it covers 4 lines
 \def\bookheadingstrut{%
 %\vskip\baselineskip% disappearing space when at the top of the page? don't work :(
-\rule[-1\baselineskip]{0pt}{3.0\baselineskip}%
+\rule[-1\baselineskip]{0pt}{3\baselineskip}% Number of lines for title
 }%
 % Heading for each book of the Bible: big text
 \newcommand{\biblnewreference}[2]{\markboth{#1}{#1}\def\mythumbindex{#2}}%
 \newcommand{\biblendreference}[2]{\markboth{#1}{#1}\def\mythumbindex{#2}}%
 \newcommand{\biblbookheading}[1]{%
     \needspace{6\baselineskip}\null% This causes the leading space at the top of a space not to be "consumed" - Genesis and Matthew ... still not exactly right though
-    {
-\bookheadingstrut% A multi-line strut for the big text
-\centering \textbf{\mybooktitlefont\mybooktitlesettings #1}
-        \par}%
+    {%
+    \begin{center}
+    \bookheadingstrut% A multi-line strut for the big text
+    \raisebox{-0.5\baselineskip}[0pt]{\textbf{\mybooktitlefont\mybooktitlesettings #1}}
+    \end{center}%
+    }
     \bibltwocolumn
 }%
 % New chapter number 
