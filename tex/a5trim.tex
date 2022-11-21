@@ -1,16 +1,21 @@
 % A5 Bible in 640 pages: 8 point
 \input{bibldefault.tex}
 
-\def\mymargins{left=5mm,top=10mm,right=7mm,bottom=7mm,bindingoffset=3mm,headheight=7mm}
+\def\mymargins{left=7mm,top=10mm,right=7mm,bottom=7mm,bindingoffset=0mm,headheight=7mm}
 \def\mypapersize{135mm,195mm}% A5, less 10mm right, and 7.5mm top and bottom
 %\def\mymargins{left=5mm,top=5mm+9mm,right=13mm+5mm,bottom=7.5mm+5mm,bindingoffset=5mm,headheight=5mm}
 %\def\mypapersize{148mm,210mm}% A5, less 10mm right, and 7.5mm top and bottom
 \def\mycolumnsep{0.8em}
-\def\mycolumnseprule{0.6pt}
+%\def\mycolumnseprule{0.6pt}
 \def\mydocumentsettings{
-  \rightskip=0pt plus 0.0em  % slightly ragged right - really improves readability, at the cost of 1.5% pages (12 pages over 800)
+  %\rightskip=0pt plus 0.5em\relax
+  \spaceskip=0.26em plus 0.005em minus 0.05em\relax% space between words
+  \rightskip=0pt plus 1em\relax%                     space on right hand margin
+  \parfillskip=0.5em plus 0.5em minus 0.5em\relax%     last line of paragraph space
+  \hbadness=18000%                                   don't whine
 %  \rightskip=0pt plus 1pt  % slightly ragged right - really improves readability, at the cost of 1.5% pages (12 pages over 800)
 }
+\def\mybooktitlesettings{\spaceskip=0.33em\relax}% "Song of Solomon" title seems to use undersized spacing without this!
 \def\myhypenpenalty{900}%   Lower penalty means more hypenation and fewer pages
 \def\mypageadjustments{
     \usepackage[
@@ -29,14 +34,14 @@
 \def\myfontname{[GrazeShorter.otf]}
 %\def\mysansfont{Liberation Sans}
 \def\mysansfont{[GrazeShorter.otf]}
-\def\myfontsize{8.0pt}
-\def\mybaseline{8.43pt}
+\def\myfontsize{8.29pt}
+\def\mybaseline{8.29pt}
 \def\myfontopts{
     BoldFont=[GrazeShorter-Bold.otf],
     ItalicFont=[GrazeShorter-Italic.otf],
 }
 % This works, but it seems neater to squash the font, rather than reduce the inter-character spacing:
-\def\myfontstretch{0.91}
+\def\myfontstretch{0.90}
 %\def\myletterspace{LetterSpace=0 plus 0 minus 0}
 %\def\myfontstretch{0.875}
 %\def\myletterspace{}
