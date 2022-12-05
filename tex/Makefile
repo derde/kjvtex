@@ -6,7 +6,8 @@ FONTS_GRAZESHORTER=\
 	GrazeShorter.otf \
 	GrazeShorter-Bold.otf \
 	GrazeShorter-BoldItalic.otf \
-	GrazeShorter-Italic.otf \
+	GrazeShorter-Italic.otf 
+FONTSW_GRAZESHORTER=\
 	GrazeShorter.woff2 \
 	GrazeShorter-Bold.woff2 \
 	GrazeShorter-BoldItalic.woff2 \
@@ -15,7 +16,8 @@ FONTS_GRAZESHORTERNARROW=\
 	GrazeShorterNarrow.otf \
 	GrazeShorterNarrow-Bold.otf \
 	GrazeShorterNarrow-BoldItalic.otf \
-	GrazeShorterNarrow-Italic.otf \
+	GrazeShorterNarrow-Italic.otf 
+FONTSW_GRAZESHORTERNARROW=\
 	GrazeShorterNarrow.woff2 \
 	GrazeShorterNarrow-Bold.woff2 \
 	GrazeShorterNarrow-BoldItalic.woff2 \
@@ -25,11 +27,12 @@ default: $(PDF)
 
 %.pdf : %.tex english.tex biblayout.tex
 	xelatex $< </dev/null 
-	cat $< | grep myrearmatter -A3  | grep mypageiii -w || xelatex $< </dev/null  # just run it again, for the TOC, because CPU is cheap
+	cat $< | grep myrearmatter -A3  | grep -P '^\s*\\mypageiii' || xelatex $< </dev/null  # just run it again, for the TOC, because CPU is cheap
 
 %.txt : %.pdf
-	pdftotext $<
+	pdftotext -layout $<
 	@grep -5 LATEX $@
+	@echo "Hypehation: ` grep -Po  '[-]' $@ | wc -l `"
 
 english.tex: gentex-english.py
 	./gentex-english.py english.tex
@@ -75,16 +78,21 @@ fonts: $(FONTS)
 	fontforge -c 'open(argv[1]).generate(argv[2])' $< $@
 
 # Deploy the font on the X server (cool way to crash programs)
-livefontdeploy:
-	cp GrazeShorter*otf $(HOME)/.fonts/ 
+fontinst: $(FONTS_GRAZESHORTER) $(FONTS_GRAZESHORTERNARROW)
+	rsync $(FONTS_GRAZESHORTER) $(FONTS_GRAZESHORTERNARROW) $(HOME)/.fonts/ 
 	fc-cache -f $(HOME)/.fonts
 
-otf: $(FONTS_GRAZESHORTER) $(FONTS_GRAZESHORTERNARROW)
+otf: $(FONTS_GRAZESHORTER) $(FONTS_GRAZESHORTERNARROW) 
+
+woff2: $(FONTSW_GRAZESHORTER) $(FONTSW_GRAZESHORTERNARROW) 
+
+fonts: fontzip
 
 fontzip: GrazeShorter.zip GrazeShorterNarrow.zip
 
-GrazeShorter.zip: $(FONTS_GRAZESHORTER) README.fonts copyright
-	zip $@ $(FONTS_GRAZESHORTER) README.fonts copyright
+GrazeShorter.zip: $(FONTSW_GRAZESHORTER) $(FONTS_GRAZESHORTER) README.fonts copyright
+	zip $@ $(FONTS_GRAZESHORTER) $(FONTSW_GRAZESHORTER) README.fonts copyright
 
-GrazeShorterNarrow.zip: $(FONTS_GRAZESHORTERNARROW) README.fonts copyright
-	zip $@ $(FONTS_GRAZESHORTERNARROW) README.fonts copyright
+GrazeShorterNarrow.zip: $(FONTSW_GRAZESHORTERNARROW) $(FONTS_GRAZESHORTERNARROW) README.fonts copyright
+	zip $@ $(FONTS_GRAZESHORTERNARROW) $(FONTSW_GRAZESHORTERNARROW) README.fonts copyright
+
