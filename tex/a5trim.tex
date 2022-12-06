@@ -8,16 +8,41 @@
 \def\mycolumnsep{0.8em}
 %\def\mycolumnseprule{0.6pt}
 \def\mydocumentsettings{
+ % \textbf{text stats for debug}
+ %   interword space \the\fontdimen2\font ,
+ %   interword stretch \the\fontdimen3\font ,
+ %   interword shrink \the\fontdimen4\font ,
+ %   extra space \the\fontdimen7\font ,
+ %   xspaceskip \the\xspaceskip .
+ % \par
+
   %\rightskip=0pt plus 0.5em\relax
-  \spaceskip=0.26em plus 0.005em minus 0.05em\relax% space between words: keep it constant, with tiny changes
-  \rightskip=0pt plus 1em\relax%                     space on right hand margin: very stretchy
-  \parfillskip=0.5em plus 0.5em minus 0.5em\relax%   last line of paragraph space: keep it small
-  \hbadness=18000%                                   don't whine
+  % custom \raggedright: strict spacing between letters, and all adjustments on margin
+  % Use the smallest space-between-words allowed by the font :
+  \spaceskip=\dimexpr\the\fontdimen2\font-\the\fontdimen4\font\relax plus 0.07em % plus \the\fontdimen4\font % space between words: keep it constant, with tiny changes, no up-side
+  %\spaceskip=0.70\spaceskip plus 0.30\spaceskip minus 0pt%  drop 5% space length ...
+  \rightskip=0pt plus 1em\relax% space on right hand margin: keep it small
+  \parfillskip=0pt plus 10em\relax%   last line of paragraph space: use up all of the spare space here.
+%  \hbadness=18000%                                   don't whine
 %  \rightskip=0pt plus 1pt  % slightly ragged right - really improves readability, at the cost of 1.5% pages (12 pages over 800)
 }
 \def\mybooktitlesettings{\spaceskip=0.33em\relax}% "Song of Solomon" title seems to use undersized spacing without this!
-\def\myhypenpenalty{1800}%   Lower penalty means more hypenation and fewer pages
-\def\mypageadjustments{
+\def\myhypenpenalty{2000}%   Lower penalty means more hypenation and fewer pages
+\def\showredgrid{%
+    \usepackage{tikz}
+    \usepackage{eso-pic}
+    \AddToShipoutPicture{%
+        \begin{tikzpicture}[overlay,remember picture]
+        \draw[thick,red]
+        (current page.north east)
+        rectangle (current page.south west);
+        \draw[red!30!white,thin]
+        (current page.south west) grid[step=\baselineskip]
+        (current page.north east);
+        \end{tikzpicture}%
+    }%
+}%
+\def\showcropmarksonpage{%
     \usepackage[
       % set width and height to a5 width and height + 6mm
       width=148truemm, height=210truemm,
@@ -29,25 +54,29 @@
       % center the contents of the page
       center
     ]{crop}
+}%
+\def\mypageadjustments{%
+    %\showredgrid
+    \showcropmarksonpage
 }% Any other page adjustments - crop package goes here
 \def\mydisplayfont{Graze Shorter}
 \def\myfontname{[GrazeShorter.otf]}
-%\def\mysansfont{Liberation Sans}
+\def\mysansfontii{Liberation Sans}
 \def\mysansfont{[GrazeShorter.otf]}
-\def\myfontsize{8.29pt}
-\def\mybaseline{8.29pt}
+\def\myfontsize{8.50pt}
+\def\mybaseline{8.72pt}
 \def\myfontopts{
     BoldFont=[GrazeShorter-Bold.otf],
     ItalicFont=[GrazeShorter-Italic.otf],
 }
 % This works, but it seems neater to squash the font, rather than reduce the inter-character spacing:
-\def\myfontstretch{0.90}
+\def\myfontstretch{0.914}
 %\def\myletterspace{LetterSpace=0 plus 0 minus 0}
 %\def\myfontstretch{0.875}
 %\def\myletterspace{}
 \def\myextradisplay{}
 \def\mytoccolumns{3}
-\def\mychapterscale{0.98}
+\def\mychapterscale{0.90}
 \def\myversescale{0.80}
 \def\myverseraise{2pt}% =~ (\baselineskip+\fontsize)/2 - \fontsize*\myversescale)
 
@@ -58,16 +87,19 @@
     %\mypageiv%  blank again
 }
 %\def\biblbeforeoldtestament{\newpage\thispagestyle{noheadings}\null\vfill\begin{center}THE OLD TESTAMENT\end{center}\vfill\null\vfill}
-%\def\biblbeforenewtestament{\newpage\thispagestyle{noheadings}\null\vfill\begin{center}THE NEW TESTAMENT\end{center}\vfill\null\vfill}
+\def\biblbeforenewtestament{\newpage\thispagestyle{noheadings}\null\vfill\begin{center}THE NEW TESTAMENT\end{center}\vfill\null\vfill}
 \def\myrearmatter{
+    \mypagei% blank
     \mypageiii%  title page with toc
     \mypageii%   print info page
     \kjvwordlist
 }
 %To omit manuscript titles (and save a page!)
-\renewcommand{\biblpsalmheading}[1]{}
-\renewcommand{\biblepistleattribution}[1]{}
-\def\mylayoutblurb{No headings; verses share lines; ragged; no psalm titles; no epistle postscripts\par
+%\renewcommand{\biblpsalmheading}[1]{}
+%\renewcommand{\biblepistleattribution}[1]{}
+\renewcommand{\biblsectionseparator}[1]{}
+\def\mylayoutblurb{No headings; verses share lines; ragged; psalm titles; epistle postscripts;\par
+Words of Christ in black.\par
 }
 % To omit binding marks
 \renewcommand{\oddbindingmarks}{}

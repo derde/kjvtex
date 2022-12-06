@@ -511,10 +511,10 @@ class bibleformatter:
     def verseheading(self,verse):
         # r+=  r'\verse{'+verse+'}'  
         cmd='\\verse'
-        if verse=='1': cmd=r'\versei'
-        elif verse=='2': cmd=r'\verseii'
-        else: cmd=r'\verse'
-        return r' '+cmd+'{'+verse+'}{'+str(self.state['index'])+'}'
+        if verse=='1': cmd=r'\versei' # no space before 1st verse
+        elif verse=='2': cmd=r' \verseii' # space before 2nd verse
+        else: cmd=r' \verse' # space before verses 3 and on
+        return r''+cmd+'{'+verse+'}{'+str(self.state['index'])+'}'
 
     def isnewparagraph(self,book,chapter,verse,text):
         # Afrikaans text has capital words indicating new paragraphs

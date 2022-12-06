@@ -107,6 +107,7 @@
 \fontspec{\myfontname}
 \setmainfont[\myfontopts \myboldness FakeStretch=\myfontstretch,Scale=1.00]{\myfontname}% 1006 pages +2
 \biblfontcustom
+\newfontfamily\mynostretchfont[FakeStretch=1]{\mysansfont}% Used for page headings
 \newfontfamily\myheadingfont[\myboldness FakeStretch=\myfontstretch,Scale=1.00]{\mysansfont}% Used for page headings
 \newfontfamily\mysmallcapsfont[\myfontopts\myboldness FakeStretch=\myfontstretch,Scale=0.85]{\myfontname}% Used for (synthetic) smallcaps
 \newfontfamily\mylatexfont[FakeStretch=1.0]{Liberation Serif}% For saying "Latex" without looking ugly
@@ -119,7 +120,7 @@
 \newfontfamily\myversefont[\myboldness FakeStretch=\myfontstretch,Scale=\myversescale]{\mysansfont}
 \newfontfamily\mybooktitlefont[\myfontopts \myboldness FakeStretch=\myfontstretch,Scale=2.8]{\myfontname}
 \newfontfamily\mychapterfont[\myboldness FakeStretch=\myfontstretch,Scale=\mychapterscale]{\mysansfont}
-\newfontfamily\myendnotesfont[\myboldness FakeStretch=\myfontstretch,Scale=\mychapterscale]{\mysansfont}
+\newfontfamily\myendnotesfont[\myboldness FakeStretch=\myfontstretch,Scale=\mychapterscale]{\mysansfontii}
 \usepackage{printlen}% provide \printlength command, and \rndprintlength - to print the page size nicely
 \usepackage[grid]{multicol}
 \setlength{\columnsep}{\mycolumnsep}
@@ -158,7 +159,7 @@
 \def\hebrewleader{}%
 \newcommand{\biblepsalmheading}[1]{{\em #1}}%
 \newcommand{\sharedverse}[2]{\raisebox{\myverseraise}[0pt]{\myversefont\textbf{#1}\hspace{0.8pt}}\def\mythumbindex{#2}}%3 points up, count height as 0 points, kern at end
-\newcommand {\versei}[2]{\mypreversei \hebrewleader\def\hebrewleader{}}%3 points up, count height as 0 points, kern at end
+\newcommand{\versei}[2]{\noindent\mypreversei \hebrewleader\def\hebrewleader{}}%3 points up, count height as 0 points, kern at end
 \newcommand{\verseii}[2]{\mypreverseii\hebrewleader\def\hebrewleader{}\sharedverse{#1}{#2}}%3 points up, count height as 0 points, kern at end
 \renewcommand{\verse}[2]{\mypreverse  \hebrewleader\def\hebrewleader{}\sharedverse{#1}{#2}}%3 points up, count height as 0 points, kern at end
 %\newcommand{\biblpagetitles}[2]{\lock{#1}{#2}}%
@@ -178,23 +179,26 @@
 % * The 1.3\baselineskip is necessary sinnce the large text has a big baseline
 % * 0pt makes it invisible
 % * 4\baselineskip means it covers 4 lines
-\def\bookheadingstrut{%
-%\vskip\baselineskip% disappearing space when at the top of the page? don't work :(
-\rule[-1\baselineskip]{0pt}{3\baselineskip}% Number of lines for title
+\newcommand{\bookheadingstrut}[1]{% %\vskip\baselineskip% disappearing space when at the top of the page? don't work :(
+\rule[1.0\baselineskip]{0pt}{#1}% Number of lines for title - 1 down, two up
 }%
 % Heading for each book of the Bible: big text
 \newcommand{\biblnewreference}[2]{\markboth{#1}{#1}\def\mythumbindex{#2}}%
 \newcommand{\biblendreference}[2]{\markboth{#1}{#1}\def\mythumbindex{#2}}%
-\newcommand{\biblbookheading}[1]{%
-    \needspace{6\baselineskip}\null% This causes the leading space at the top of a space not to be "consumed" - Genesis and Matthew ... still not exactly right though
-    {%
-    \begin{center}
-    \bookheadingstrut% A multi-line strut for the big text
-    \raisebox{-0.5\baselineskip}[0pt]{\textbf{\mybooktitlefont\mybooktitlesettings #1}}
-    \end{center}%
-    }
-    \bibltwocolumn
-}%
+\newcommand{\biblbookheading}[1]{\needspace{7\baselineskip}%
+% 5 lines for title, 2 lines for chapter number ... This causes the leading space at the top of a space not to be "consumed" - Genesis and Matthew ... still not exactly right though
+{%
+%\rightskip=0pt% let's not flexy rightskip
+%\parfillskip=0pt plus \linewidth% let's not flexy rightskip
+\null% blank paragraph - good for top of page exact alignment!
+\par
+\hfill%center it
+\raisebox{0.6\baselineskip}[0.5\baselineskip][0pt]{%
+    \textbf{\mybooktitlefont\mybooktitlesettings #1}}%
+\bookheadingstrut{2\baselineskip}% assume that the paragraph above did the trick ...
+\hfill%center it
+}
+\par\bibltwocolumn}%
 % New chapter number 
 \newcommand{\biblnewchapter}[1]{}%
 % Move the thumb index (just make sure it doesn't disappear)
@@ -217,8 +221,10 @@
 %% \end{paracol}\nopagebreak}%
 %% \setlength{\abnormalparskip{1pt}}
 %%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\bibldropcapschapter}[1]{\needspace{0.5\baselineskip}
-\lettrine[lines=2, lraise=0.05, lhang=0.00, findent=3pt, nindent=0pt, loversize=0.0]{\hspace{2pt}\textbf{\mychapterfont #1}}{}}%
+\newcommand{\bibldropcapschapter}[1]{\needspace{0.5\baselineskip}%
+%\lettrine[lines=2, lraise=0.05, lhang=0.00, findent=3pt, nindent=0pt, loversize=0.0]{\hspace{2pt}\textbf{\mychapterfont \smash{#1}}}{}}%
+\lettrine[lines=2, lraise=0.05, lhang=0.00, findent=3pt, nindent=0pt, loversize=0.0]{\textbf{\mychapterfont #1}}{}}%
+%debug: \textbf{#1}}%
 % Work around lettrine bug with "Fpar" definition from https://tex.stackexchange.com/questions/369868/using-lettrine-with-short-paragraphs :
 % Synthetic paragraph that should be used for verse 2, in case it is right net to verse 1 and the dropcaps chapter number
 \def\bibleparnoindent{\hfil\vadjust{\vskip\parskip}\break}%
@@ -281,8 +287,10 @@
 \null\vfill
 \InputIfFileExists{\jobname.pages}{}{}
 \thispagestyle{noheadings}%
-HOLY BIBLE\par
-King James Bible: \textsc{kjvtex compact}\par
+\ENpretitle\par
+\ENtitle: \textsc{\ENsubtitle}
+\par
+\ifdefined\biblISBN{\biblISBN\par}
 You may copy freely and republish in whole, or in part.\par
 \null\par
 Typesetting by {\mylatexfont \LaTeX{}}, %
@@ -305,7 +313,7 @@ Text area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit
 \par
 \mylayoutblurb
 \par
-\bookheadingstrut
+\bookheadingstrut{3\baselineskip}%
 \par
 \newpage
 }}\fi
@@ -316,14 +324,15 @@ Text area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit
 \thispagestyle{noheadings}%
 %\fontsize{10}{10}\selectfont%
 \null
-%\bookheadingstrut\par
+%\bookheadingstrut{3\baselineskip}\par
 \vfill
 \begin{center}%
-\textsc{\ENpretitle}%HOLY BIBLE
-\par\null
-\textbf{\mybooktitlefont{\ENtitle}}% King James Bible
+\textsc{\mybooktitlesettings\ENpretitle}%HOLY BIBLE
 \par
-\textsc{\ENsubtitle}% kjvtex compactt
+\bookheadingstrut{3\baselineskip}
+\raisebox{0.6\baselineskip}[0.5\baselineskip][0pt]{\textbf{\mybooktitlefont{\mybooktitlesettings\ENtitle}}}% King James Bible
+\par
+\textsc{\mybooktitlesettings\ENsubtitle}% kjvtex compactt
 \par
 \vfill
 \par
@@ -363,7 +372,12 @@ Text area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit
     \write\mytoc{\unexpanded{\bibltocsectionheader}{#1}}
     \gdef\mycurrentsection{#1}\thispagestyle{sectionheadings}
 }%
-\newcommand{\biblnewbook}[2]{\write\mytoc{\noindent #1 \unexpanded{\mydotfill}{\thepage}\par}\gdef\mybookshort{#2}\gdef\mythumbindex{#2}}%
+\newcommand{\biblnewbook}[2]{%
+    \write\mytoc{%
+        \noindent {\mynostretchfont □ ~}#1 \unexpanded{\mydotfill}{\thepage}\par}% The box is defined in the font, we hope
+    \gdef\mybookshort{#2}%
+    \gdef\mythumbindex{#2}%
+}%
 \newwrite\mytoc\immediate\openout\mytoc=\jobname.section%
 \include{\mysourcetext}% Load main content
 %% Write out stats and stuff for laters
