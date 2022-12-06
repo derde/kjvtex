@@ -47,7 +47,7 @@
 \mypageadjustments% Any other page adjustments - crop package goes here
 %\usepackage[absolute,overlay]{textpos}% Put things in absolute positions (for thumb marker)
 \usepackage[absolute]{textpos}% Put things in absolute positions (for thumb marker)
-\TPGrid[0mm,7mm]{26}{66}% defines tiny boxes down right hand margin for book name - see textblock below
+\TPGrid[0mm,10mm]{60}{66}% defines tiny boxes down right hand margin for book name - see textblock below
 % 0.3528pt/mm ... 334pt,510pt
 %\usepackage[grid]{mymulticol}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -168,7 +168,18 @@
     \begin{multicols}{2}%
     \renewcommand{\biblonecolumn}{\end{multicols}\renewcommand{\biblonecolumn}{}}%
 }%
-\newcommand{\biblthumbmark}[1]{\begin{textblock}{1}(25,#1)\hfill\rule[0em]{1em}{0.5em}\end{textblock}}
+% FIXI?
+\newcommand{\biblthumbmark}[1]{%
+\begin{textblock}{1}(59,#1)%
+%\rule[0em]{1em}{1ex}%
+\hfuzz=72pt
+\raisebox{0pt}[0pt]{\rule[0em]{2em}{0.5em}}%
+\end{textblock}
+}
+\newlength{\rightmarkspace}%
+\newlength{\rightmarksep}
+\setlength{\rightmarkspace}{\paperwidth-5em}% 
+\setlength{\rightmarksep}{0.5ex}%
 %\renewcommand{\bibltwocolumn}{\par}%
 %\renewcommand{\biblonecolumn}{\par}%
 \newcommand{\biblendbook}[1]{\needspace{3\baselineskip}\biblonecolumn}%

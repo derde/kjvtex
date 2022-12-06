@@ -27,12 +27,12 @@ default: $(PDF)
 
 %.pdf : %.tex english.tex biblayout.tex
 	xelatex $< </dev/null 
-	cat $< | grep myrearmatter -A3  | grep -P '^\s*\\mypageiii' || xelatex $< </dev/null  # just run it again, for the TOC, because CPU is cheap
+	grep myrearmatter -A3 < $< | grep -P '^\s*\\mypageiii' || xelatex $< </dev/null  # just run it again, for the TOC, because CPU is cheap
 
 %.txt : %.pdf
 	pdftotext -layout $<
 	@grep -5 LATEX $@
-	@echo "Hypehation: ` grep -Po  '[-]' $@ | wc -l `"
+	@echo "Hypehation: ` grep -P '[-]' $@ | grep -vw page | grep -Po '[-]' | wc -l `"
 
 english.tex: gentex-english.py
 	./gentex-english.py english.tex
