@@ -22,13 +22,15 @@
   %\spaceskip=\dimexpr\the\fontdimen2\font-\the\fontdimen4\font\relax plus 0.07em % plus \the\fontdimen4\font % space between words: keep it constant, with tiny changes, no up-side
   \spaceskip=0.245em plus 0.255em minus 0.00em\relax
   %\spaceskip=0.70\spaceskip plus 0.30\spaceskip minus 0pt%  drop 5% space length ...
-  \rightskip=0pt plus 5em\relax% space on right hand margin: keep it small
-  \parfillskip=0pt plus 20em\relax%   last line of paragraph space: use up all of the spare space here.
+  \rightskip=0pt plus 3em\relax% space on right hand margin: keep it small
+  \parfillskip=0pt plus 15em\relax%   last line of paragraph space: use up all of the spare space here.
 %  \hbadness=18000%                                   don't whine
 %  \rightskip=0pt plus 1pt  % slightly ragged right - really improves readability, at the cost of 1.5% pages (12 pages over 800)
 }
 \def\mybooktitlesettings{\spaceskip=0.33em\relax}% "Song of Solomon" title seems to use undersized spacing without this!
-\def\myhypenpenalty{1000}%   Lower penalty means more hypenation and fewer pages
+\def\myhypenpenalty{200}%   Lower penalty means more hypenation and fewer pages
+\hyphenation{Bel-te-shaz-zar}
+\hyphenation{Ahi-me-lech}
 \def\showredgrid{%
     \usepackage{tikz}
     \usepackage{eso-pic}
@@ -58,7 +60,8 @@
 }%
 \def\mypageadjustments{%
     %\showredgrid
-    \showcropmarksonpage
+    %FINAL PRINTING:
+    %\showcropmarksonpage
 }% Any other page adjustments - crop package goes here
 \def\mydisplayfont{Graze Shorter}
 \def\myfontname{[GrazeShorter.otf]}
