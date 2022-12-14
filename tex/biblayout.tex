@@ -232,9 +232,10 @@
 %% \end{paracol}\nopagebreak}%
 %% \setlength{\abnormalparskip{1pt}}
 %%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\bibldropcapschapter}[1]{\needspace{0.5\baselineskip}%
+%\newcommand{\bibldropcapschapter}[1]{\null\needspace{0.5\baselineskip}%
+\newcommand{\bibldropcapschapter}[1]{\needspace{0.25\baselineskip}%
 %\lettrine[lines=2, lraise=0.05, lhang=0.00, findent=3pt, nindent=0pt, loversize=0.0]{\hspace{2pt}\textbf{\mychapterfont \smash{#1}}}{}}%
-\lettrine[lines=2, lraise=0.05, lhang=0.00, findent=3pt, nindent=0pt, loversize=0.0]{\textbf{\mychapterfont #1}}{}}%
+\lettrine[lines=2, lraise=0.00, lhang=0.00, findent=3pt, nindent=0pt, loversize=0.0]{\textbf{\mychapterfont #1}}{}}%
 %debug: \textbf{#1}}%
 % Work around lettrine bug with "Fpar" definition from https://tex.stackexchange.com/questions/369868/using-lettrine-with-short-paragraphs :
 % Synthetic paragraph that should be used for verse 2, in case it is right net to verse 1 and the dropcaps chapter number
@@ -294,15 +295,17 @@
 }
 
 \ifdefined\mypageii{}\else{
-\gdef\mypageii{
+\gdef\mypageii{{
+\spaceskip=0.33em\relax
 \null\vfill
 \InputIfFileExists{\jobname.pages}{}{}
 \thispagestyle{noheadings}%
 \ENpretitle\par
 \ENtitle: \textsc{\ENsubtitle}
 \par
-\ifdefined\biblISBN{\biblISBN\par}
+\ifdefined\biblISBN{\biblISBN\par}\fi
 You may copy freely and republish in whole, or in part.\par
+\ifdefined\ENmottoii{\ENmottoii\par}\fi
 \null\par
 Typesetting by {\mylatexfont \LaTeX{}}, %
 \myformattinginfoi
@@ -323,11 +326,10 @@ Text area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit
  (\arabic{mylines}$\times${\uselengthunit{pt}\rndprintlength{\mybestlinespace}})
 \par
 \mylayoutblurb
-\par
-\bookheadingstrut{3\baselineskip}%
+%\par\bookheadingstrut{3\baselineskip}%
 \par
 \newpage
-}}\fi
+}}}\fi
 %%% PAGE 3: TITLE PAGE %%%%%%%%%%%%%%%
 % Kerning adjustment: big deal page-count affecter
 % Big deal don't hypenate rule: we would save pages by hypenating, but it's ugly
@@ -336,7 +338,7 @@ Text area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit
 %\fontsize{10}{10}\selectfont%
 \null
 %\bookheadingstrut{3\baselineskip}\par
-\vfill
+%\vfill
 \begin{center}%
 \textsc{\mybooktitlesettings\ENpretitle}%HOLY BIBLE
 \par
@@ -344,6 +346,7 @@ Text area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit
 \raisebox{0.6\baselineskip}[0.5\baselineskip][0pt]{\textbf{\mybooktitlefont{\mybooktitlesettings\ENtitle}}}% King James Bible
 \par
 \textsc{\mybooktitlesettings\ENsubtitle}% kjvtex compactt
+\ifdefined\ENsubtitleii\ENsubtitleii\fi % soulwinning.info
 \par
 \vfill
 \par
@@ -359,12 +362,17 @@ Text area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit
 %%     \fileline% just emit
 %% \repeat
 %% \closein\myfiletocread
-\InputIfFileExists{\jobname.section}{}{}
+\begin{center}
+%\noindent\hspace{0.05\linewidth}% Indent the TOC so
+\begin{minipage}{0.90\linewidth}%
+    \InputIfFileExists{\jobname.section}{}{}
 \bibltocendmulticol
+\end{minipage}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 \vfill
-\begin{center}
+\ifdefined\ENmottoii{\ENmottoii\par}\else
 \myformattinginfoi \myformattinginfoii
+\fi
 \end{center}
 %%%%%%%%%%%%%%%%%%%%%
 % Commands that write the table of content later

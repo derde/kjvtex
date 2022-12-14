@@ -16,18 +16,18 @@ Goals:
  * made for reading: i.e. the fewest possible intrusions into the text.
 
 Specific features to reduce length and print cost:
-* Verses continue on the same line.  This reflects the form of the original (no verse divisions), and encourages regular reading over proof-texting.
-* Over 31k verses with random lengths, this shortens the print by around 14k lines, and at 110 lines per page, that's 127 pages or so saved.
+* Verses continue on the same line.  This reflects the form of the original (no verse divisions), and encourages regular reading over proof-texting.  Over 31k verses with random lengths, this shortens the print by around 14k lines, and at 110 lines per page, that's 127 pages or so saved.
 * Embedded verse numbers (these are printed in a smaller font, and raised, so that they are visually distinct.
 * No paragraph headings: these both tend to be tendentious (adj. having or showing a definite tendency, bias, or purpose), and take up print space
-* Chapter numbers use drop-caps
+* Chapter numbers use drop-caps, rather than CHAPTER 1 in a space between the text.
 * New books of the Bible start on same page as the previous book ended (66 books that don't start on a new page should save around 30 pages)
 * No maps (yes, those are indeed on the end papers, but you don't have to print them, you know, and not printing saves)
-* Acrostic psalms (ps 119) has just the Hebrew letter.
+* Acrostic psalms (ps 119) have just the Hebrew letter.
+* No "OLD TESTAMENT" and "NEW TESTAMENT" title pages.
 
 Other features:
 * No paragraph titles (same as headings, but at the top of the page: they tend to be wrong and unhelpful)
-* Print table of contents block down outer margin to identify signature selection errors. This is a nondescript little black block ... a shade of grey might be better ...
+* Print table of contents block down outer margin to identify signature selection errors. This is a nondescript little black block that extends into the bleed area ... a shade of grey might be better ...
 
 ## Tradeoffs in printing:
 Some general ideas about the tradeoffs to print in good quality using the least physical material:
@@ -44,13 +44,6 @@ Page size
  * A taller-than-a5 form factor is acceptable
 > The largest practical paper size should be used
 
-
-
-
-
-
-
-
 Text size
  * 10pt seems nice, but it seems that 8.5pt might be an acceptable minimum
  > This is very subjective
@@ -66,8 +59,13 @@ Ragged vs justified
  * Justified makes a block that needs a column separation of 1.5em, or a line.  With ragged you can do 1em colum separation.
  > Ragged seems nicer
 
+Inter-word spacing
+ * Inter-word spacing .. it looks like we can do 0.25em to 0.50em along with ragged right
+ * Font aspect ratio ... it looks like 0.90 is an inoffensive aspect ratio.
+
 Kerning
  * If the font is not kerned for lower case letters, then it's best to edit the font.  Adjusting the inter-character space is crude, and it works, but it's not ideal.
+
 
 
 ## METRICS OF OTHER BIBLES
@@ -232,15 +230,19 @@ For this paper size and similar margins, we can do 707 pages: CharisSIL 9.0pt te
 ### Layout:
 * Verse numbering: check for collision with descender (e.g. g and j), or below top of ascender
 * Check for "overfull vbox" in xelatex log file for the job, and inspect each page and neighbouring pages for every report
+* Check for too much hyphenation (latex lurves hyphenation)
+* Check that all available space on the page is used (increase inter-line spacing as much as possible)
 ### Fonts:
-*        Check font kerning: "Avith" in 1 Chronicles 1:46 - A and V should kern. Charis SIL does not include kerning, unless you edit it!
-*        Check that bold fonts do appear (verse numbers, headings)
-*        Check that italic fonts do appear (italicised words)
+* Check font kerning: "Avith" in 1 Chronicles 1:46 - A and V should kern. Charis SIL does not include kerning, unless you edit it!
+* Check that bold fonts do appear (verse numbers, headings)
+* Check that italic fonts do appear (italicised words)
+* Check ligatures (ff, fi, ffi, ffl), that these do appear
+* Check font spacing in titles, e.g. Song of Solomon (must not use reduced spacing)
 ### Appearance:
 * Check register-true (text on front and back of page should be on the same line)
 ### Layout:
 * After psalm title indentation
-* Verse 2 of psalms indentation
+* Verse 2 of psalms indentation, especially when it is next to the drop-caps number
 
 # Afrikaans
 
@@ -255,4 +257,3 @@ These are the specific additional check items for Afrikaans:
 * Handling of CAPITAL leading verse
 * Psalm titles in italics
 * Alef. Bet. rewritten (or handled) in Lamentations, Proverbs and Psalms
-

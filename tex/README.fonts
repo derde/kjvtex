@@ -12,7 +12,6 @@ ridiculously low, such that the descenders and ascenders almost touch.
 Once the ascenders and descenders are shorter, compressing the font
 horizontally by 85% is still a compact font, which is "Graze Shorter Narrow".
 
-
 CHARIS SIL
 
 The default Charis SIL has the following "deficiencies" -
@@ -28,7 +27,7 @@ cure those minor deficiencies -
 
  * Full unicode support for all sorts of languages
 
-Those unicode items are pretty mangled, which is why this 
+Those unicode items are pretty mangled, which is why this font has a new name. 
 
 
 GRAZE SHORT
@@ -82,10 +81,23 @@ Same as "Graze Short", but both ascenders and descenders are chopped:
 
  * Kerning is set to 280 dots for letters a-z A-Z on left, and a-z A-z and punctuation on right hand side.
 
- * Special kerning consideration: Ty (and T-everything), "y,"
+ * Special kerning consideration: Ty (and T-everything), "y," ... and lots of Fx and Yx and fo manual adjustments
+
+The special attention given to each letter ...
+
+ * p and q - the lower part of the loop was lifted up, so that the descender doesn't seem overly short
+
+ * f - the rounding of the top left curve was accentuated, to make it further from the cross bar
+
+ * E - the serifs were reduced, because they were cluttering the interior of the letter
+
+ * A - the top was cut off, rather than changing the shape.
+
+ * ff, fl, fi and ffl ligatures - didn't forget these
 
 
 TODO:
     When using the shorter font on computer screens, it looks too high in the
     text block. Some "free" space must be moved from the descender to above the
     ascenders. (DONE)
+

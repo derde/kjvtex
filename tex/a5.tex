@@ -1,21 +1,28 @@
 % A5 Bible in 640 pages: 8 point
 \input{bibldefault.tex}
 
-\def\mymargins{left=7mm,top=10mm,right=7mm,bottom=7mm,bindingoffset=0mm,headheight=5mm}
+\def\mymargins{left=7mm,top=10mm,right=7mm,bottom=7mm,bindingoffset=1mm,headheight=5mm}
 \def\mypapersize{138mm,210mm}% A5
 \def\mydisplayfont{Graze Shorter}
 \def\myfontname{[GrazeShorter.otf]}
 %\def\mysansfont{Liberation Sans}
+\def\mysansfontii{Liberation Sans}
 \def\mysansfont{[GrazeShorter.otf]}
-\def\myfontsize{9.0pt}
-\def\mybaseline{9.2pt}
+\def\myfontsize{8.0pt}
+\def\mybaseline{8.06pt}
+\def\myfontstretch{0.925}
+\def\mycolumnsep{0.8em}
+\def\mydocumentsettings{% Ragged
+  \spaceskip=0.28em plus 0.32em minus 0.08em\relax
+  \rightskip=0pt plus 3em\relax% space on right hand margin: keep it small
+  \parfillskip=0pt plus 15em\relax%   last line of paragraph space: use up all of the spare space here.
+}%
 \def\myfontopts{
     BoldFont=[GrazeShorter-Bold.otf],
     ItalicFont=[GrazeShorter-Italic.otf],
 }
-\renewcommand\showbindingmarks[1]{}
+%\renewcommand\showbindingmarks[1]{}
 % This works, but it seems neater to squash the font, rather than reduce the inter-character spacing:
-\def\myfontstretch{0.90}
 %\def\myletterspace{LetterSpace=0 plus 0 minus 0}
 %\def\myfontstretch{0.875}
 %\def\myletterspace{}
@@ -26,16 +33,24 @@
 \def\myversescale{0.80}
 \def\myverseraise{2pt}% =~ (\baselineskip+\fontsize)/2 - \fontsize*\myversescale)
 \renewcommand\myfrontmatter{%
+    \mypageiii%  title page
+    \mypageii%   print info page
     %\mypagei%   blank
     %\mypageiv%  blank again
 }
 %\def\biblbeforeoldtestament{\newpage\thispagestyle{noheadings}\null\vfill\begin{center}THE OLD TESTAMENT\end{center}\vfill\null\vfill}
 %\def\biblbeforenewtestament{\newpage\thispagestyle{noheadings}\null\vfill\begin{center}THE NEW TESTAMENT\end{center}\vfill\null\vfill}
 \def\myrearmatter{
-    \mypagei%   blank
-    \mypageiii%  title page
-    \mypageii%   print info page
-    \kjvwordlist
+    %\mypagei%   blank
+    %\kjvwordlist
+}
+\def\myhypenpenalty{200}%   Lower penalty means more hypenation and fewer pages
+\input{hyph-en.tex}
+\renewcommand{\biblepistleattribution}[1]{}
+\renewcommand{\biblsectionseparator}[1]{}
+\renewcommand{\biblpsalmheading}[1]{}
+\def\mylayoutblurb{No headings; verses share lines; ragged; no psalm titles; no epistle postscripts;\par
+Words of Christ in black.\par
 }
 \input{biblayout.tex}
 

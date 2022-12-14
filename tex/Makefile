@@ -25,6 +25,8 @@ FONTSW_GRAZESHORTERNARROW=\
 
 default: $(PDF)
 
+.NOTINTERMEDIATE: meh
+
 %.pdf : %.tex english.tex biblayout.tex
 	xelatex $< </dev/null 
 	grep myrearmatter -A3 < $< | grep -P '^\s*\\mypageiii' || xelatex $< </dev/null  # just run it again, for the TOC, because CPU is cheap
@@ -38,7 +40,7 @@ english.tex: gentex-english.py
 	./gentex-english.py english.tex
 
 clean:
-	rm *.{aux,log,toc,dvi,ps}
+	rm *.{aux,pages,section,log,toc,dvi,ps}
 
 generated.tex: gentex.py
 	./gentex.py generated.tex
@@ -52,7 +54,7 @@ bibl.pdf: bibl.tex
 # Make book signatures - the 28 here is 28 x 1/72" ≅ 10mm
 # See also https://softwarerecs.stackexchange.com/questions/438/software-to-put-pages-of-a-pdf-file-in-book-order
 %-book.pdf: %.pdf
-	pdfbook2 --no-crop --paper=a4paper --outer-margin=28 --inner-margin=0 --top-margin=0 --bottom-margin=0 --signature=32 $<
+	pdfbook2 --no-crop --paper=a4paper --outer-margin=28 --inner-margin=0 --top-margin=0 --bottom-margin=0 --signature=40 $<
 
 # Make book signatures - but move the 1st four pages to the tail first
 %-u-book.pdf: %.pdf
@@ -79,7 +81,7 @@ fonts: $(FONTS)
 
 # Deploy the font on the X server (cool way to crash programs)
 fontinst: $(FONTS_GRAZESHORTER) $(FONTS_GRAZESHORTERNARROW)
-	rsync $(FONTS_GRAZESHORTER) $(FONTS_GRAZESHORTERNARROW) $(HOME)/.fonts/ 
+	rsync --info=stats0,flist1 -av $(FONTS_GRAZESHORTER) $(FONTS_GRAZESHORTERNARROW) $(HOME)/.fonts/ 
 	fc-cache -f $(HOME)/.fonts
 
 otf: $(FONTS_GRAZESHORTER) $(FONTS_GRAZESHORTERNARROW) 
@@ -95,4 +97,6 @@ GrazeShorter.zip: $(FONTSW_GRAZESHORTER) $(FONTS_GRAZESHORTER) README.fonts copy
 
 GrazeShorterNarrow.zip: $(FONTSW_GRAZESHORTERNARROW) $(FONTS_GRAZESHORTERNARROW) README.fonts copyright
 	zip $@ $(FONTS_GRAZESHORTERNARROW) $(FONTSW_GRAZESHORTERNARROW) README.fonts copyright
+
+.PRECIOUS: %.pdf
 
