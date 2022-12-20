@@ -84,6 +84,13 @@
     \fancyhead[C]{\myheadingfont \textbf{\mycurrentsection}}% hush
     \fancyhead[OR]{\thepage}% hush
 }
+\fancypagestyle{endmatter}{%
+    \fancyhead[EL]{\thepage}% hush
+    \fancyhead[ER]{}% hush
+    \fancyhead[OL]{}% hush
+    \fancyhead[C]{\myendnotesfont \textbf{\leftmark}}% hush
+    \fancyhead[OR]{\thepage}% hush
+}
 \def\mybookname{GEN}
 \def\thelastpage{}%
 \gdef\mythumbindex{0}% Where to put the vertical thumb index
