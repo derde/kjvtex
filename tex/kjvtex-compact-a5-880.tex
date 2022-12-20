@@ -20,14 +20,15 @@
   % custom \raggedright: strict spacing between letters, and all adjustments on margin
   % Use the smallest space-between-words allowed by the font :
   %\spaceskip=\dimexpr\the\fontdimen2\font-\the\fontdimen4\font\relax plus 0.07em % plus \the\fontdimen4\font % space between words: keep it constant, with tiny changes, no up-side
-  \spaceskip=0.28em plus 0.32em minus 0.08em\relax
+  %\spaceskip=0.28em plus 0.32em minus 0.08em\relax
+  \spaceskip=\dimexpr\the\fontdimen2\font-\the\fontdimen4\font\relax plus 0.07em % plus \the\fontdimen4\font % space between words: keep it constant, with tiny changes, no up-side
   %\spaceskip=0.70\spaceskip plus 0.30\spaceskip minus 0pt%  drop 5% space length ...
   \rightskip=0pt plus 2em\relax% space on right hand margin: keep it small
   \parfillskip=0pt plus 12em\relax%   last line of paragraph space: use up all of the spare space here.
 %  \hbadness=18000%                                   don't whine
 %  \rightskip=0pt plus 1pt  % slightly ragged right - really improves readability, at the cost of 1.5% pages (12 pages over 800)
 }
-\def\myhypenpenalty{200}%   Lower penalty means more hypenation and fewer pages
+\def\myhypenpenalty{700}%   Lower penalty means more hypenation and fewer pages
 \input{hyph-en.tex}
 \def\showredgrid{%
     \usepackage{tikz}
@@ -90,15 +91,17 @@
 }
 %\def\biblbeforeoldtestament{\newpage\thispagestyle{noheadings}\null\vfill\begin{center}THE OLD TESTAMENT\end{center}\vfill\null\vfill}
 \def\biblbeforenewtestament{\newpage\thispagestyle{noheadings}\null\vfill\begin{center}THE NEW TESTAMENT\end{center}\vfill\null\vfill}
+\input{gospeloutline.tex}
 \def\myrearmatter{
 %    \mypagei% blank
 %    \mypageii%   print info page
-%    \kjvwordlist
+    \kjvwordlist
+    \gospeloutline
 }
 %To omit manuscript titles (and save a page!)
 %\renewcommand{\biblpsalmheading}[1]{}
 \renewcommand{\biblepistleattribution}[1]{}
-\renewcommand{\biblsectionseparator}[1]{}
+%\renewcommand{\biblsectionseparator}[1]{}% END OF THE PROPHETS and THE END at revelation
 \def\mylayoutblurb{No headings; verses share lines; ragged; psalm titles; no epistle postscripts;\par
 Words of Christ in black.\par
 }

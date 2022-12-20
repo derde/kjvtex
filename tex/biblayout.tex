@@ -165,7 +165,7 @@
 %\newcommand{\biblpagetitles}[2]{\lock{#1}{#2}}%
 \newcommand{\biblonecolumn}{}%
 \newcommand{\bibltwocolumn}{%
-    \begin{multicols}{2}%
+    \begin{multicols}{\mycontentcolumns}%
     \renewcommand{\biblonecolumn}{\end{multicols}\renewcommand{\biblonecolumn}{}}%
 }%
 % FIXI?
@@ -233,7 +233,7 @@
 %% \setlength{\abnormalparskip{1pt}}
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %\newcommand{\bibldropcapschapter}[1]{\null\needspace{0.5\baselineskip}%
-\newcommand{\bibldropcapschapter}[1]{\needspace{0.25\baselineskip}%
+\newcommand{\bibldropcapschapter}[1]{\needspace{\mychapterspace}% big mystery here ... for needspace within 2 column environment, this is the number of lines /2 /2 (ie div 4)
 %\lettrine[lines=2, lraise=0.05, lhang=0.00, findent=3pt, nindent=0pt, loversize=0.0]{\hspace{2pt}\textbf{\mychapterfont \smash{#1}}}{}}%
 \lettrine[lines=2, lraise=0.00, lhang=0.00, findent=3pt, nindent=0pt, loversize=0.0]{\textbf{\mychapterfont #1}}{}}%
 %debug: \textbf{#1}}%

@@ -1,3 +1,10 @@
+PDFDEPS=hyph-en.tex \
+	hyph-af.tex\
+	bibldefault.tex \
+	biblayout.tex \
+	gospeloutline.tex \
+	kjvwordlist.tex \
+	english.tex
 PDF=largeprint.pdf a5x800.pdf english0.pdf waterproof.pdf giftandaward.pdf africa.pdf
 FONTS=GrazeShort-Bold.otf    GrazeShorter-BoldItalic.otf    GrazeShorter-Italic.otf    GrazeShorter.otf  \
       GrazeShort-Bold.woff2  GrazeShorter-BoldItalic.woff2  GrazeShorter-Italic.woff2  GrazeShorter.woff2 \
@@ -27,7 +34,7 @@ default: $(PDF)
 
 .NOTINTERMEDIATE: meh
 
-%.pdf : %.tex english.tex biblayout.tex
+%.pdf : %.tex $(PDFDEPS) $(FONTS_GRAZESHORTER)
 	xelatex $< </dev/null 
 	grep myrearmatter -A3 < $< | grep -P '^\s*\\mypageiii' || xelatex $< </dev/null  # just run it again, for the TOC, because CPU is cheap
 
@@ -54,7 +61,8 @@ bibl.pdf: bibl.tex
 # Make book signatures - the 28 here is 28 x 1/72" ≅ 10mm
 # See also https://softwarerecs.stackexchange.com/questions/438/software-to-put-pages-of-a-pdf-file-in-book-order
 %-book.pdf: %.pdf
-	pdfbook2 --no-crop --paper=a4paper --outer-margin=28 --inner-margin=0 --top-margin=0 --bottom-margin=0 --signature=40 $<
+	# pdfbook2 --no-crop --paper=a4paper --outer-margin=28 --inner-margin=0 --top-margin=0 --bottom-margin=0 --signature=40 $<
+	pdfbook2 --no-crop --paper=a4paper --outer-margin=0 --inner-margin=0 --top-margin=0 --bottom-margin=0 --signature=4 $<
 
 # Make book signatures - but move the 1st four pages to the tail first
 %-u-book.pdf: %.pdf
