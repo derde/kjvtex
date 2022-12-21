@@ -2,7 +2,7 @@ PDFDEPS=hyph-en.tex \
 	hyph-af.tex\
 	bibldefault.tex \
 	biblayout.tex \
-	gospeloutline.tex \
+	kjvtopics.tex \
 	kjvwordlist.tex \
 	english.tex
 PDF=largeprint.pdf a5x800.pdf english0.pdf waterproof.pdf giftandaward.pdf africa.pdf
