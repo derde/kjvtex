@@ -1,5 +1,6 @@
 #! /usr/bin/python3
 # coding: utf-8
+import os
 
 # DISCLAIMER: this code is torturous, because it is hacked from code for making
 # a side-by-side parallel Bible, which needs a lot of bad hacks.  I'm sorry.
@@ -493,6 +494,7 @@ class bibleformatter:
         '''Read in the bible file, and parse to book, chapter, verse and text'''
         lineformat_re=re.compile('(.*?) (\d+):(\d+) (.*)')
         for line in self.fd:
+            if line.startswith("Source:"): continue
             m=lineformat_re.search(line.strip())
             book,chapter,verse,text=m.groups()
             book=self.language.bookFullnames.get(book,book)
@@ -562,7 +564,16 @@ class bibleformatter:
     def reformat_smallcaps(self,text):
         # Rewrite CAPITALISED WORDS as smallcaps .. 
         # This might do the wrong thing in the new testament and odd places, so exceptions apply:
-        dontsmallcapsnt=['AEnas','JESUS','For David himself said by the Holy Ghost','KING OF','TO THE UNKNOWN GOD','MYSTERY'];
+        dontsmallcapsnt=['AEnas',
+            'AEneas',
+            'JESUS',
+            'For David himself said by the Holy Ghost',
+            'And David himself saith in the book',
+            'For David is not ascended into the heavens:',
+            'KING OF',
+            'TO THE UNKNOWN GOD',
+            'MYSTERY',
+            'thy footstool\\?'];
         if re.search('|'.join(dontsmallcapsnt),text): 
             return text
 
@@ -584,7 +595,7 @@ class bibleformatter:
         self.state['chapter']=''
         self.state['verse']=''
         self.state['text']=''
-        self.state['index']=26
+        self.state['index']=21
         self.state['shortbook']=''
         newbook=True
         yield r'\biblbeforeoldtestament' % self.state +'%\n'
@@ -614,7 +625,8 @@ class bibleformatter:
                 yield ( r'\biblbeforenewtestament' % self.state ) + '%\n'
                 yield ( (r'\biblnewsection{'+self.language.newtestament+'}') % self.state ) + '%\n'
             if newbook:
-                self.state['index']=(self.state['index']+1) % 66
+                if self.state['book'] not in ('2 John','3 John','2 Peter', '2 Timothy', '2 Thessalonians'):
+                    self.state['index']=(self.state['index']+1) % 61
                 self.state['prettyname']=self.language.getbookprettyname(self.state['book'])
                 yield r'\biblbookheading{%(prettyname)s}' % self.state+'%\n';
                 yield r'\biblnewbook{%(book)s}{%(short)s}' % self.state + '%\n'
@@ -641,6 +653,7 @@ class bibleformatter:
             text=re.sub(r'<<([^a-z]*?)>>',self.sub_format_sectionsep,text)
             text=re.sub(r'<<(.*?)>>',self.sub_format_psalmheading,text)
             text=re.sub(r'\[(.*?)\]',self.sub_format_italics,text)
+            text=re.sub(r'AEneas','Æneas',text)
             text= self.reformat_smallcaps(text)
             t += text
             t += r'\biblendreference{%(REFERENCE)s}{%(index)s}' % self.state 
@@ -662,12 +675,16 @@ def iteratechapters(language,src):
 english=English()
 afrikaans=Afrikaans()
 src_dst = [
-    (english,   '../TEXT-PCE-127.txt', 'english.tex'),
+    # (english,   '../TEXT-PCE-127.txt', 'english.tex'),
+    (english,   '../1769.fix', 'english.tex'),
     (afrikaans, '../af1953.txt', 'afrikaans.tex'), ]
 
 for language,srcfile,dstfile in src_dst:
+    md5=os.popen('md5sum %s' % srcfile,'r').readline().split()[0]
     src=open(srcfile,'r')
     outfd=open(dstfile,'w')
+    outfd.write('\\def\\srcmdsum{%s}\n' % md5)
+    outfd.write('\\def\\srcfilename{%s}\n' % srcfile.split('/')[-1])
     #src=os.popen('grep ^Ps < ../TEXT-PCE-127.txt','r')
     for splurge in iteratechapters(language,src):
         outfd.write( splurge )

@@ -47,7 +47,7 @@
 \mypageadjustments% Any other page adjustments - crop package goes here
 %\usepackage[absolute,overlay]{textpos}% Put things in absolute positions (for thumb marker)
 \usepackage[absolute]{textpos}% Put things in absolute positions (for thumb marker)
-\TPGrid[0mm,10mm]{60}{66}% defines tiny boxes down right hand margin for book name - see textblock below
+\TPGrid[0mm,10mm]{60}{61}% defines tiny boxes down right hand margin for book name - see textblock below.  For 66 books, we have 61 markers
 % 0.3528pt/mm ... 334pt,510pt
 %\usepackage[grid]{mymulticol}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -130,6 +130,7 @@
 \newfontfamily\myendnotesfont[\myboldness FakeStretch=\myfontstretch,Scale=\mychapterscale]{\mysansfontii}
 \usepackage{printlen}% provide \printlength command, and \rndprintlength - to print the page size nicely
 \usepackage[grid]{multicol}
+\usepackage{xcolor}
 \setlength{\columnsep}{\mycolumnsep}
 \setlength{\columnseprule}{\mycolumnseprule}%
 \setlength{\premulticols}{0\baselineskip}
@@ -180,7 +181,7 @@
 \begin{textblock}{1}(59,#1)%
 %\rule[0em]{1em}{1ex}%
 \hfuzz=72pt
-\raisebox{0pt}[0pt]{\rule[0em]{2em}{0.5em}}%
+\raisebox{0pt}[0pt]{\color{lightgray}\rule[0em]{2em}{1.0em}}%
 \end{textblock}
 }
 \newlength{\rightmarkspace}%
@@ -311,7 +312,7 @@
 \ENtitle: \textsc{\ENsubtitle}
 \par
 \ifdefined\biblISBN{\biblISBN\par}\fi
-You may copy freely and republish in whole, or in part.\par
+\ENcopyright
 \ifdefined\ENmottoii{\ENmottoii\par}\fi
 \null\par
 Typesetting by {\mylatexfont \LaTeX{}}, %
@@ -323,7 +324,9 @@ Font
 \par
 Source code: https://github.com/derde/kjvtex, ``\jobname.tex''
 \par
-Source text TEXT-PCE-127.txt, d6176dd776234eeaf0944dd0cac24bef MD5
+Source text
+\ifdefined\srcfilename{\srcfilename, }\fi
+\ifdefined\srcmdsum{\srcmdsum\ MD5}\fi
 \par
 \newcounter{mylines}
 \setcounter{mylines}{\textheight / \baselineskip}
@@ -411,6 +414,9 @@ Text area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit
 \immediate\openout\mypages=\jobname.pages%
 \addtocounter{page}{-1}% adjust for dunno
 \immediate\write\mypages{\unexpanded{\gdef\myshowpageinfo}{\thepage\ \ENpages\ }}% FIXME: adds one to the page .. weird
+% FIXME: this is dumb:
+\immediate\write\mypages{\unexpanded{\def\srcmdsum}{\srcmdsum}}%
+\immediate\write\mypages{\unexpanded{\def\srcfilename}{\srcfilename}}%
 \addtocounter{page}{1}% unadjust for dunno
 % I think we're done here ...
 \immediate\closeout\mytoc%

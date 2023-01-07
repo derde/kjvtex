@@ -1,0 +1,38 @@
+Intial development was done against the "PCE" text published by Matthew
+Verschuur.  This approach was abandoned in favour of the 1769 text from
+textusreceptusbibles.com, as the PCE text appears to have some tendentious
+capitalisation, in accordance with Pentecostal doctrine, explained at
+https://bibleprotector.com/GUIDE_TO_PCE.pdf
+
+wdiff made a great comparison of textusreceptusbibles against PCE, and 10 verses
+with errata were identified (listed in 1769.errata), specifically -
+    Genesis 6:5
+    Deuteronomy 19:14
+    Psalms 137:7
+    Psalms 141:1
+    2 Kings 25:12 
+    1 Chronicles 27:1
+    Daniel 7:9
+    Matthew 15:26 
+    Matthew 17:15
+    Matthew 18:17
+
+Variations in the "PCE":
+ * Spelling diffences
+ * Enquire rendered as "inquire"
+ * Capitalisation of "son of David"
+ * Many variations in capitalisation of "spirit"
+ * A lot more italicised words
+ * Some improved punctuation (but punctuation in Jeremiah 32:5 is wrong)
+
+The verses that were found to have typos were replaced with the verses from the
+PCE edition.  1769.py reads 1769.txt, 1769.errata and 1769.titles and produces
+1769.fix, which has Psalm titles and epistle postscripts.
+
+The following rules were used for choosing errata:
+ * Where differences in italics appear, the italics from the 1769 are used.  
+ * Where differences in spelling appear, the spelling from the 1769 is used.  
+ * Where extra text or missing text occur, the correct verse is substituted from the PCE
+ * For capitalisation (except for GOD and LORD), the 1769 is accepted (e.g. son of David)
+ * The sources for evaluating the differences were the SA Bible society KJV and the 1611 original edition PDF from princeton university
+ * Epistle titles and Psalm titles are copied from the PCE edition

@@ -47,7 +47,7 @@ english.tex: gentex-english.py
 	./gentex-english.py english.tex
 
 clean:
-	rm *.{aux,pages,section,log,toc,dvi,ps}
+	find . -maxdepth 1 '(' -name '*.aux' -o -name '*.pages' -o -name '*.section' -o -name '*.log' -o -name '*.toc' -o -name '*.dvi' -o -name '*.ps' ')' -print0 | xargs -0 rm
 
 generated.tex: gentex.py
 	./gentex.py generated.tex
@@ -62,7 +62,8 @@ bibl.pdf: bibl.tex
 # See also https://softwarerecs.stackexchange.com/questions/438/software-to-put-pages-of-a-pdf-file-in-book-order
 %-book.pdf: %.pdf
 	# pdfbook2 --no-crop --paper=a4paper --outer-margin=28 --inner-margin=0 --top-margin=0 --bottom-margin=0 --signature=40 $<
-	pdfbook2 --no-crop --paper=a4paper --outer-margin=0 --inner-margin=0 --top-margin=0 --bottom-margin=0 --signature=4 $<
+	pdfbook2 --no-crop --paper=a4paper --outer-margin=18 --inner-margin=0 --top-margin=15 --bottom-margin=14 --signature=4 $<
+	# pdfbook2 --paper=a4paper --outer-margin=18 --inner-margin=0 --top-margin=15 --bottom-margin=14 --signature=4 $<
 
 # Make book signatures - but move the 1st four pages to the tail first
 %-u-book.pdf: %.pdf
@@ -74,7 +75,7 @@ bibl.pdf: bibl.tex
 	mv tmp/$(basename $<)-0004.pdf tmp/$(basename $<)-z0004.pdf
 	pdfunite tmp/$(basename $<)-*.pdf $(basename $<)-u.pdf
 	rm tmp/$(basename $<)-*.pdf
-	pdfbook2 --no-crop --paper=a4paper --outer-margin=28 --inner-margin=0 --top-margin=0 --bottom-margin=0 --signature=32 $(basename $<)-u.pdf
+	pdfbook2 --no-crop --paper=a4paper --outer-margin=10 --inner-margin=0 --top-margin=8 --bottom-margin=7 --signature=32 $(basename $<)-u.pdf
 
 
 fonts: $(FONTS)
