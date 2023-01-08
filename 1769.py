@@ -1,12 +1,16 @@
 #! /usr/bin/python3
 
+# Generate 1769.fix from base file, errata and titles
+
 import re
+import sys
 
 class Errata:
   def __init__(self,fn):
     fd=open(fn,'r')
     self.verse={}
     for line in fd:
+      if line.startswith('#'): continue
       m=re.search('^(.*?\d+:\d+)',line)
       if not m: continue
       ref=m.group(1)
@@ -14,7 +18,9 @@ class Errata:
   def erratum(self,line):
     m=re.search('^(.*?\d+:\d+)',line)
     ref=m.group(1)
-    return self.verse.get(ref,line)
+    if ref in self.verse:
+        return self.verse.pop(ref)
+    return line
       
 errata = Errata('1769.errata')
 titles = Errata('1769.titles')
@@ -36,3 +42,6 @@ for line in fi:
 
     fo.write(line)
 fo.close()
+# Print out unused errata:
+for k,v in errata.verse.items():
+    sys.stderr.write('Unused erratum: '+v)

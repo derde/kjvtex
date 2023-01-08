@@ -25,9 +25,14 @@ Variations in the "PCE":
  * A lot more italicised words
  * Some improved punctuation (but punctuation in Jeremiah 32:5 is wrong)
 
+After those fixes, it was compared to the text (the online text, not the
+download) from https://www.kingjamesbibleonline.org/.
+
 The verses that were found to have typos were replaced with the verses from the
-PCE edition.  1769.py reads 1769.txt, 1769.errata and 1769.titles and produces
-1769.fix, which has Psalm titles and epistle postscripts.
+PCE edition, or the kingjamesbibleonline edition.  1769.py reads 1769.txt,
+1769.errata and 1769.titles and produces 1769.fix, which has Psalm titles and
+epistle postscripts.  All of the errata are spelling, capitalisation and
+punctuation.
 
 The following rules were used for choosing errata:
  * Where differences in italics appear, the italics from the 1769 are used.  
@@ -36,3 +41,8 @@ The following rules were used for choosing errata:
  * For capitalisation (except for GOD and LORD), the 1769 is accepted (e.g. son of David)
  * The sources for evaluating the differences were the SA Bible society KJV and the 1611 original edition PDF from princeton university
  * Epistle titles and Psalm titles are copied from the PCE edition
+
+Features of 1769.txt that might be fixed:
+ * "Ax" to "Axe", being English spelling
+ * "son of David" to "Son of David"
+ * "spirit of the LORD to "Spirit o the LORD" in old Testament
