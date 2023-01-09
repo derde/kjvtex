@@ -213,7 +213,8 @@
 \par
 \hfill%center it
 \raisebox{0.6\baselineskip}[0.5\baselineskip][0pt]{%
-    \textbf{\mybooktitlefont\mybooktitlesettings #1}}%
+    %\textbf{\mybooktitlefont\mybooktitlesettings #1}}%
+    {\mybooktitlefont\mybooktitlesettings #1}}%
 \bookheadingstrut{2\baselineskip}% assume that the paragraph above did the trick ...
 \hfill%center it
 }
@@ -353,7 +354,7 @@ Text area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit
 \textsc{\mybooktitlesettings\ENpretitle}%HOLY BIBLE
 \par
 \bookheadingstrut{3\baselineskip}
-\raisebox{0.6\baselineskip}[0.5\baselineskip][0pt]{\textbf{\mybooktitlefont{\mybooktitlesettings\ENtitle}}}% King James Bible
+\raisebox{0.6\baselineskip}[0.5\baselineskip][0pt]{{\mybooktitlefont{\mybooktitlesettings\ENtitle}}}% King James Bible
 \par
 \textsc{\mybooktitlesettings\ENsubtitle}% kjvtex compactt
 \ifdefined\ENsubtitleii\ENsubtitleii\fi % soulwinning.info
