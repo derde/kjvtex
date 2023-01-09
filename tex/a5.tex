@@ -8,9 +8,9 @@
 %\def\mysansfont{Liberation Sans}
 \def\mysansfontii{Liberation Sans}
 \def\mysansfont{[GrazeShorter.otf]}
-\def\myfontsize{8pt}
-\def\mybaseline{8pt}
-\def\myfontstretch{0.925}
+\def\myfontsize{8.0pt}
+\def\mybaseline{8.0pt}
+\def\myfontstretch{0.875}
 \def\mycolumnsep{0.8em}
 \def\mydocumentsettings{% Ragged
   % \spaceskip=0.28em plus 0.14em minus 0.08em\relax
@@ -22,11 +22,9 @@
     BoldFont=[GrazeShorter-Bold.otf],
     ItalicFont=[GrazeShorter-Italic.otf],
 }
-%\renewcommand\showbindingmarks[1]{}
+\renewcommand\showbindingmarks[1]{}
 % This works, but it seems neater to squash the font, rather than reduce the inter-character spacing:
 %\def\myletterspace{LetterSpace=0 plus 0 minus 0}
-%\def\myfontstretch{0.875}
-%\def\myletterspace{}
 \def\myextradisplay{}
 \def\myhypenpenalty{1000}%   Lower penalty means more hypenation and fewer pages
 \def\mytoccolumns{3}
@@ -42,9 +40,12 @@
 }
 %\def\biblbeforeoldtestament{\newpage\thispagestyle{noheadings}\null\vfill\begin{center}THE OLD TESTAMENT\end{center}\vfill\null\vfill}
 %\def\biblbeforenewtestament{\newpage\thispagestyle{noheadings}\null\vfill\begin{center}THE NEW TESTAMENT\end{center}\vfill\null\vfill}
+\input{kjvtopics.tex}
 \def\myrearmatter{
-    %\mypagei%   blank
-    %\kjvwordlist
+%    \mypagei% blank
+%    \mypageii%   print info page
+    \kjvwordlist
+    \kjvtopics
 }
 \def\myhypenpenalty{200}%   Lower penalty means more hypenation and fewer pages
 \input{hyph-en.tex}

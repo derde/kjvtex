@@ -10,7 +10,12 @@
 \def\mytexlanguage{english}%
 \def\mysourcetext{english}%
 \def\mypageadjustments{}% Any other page adjustments - crop package goes here
-\def\mybooktitlesettings{\spaceskip=0.33em\relax}% "Song of Solomon" title seems to use undersized spacing without this, unless you don't change spaceskip
+\def\mybooktitlesettings{%
+    \spaceskip=0.33em%  "Song of Solomon" title seems to use undersized spacing without this, unless you don't change spaceskip
+    \relax\color{mygray}% Don't bleed through the page - just be lighter
+}%
+\def\mybooktitlesettingsz{\spaceskip=0.33em\relax}% For the first page
+\newcommand\mybooktitletextbf[1]{\textbf{#1}}% bold in title
 \def\mypreverse{}% set this to \par for verse-per-line
 \def\mypreversei{}% set this to \par for verse-per-line
 \def\mypreverseii{}% set this to \par for verse-per-line

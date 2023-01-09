@@ -24,6 +24,7 @@ Specific features to reduce length and print cost:
 * No maps (yes, those are indeed on the end papers, but you don't have to print them, you know, and not printing saves)
 * Acrostic psalms (ps 119) have just the Hebrew letter.
 * No "OLD TESTAMENT" and "NEW TESTAMENT" title pages.
+* TODO: Top of page book title: 1) blank line; 2) need space for 4 lines; 3) 4 lines for title
 
 Other features:
 * No paragraph titles (same as headings, but at the top of the page: they tend to be wrong and unhelpful)
@@ -257,3 +258,4 @@ These are the specific additional check items for Afrikaans:
 * Handling of CAPITAL leading verse
 * Psalm titles in italics
 * Alef. Bet. rewritten (or handled) in Lamentations, Proverbs and Psalms
+

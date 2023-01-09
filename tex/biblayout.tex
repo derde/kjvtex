@@ -47,7 +47,7 @@
 \mypageadjustments% Any other page adjustments - crop package goes here
 %\usepackage[absolute,overlay]{textpos}% Put things in absolute positions (for thumb marker)
 \usepackage[absolute]{textpos}% Put things in absolute positions (for thumb marker)
-\TPGrid[0mm,10mm]{60}{61}% defines tiny boxes down right hand margin for book name - see textblock below.  For 66 books, we have 61 markers
+\TPGrid[0mm,10mm]{30}{61}% defines tiny boxes down right hand margin for book name - see "textblock" below.  For 66 books, we have 61 markers
 % 0.3528pt/mm ... 334pt,510pt
 %\usepackage[grid]{mymulticol}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -131,6 +131,7 @@
 \usepackage{printlen}% provide \printlength command, and \rndprintlength - to print the page size nicely
 \usepackage[grid]{multicol}
 \usepackage{xcolor}
+\definecolor{mygray}{gray}{0.33}
 \setlength{\columnsep}{\mycolumnsep}
 \setlength{\columnseprule}{\mycolumnseprule}%
 \setlength{\premulticols}{0\baselineskip}
@@ -178,10 +179,10 @@
 }%
 % FIXI?
 \newcommand{\biblthumbmark}[1]{%
-\begin{textblock}{1}(59,#1)%
+\begin{textblock}{1}(29,#1)%
 %\rule[0em]{1em}{1ex}%
 \hfuzz=72pt
-\raisebox{0pt}[0pt]{\color{lightgray}\rule[0em]{2em}{1.0em}}%
+\raisebox{0pt}[0pt]{\color{lightgray}\rule[0em]{3em}{1.0em}}%
 \end{textblock}
 }
 \newlength{\rightmarkspace}%
@@ -190,7 +191,7 @@
 \setlength{\rightmarksep}{0.5ex}%
 %\renewcommand{\bibltwocolumn}{\par}%
 %\renewcommand{\biblonecolumn}{\par}%
-\newcommand{\biblendbook}[1]{\needspace{3\baselineskip}\biblonecolumn}%
+\newcommand{\biblendbook}[1]{\needspace{3\baselineskip}\biblonecolumn}% Job 42 ...
 \newcommand{\biblendlastbook}[1]{\biblonecolumn}%
 \newcommand{\biblenddocument}{}%
 %
@@ -204,17 +205,18 @@
 % Heading for each book of the Bible: big text
 \newcommand{\biblnewreference}[2]{\markboth{#1}{#1}\def\mythumbindex{#2}}%
 \newcommand{\biblendreference}[2]{\markboth{#1}{#1}\def\mythumbindex{#2}}%
-\newcommand{\biblbookheading}[1]{\needspace{7\baselineskip}%
+\newcommand{\biblbookheading}[1]{%
+    \needspace{6\baselineskip}%
+    \null\par
 % 5 lines for title, 2 lines for chapter number ... This causes the leading space at the top of a space not to be "consumed" - Genesis and Matthew ... still not exactly right though
 {%
 %\rightskip=0pt% let's not flexy rightskip
 %\parfillskip=0pt plus \linewidth% let's not flexy rightskip
-\null% blank paragraph - good for top of page exact alignment!
-\par
+%\null% blank paragraph - good for top of page exact alignment!
+%\par
 \hfill%center it
 \raisebox{0.6\baselineskip}[0.5\baselineskip][0pt]{%
-    %\textbf{\mybooktitlefont\mybooktitlesettings #1}}%
-    {\mybooktitlefont\mybooktitlesettings #1}}%
+    \mybooktitletextbf{\mybooktitlefont\mybooktitlesettings #1}}%
 \bookheadingstrut{2\baselineskip}% assume that the paragraph above did the trick ...
 \hfill%center it
 }
@@ -244,7 +246,8 @@
 %\newcommand{\bibldropcapschapter}[1]{\null\needspace{0.5\baselineskip}%
 \newcommand{\bibldropcapschapter}[1]{\needspace{\mychapterspace}% big mystery here ... for needspace within 2 column environment, this is the number of lines /2 /2 (ie div 4)
 %\lettrine[lines=2, lraise=0.05, lhang=0.00, findent=3pt, nindent=0pt, loversize=0.0]{\hspace{2pt}\textbf{\mychapterfont \smash{#1}}}{}}%
-\lettrine[lines=2, lraise=0.00, lhang=0.00, findent=3pt, nindent=0pt, loversize=0.0]{\textbf{\mychapterfont #1}}{}}%
+\lettrine[lines=2, lraise=0.00, lhang=0.00, findent=3pt, nindent=0pt, loversize=0.0]{\textbf{\mychapterfont #1}}{}%
+}%
 %debug: \textbf{#1}}%
 % Work around lettrine bug with "Fpar" definition from https://tex.stackexchange.com/questions/369868/using-lettrine-with-short-paragraphs :
 % Synthetic paragraph that should be used for verse 2, in case it is right net to verse 1 and the dropcaps chapter number
@@ -330,7 +333,7 @@ Source text
 \ifdefined\srcmdsum{\srcmdsum\ MD5}\fi
 \par
 \newcounter{mylines}
-\setcounter{mylines}{\textheight / \baselineskip}
+\setcounter{mylines}{ \textheight / \baselineskip}
 \newlength{\mybestlinespace}
 \setlength{\mybestlinespace}{\textheight / \themylines}
 Text area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit{mm}\rndprintlength{\textheight}} 
@@ -351,12 +354,12 @@ Text area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit
 %\bookheadingstrut{3\baselineskip}\par
 %\vfill
 \begin{center}%
-\textsc{\mybooktitlesettings\ENpretitle}%HOLY BIBLE
+\textsc{\mybooktitlesettingsz\ENpretitle}%HOLY BIBLE
 \par
 \bookheadingstrut{3\baselineskip}
-\raisebox{0.6\baselineskip}[0.5\baselineskip][0pt]{{\mybooktitlefont{\mybooktitlesettings\ENtitle}}}% King James Bible
+\raisebox{0.6\baselineskip}[0.5\baselineskip][0pt]{{\mybooktitlefont\mybooktitlesettingsz\mybooktitletextbf{\ENtitle}}}% King James Bible
 \par
-\textsc{\mybooktitlesettings\ENsubtitle}% kjvtex compactt
+\textsc{\mybooktitlesettingsz\ENsubtitle}% kjvtex compactt
 \ifdefined\ENsubtitleii\ENsubtitleii\fi % soulwinning.info
 \par
 \vfill

@@ -2,6 +2,24 @@
 # coding: utf-8
 import os
 
+romannumerals=[ '', 'i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix',
+    'x', 'xi', 'xii', 'xiii', 'xiv', 'xv', 'xvi', 'xvii', 'xviii', 'xix', 'xx',
+    'xxi', 'xxii', 'xxiii', 'xxiv', 'xxv', 'xxvi', 'xxvii', 'xxviii', 'xxix',
+    'xxx', 'xxxi', 'xxxii', 'xxxiii', 'xxxiv', 'xxxv', 'xxxvi', 'xxxvii',
+    'xxxviii', 'xxxix', 'xl', 'xli', 'xlii', 'xliii', 'xliv', 'xlv', 'xlvi',
+    'xlvii', 'xlviii', 'xlix', 'l', 'li', 'lii', 'liii', 'liv', 'lv', 'lvi',
+    'lvii', 'lviii', 'lix', 'lx', 'lxi', 'lxii', 'lxiii', 'lxiv', 'lxv', 'lxvi',
+    'lxvii', 'lxviii', 'lxix', 'lxx', 'lxxi', 'lxxii', 'lxxiii', 'lxxiv', 'lxxv',
+    'lxxvi', 'lxxvii', 'lxxviii', 'lxxix', 'lxxx', 'lxxxi', 'lxxxii', 'lxxxiii',
+    'lxxxiv', 'lxxxv', 'lxxxvi', 'lxxxvii', 'lxxxviii', 'lxxxix', 'xc', 'xci',
+    'xcii', 'xciii', 'xciv', 'xcv', 'xcvi', 'xcvii', 'xcviii', 'xcix', 'c', 'ci',
+    'cii', 'ciii', 'civ', 'cv', 'cvi', 'cvii', 'cviii', 'cix', 'cx', 'cxi', 'cxii',
+    'cxiii', 'cxiv', 'cxv', 'cxvi', 'cxvii', 'cxviii', 'cxix', 'cxx', 'cxxi',
+    'cxxii', 'cxxiii', 'cxxiv', 'cxxv', 'cxxvi', 'cxxvii', 'cxxviii', 'cxxix',
+    'cxxx', 'cxxxi', 'cxxxii', 'cxxxiii', 'cxxxiv', 'cxxxv', 'cxxxvi', 'cxxxvii',
+    'cxxxviii', 'cxxxix', 'cxl', 'cxli', 'cxlii', 'cxliii', 'cxliv', 'cxlv',
+    'cxlvi', 'cxlvii', 'cxlviii', 'cxlix', 'cl', ]
+
 # DISCLAIMER: this code is torturous, because it is hacked from code for making
 # a side-by-side parallel Bible, which needs a lot of bad hacks.  I'm sorry.
 # Don't write your own code like this.  Be better.
@@ -618,8 +636,13 @@ class bibleformatter:
             newbook = ostate['book']!=self.state['book']
             newchapter = ostate['chapter']!=self.state['chapter'] or newbook
             if newchapter and ostate['book']:
+                ostate['sbook']=ostate['book'].replace(' ','').lower().replace('1','i').replace('2','ii').replace('3','iii')
+                ostate['romanchapter']=romannumerals[int(ostate['chapter'])]
+                yield ( r'\ifdefined\biblendchapter%(sbook)s%(romanchapter)s{\biblendchapter%(sbook)s%(romanchapter)s}\fi' % ostate ) + '%\n'
                 yield ( r'\biblendchapter{%(book_s)s %(chapter)s}{%(index)s}' % ostate ) + '%\n'
             if newbook and ostate['book']:
+                ostate['sbook']=ostate['book'].replace(' ','').lower().replace('1','i').replace('2','ii').replace('3','iii')
+                yield ( r'\ifdefined\biblendbook%(sbook)s{\biblendbook%(sbook)s}\fi' % ostate ) + '%\n'
                 yield ( r'\biblendbook{%(book)s}' % ostate ) + '%\n'
             if newbook and book.startswith('Matthe'): # matthew/matteus
                 yield ( r'\biblbeforenewtestament' % self.state ) + '%\n'
