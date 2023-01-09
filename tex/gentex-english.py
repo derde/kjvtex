@@ -675,8 +675,8 @@ def iteratechapters(language,src):
 english=English()
 afrikaans=Afrikaans()
 src_dst = [
-    # (english,   '../TEXT-PCE-127.txt', 'english.tex'),
-    (english,   '../1769.fix', 'english.tex'),
+    # (english,   '../TEXT-PCE-127.txt', 'english.tex'), # don't like this one any more
+    (english,   '../kingjamesbibleonline.txt', 'english.tex'), # like this one more
     (afrikaans, '../af1953.txt', 'afrikaans.tex'), ]
 
 for language,srcfile,dstfile in src_dst:
