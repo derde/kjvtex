@@ -66,14 +66,16 @@
 \def\myfontname{[GrazeShorter.otf]}
 \def\mysansfontii{Liberation Sans}
 \def\mysansfont{[GrazeShorter.otf]}
-\def\myfontsize{8.00pt}
-\def\mybaseline{8.57pt}
+\def\myfontsize{8.40pt}
+\def\mybaseline{9.03pt}
 \def\myfontopts{
     BoldFont=[GrazeShorter-Bold.otf],
     ItalicFont=[GrazeShorter-Italic.otf],
 }
+%8.57*59/56 = 9.02910714285714285714
+%0.968/59*56 = .91877966101694915240
 % This works, but it seems neater to squash the font, rather than reduce the inter-character spacing:
-\def\myfontstretch{0.968}
+\def\myfontstretch{0.875}
 %\def\myletterspace{LetterSpace=0 plus 0 minus 0}
 %\def\myfontstretch{0.875}
 %\def\myletterspace{}
@@ -121,4 +123,6 @@ Words of Christ in black.\par
 \def\biblISBN{ISBN: 978-0-6397-5450-5 \copyright 2023, with this licence:}
 
 \input{biblayout.tex}
+
+
 
