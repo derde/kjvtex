@@ -1,23 +1,24 @@
 % A5 Bible in 640 pages: 8 point
 \input{bibldefault.tex}
 
-\def\mymargins{left=7mm,top=8mm,right=7mm,bottom=5mm,bindingoffset=3mm,headheight=5mm}
+\def\mymargins{left=7mm,top=8mm,right=7mm,bottom=5mm,bindingoffset=4mm,headheight=5mm}
 \def\mypapersize{148mm,210mm}% A5
 \def\mydisplayfont{Graze Shorter}
 \def\myfontname{[GrazeShorter.otf]}
 %\def\mysansfont{Liberation Sans}
 \def\mysansfontii{Liberation Sans}
 \def\mysansfont{[GrazeShorter.otf]}
-\def\myfontsize{8.0pt}
-\def\mybaseline{8.0pt}
+\def\myfontsize{8.40pt}
+\def\mybaseline{9.04pt}
 \def\myfontstretch{0.875}
 \def\mycolumnsep{0.8em}
 \def\mydocumentsettings{% Ragged
   % \spaceskip=0.28em plus 0.14em minus 0.08em\relax
   \spaceskip=\dimexpr\the\fontdimen2\font-\the\fontdimen4\font\relax plus 0.07em % plus \the\fontdimen4\font % space between words: keep it constant, with tiny changes, no up-side
-  \rightskip=0pt plus 3em\relax% space on right hand margin: keep it small
-  \parfillskip=0pt plus 16em\relax%   last line of paragraph space: use up all of the spare space here.
+  \rightskip=0pt plus 1.8em\relax% space on right hand margin: keep it small
+  \parfillskip=0pt plus 10em\relax%   last line of paragraph space: use up all of the spare space here.
 }%
+\def\myhypenpenalty{1400}%   Lower penalty means more hypenation and fewer pages
 \def\myfontopts{
     BoldFont=[GrazeShorter-Bold.otf],
     ItalicFont=[GrazeShorter-Italic.otf],
@@ -26,7 +27,6 @@
 % This works, but it seems neater to squash the font, rather than reduce the inter-character spacing:
 %\def\myletterspace{LetterSpace=0 plus 0 minus 0}
 \def\myextradisplay{}
-\def\myhypenpenalty{1000}%   Lower penalty means more hypenation and fewer pages
 \def\mytoccolumns{3}
 \def\mycontentcolumns{2}
 \def\mychapterscale{1.05}
@@ -55,6 +55,6 @@
 \def\mylayoutblurb{No headings; verses share lines; ragged; no psalm titles; no epistle postscripts;\par
 Words of Christ in black.\par
 }
-\def\mychapterspace{0.5\baselineskip}
+\def\mychapterspace{0.34\baselineskip}
 \input{biblayout.tex}
 
