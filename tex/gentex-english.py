@@ -613,7 +613,7 @@ class bibleformatter:
         self.state['chapter']=''
         self.state['verse']=''
         self.state['text']=''
-        self.state['index']=21
+        self.state['index']=22
         self.state['shortbook']=''
         newbook=True
         yield r'\biblbeforeoldtestament' % self.state +'%\n'
@@ -649,7 +649,7 @@ class bibleformatter:
                 yield ( (r'\biblnewsection{'+self.language.newtestament+'}') % self.state ) + '%\n'
             if newbook:
                 if self.state['book'] not in ('2 John','3 John','2 Peter', '2 Timothy', '2 Thessalonians'):
-                    self.state['index']=(self.state['index']+1) % 61
+                    self.state['index']=((self.state['index']) % 61 )+1
                 self.state['prettyname']=self.language.getbookprettyname(self.state['book'])
                 yield r'\biblbookheading{%(prettyname)s}' % self.state+'%\n';
                 yield r'\biblnewbook{%(book)s}{%(short)s}' % self.state + '%\n'
