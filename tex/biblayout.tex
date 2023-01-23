@@ -416,18 +416,21 @@ Text area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit
 %% Write out stats and stuff for laters
 \newwrite\mypages
 \immediate\openout\mypages=\jobname.pages%
-\addtocounter{page}{-1}% adjust for dunno
+\addtocounter{page}{-1}% adjust for presentation
 \immediate\write\mypages{\unexpanded{\gdef\myshowpageinfo}{\thepage\ \ENpages\ }}% FIXME: adds one to the page .. weird
+\addtocounter{page}{1}% un-adjust for presentation
 % FIXME: this is dumb:
 \immediate\write\mypages{\unexpanded{\def\srcmdsum}{\srcmdsum}}%
 \immediate\write\mypages{\unexpanded{\def\srcfilename}{\srcfilename}}%
-\addtocounter{page}{1}% unadjust for dunno
 % I think we're done here ...
-\immediate\closeout\mytoc%
-\immediate\closeout\mypages%
 %% Oh wait, we might write out something more here
 \myrearmatter% print the rear matter pages (not counted above!)
 %%% PAGE n: RECORD PAGE COUNT AND QUIT %%%%
+\addtocounter{page}{-1}% adjust for presentatoin
+\immediate\write\mypages{\unexpanded{\gdef\mypagecount}{\thepage}}% FIXME: adds one to the page .. weird
+\addtocounter{page}{1}% un-adjust for presentation
+\immediate\closeout\mytoc%
+\immediate\closeout\mypages%
 \biblenddocument
 %%\bigskip%%\ldots
 \end{document}
