@@ -37,7 +37,7 @@ default: $(PDF)
 %.pdf : %.tex $(PDFDEPS) $(FONTS_GRAZESHORTER)
 	xelatex $< </dev/null 
 	grep myrearmatter -A3 < $< | grep -P '^\s*\\mypageiii' || xelatex $< </dev/null  # just run it again, for the TOC, because CPU is cheap
-	grep --color 'Overfull.*' `echo $<|sed s/.tex/.log/` || true # just run it again, for the TOC, because CPU is cheap
+	grep --color 'Overfull.*' `echo $<|sed 's/\.tex/.log/'` || true # just run it again, for the TOC, because CPU is cheap
 
 %.txt : %.pdf
 	pdftotext -layout $<
@@ -64,7 +64,7 @@ bibl.pdf: bibl.tex
 %-book.pdf: %.pdf
 	# pdfbook2 --no-crop --paper=a4paper --outer-margin=28 --inner-margin=0 --top-margin=0 --bottom-margin=0 --signature=40 $<
 	# pdfbook2 --no-crop --paper=a4paper --outer-margin=18 --inner-margin=0 --top-margin=15 --bottom-margin=14 --signature=4 $<
-	pdfbook2 --no-crop --paper=a4paper --outer-margin=15 --inner-margin=0 --top-margin=15 --bottom-margin=15 --signature=4 $<
+	pdfbook2 --no-crop --paper=a4paper --outer-margin=15 --inner-margin=0 --top-margin=15 --bottom-margin=15 --signature=4 --short-edge $<
 	# pdfbook2 --paper=a4paper --outer-margin=18 --inner-margin=0 --top-margin=15 --bottom-margin=14 --signature=4 $<
 
 # Make book signatures - but move the 1st four pages to the tail first
