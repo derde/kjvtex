@@ -101,3 +101,20 @@ TODO:
     text block. Some "free" space must be moved from the descender to above the
     ascenders. (DONE)
 
+GENERATE GRAZE SHORTER NARROW FROM GRAZE SHORTER:
+
+    For each subfont:
+    Scaling:
+        Ctrl+\
+        Origin: Glyph Origin
+        Operation: Scale...
+        X: 0.875
+        Y: 0
+        Scale horizontally by .875
+    Correct for font weight reduction:
+        Expand stroke horizontally by 5 pts (not 13/2 = 6.5):
+        Ctrl+Shift+E, with these settings:
+            nib angle: 0
+            nib width 5
+            nib height 1
+            contours (from closed): External only     
