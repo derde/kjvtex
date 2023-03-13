@@ -1,0 +1,3 @@
+# Install ALL the dependencies ... xelatex and fontforge mainly, and then run ...
+make kjvtex-compact-a5-880.txt
+
