@@ -50,6 +50,18 @@ import re
 import itertools
 import sys,copy
 
+class RewriteReference:
+    def __init__(self,numberfile):
+        self.aftoen={}
+        self.entoaf={}
+        fd=open(numberfile,'r')
+        for line in fd:
+            en,af=line.strip().split('\t',1)
+            self.aftoen[af]=en
+            self.entoaf[en]=af
+    def __getitem__(self, key):
+        return self.aftoen.get(key,key)
+
 class Hebrew:
     "Hebrew rewrites"
     def __init__(self,file='hebrew-words'):
@@ -75,6 +87,7 @@ class Hebrew:
         return text
 
 class English:
+    languageindex=1
     bookfullnamesEn = {
         'Ge'   : 'Genesis',
         'Ex'   : 'Exodus',
@@ -148,6 +161,8 @@ class English:
         self.oldtestament="THE OLD TESTAMENT"
         self.newtestament="THE NEW TESTAMENT"
         pass
+    def prefilter(self,text):
+        return text
     def renumberreference(self,ref):
         return ref
     def markuppsalmheadings(self,text,state):
@@ -155,7 +170,220 @@ class English:
     def getbookprettyname(self,book):
         return book
 
+class German:
+    languageindex=3
+    bookfullnamesDe = {
+        'Ge'   : '1. Mose',
+        'Ex'   : '2. Mose',
+        'Le'   : '3. Mose',
+        'Nu'   : '4. Mose',
+        'De'   : '5. Mose',
+        'Jos'  : 'Josua',
+        'Jg'   : 'Richter',
+        'Ru'   : 'Ruth',
+        '1Sa'  : '1. Samuel',
+        '2Sa'  : '2. Samuel',
+        '1Ki'  : '1. Könige',
+        '2Ki'  : '2. Könige',
+        '1Ch'  : '1. Chronik',
+        '2Ch'  : '2. Chronik',
+        'Ezr'  : 'Esra',
+        'Ne'   : 'Nehemia',
+        'Es'   : 'Ester',
+        'Job'  : 'Hiob',
+        'Ps'   : 'Psalmen',
+        'Pr'   : 'Sprüche',
+        'Ec'   : 'Prediger',
+        'Song' : 'Hohelied',
+        'Isa'  : 'Jesaja',
+        'Jer'  : 'Jeremia',
+        'La'   : 'Klagelieder',
+        'Eze'  : 'Hesekiel',
+        'Da'   : 'Daniel',
+        'Ho'   : 'Hosea',
+        'Joe'  : 'Joel',
+        'Am'   : 'Amos',
+        'Ob'   : 'Obadja',
+        'Jon'  : 'Jona',
+        'Mic'  : 'Micha',
+        'Na'   : 'Nahum',
+        'Hab'  : 'Habakuk',
+        'Zep'  : 'Zephanja',
+        'Hag'  : 'Haggai',
+        'Zec'  : 'Sacharja',
+        'Mal'  : 'Maleachi',
+        'Mt'   : 'Matthäus',
+        'Mr'   : 'Markus',
+        'Lu'   : 'Lukas',
+        'Joh'  : 'Johannes',
+        'Ac'   : 'Apostelgeschichte',
+        'Ro'   : 'Römer',
+        '1Co'  : '1. Korinther',
+        '2Co'  : '2. Korinther',
+        'Ga'   : 'Galater',
+        'Eph'  : 'Epheser',
+        'Php'  : 'Philipper',
+        'Col'  : 'Kolosser',
+        '1Th'  : '1. Thessalonicher',
+        '2Th'  : '2. Thessalonicher',
+        '1Ti'  : '1. Timotheus',
+        '2Ti'  : '2. Timotheus',
+        'Tit'  : 'Titus',
+        'Phm'  : 'Philemon',
+        'Heb'  : 'Hebräer',
+        'Jas'  : 'Jakobus',
+        '1Pe'  : '1. Petrus',
+        '2Pe'  : '2. Petrus',
+        '1Jo'  : '1. Johannes',
+        '2Jo'  : '2. Johannes',
+        '3Jo'  : '3. Johannes',
+        'Jude' : 'Judas',
+        'Re'   : 'Offenbarung',
+    }
+    def __init__(self,file='de.psalmtitles', numberfile='german.renumbering'):
+        self.bookFullnames=self.bookfullnamesDe
+        self.oldtestament="DAS ALTE TESTAMENT"
+        self.newtestament="DAS NEUE TESTAMENT"
+        self.rewritereference=RewriteReference(numberfile)
+    def prefilter(self,text):
+        lineformat_re=re.compile('(.*? \d+:\d+ ) *(.*)')
+        m=lineformat_re.search(text)
+        if m:
+            ref,verse=m.groups()
+            if verse.startswith('<<'):
+                text=ref+verse
+                pass
+            else:
+                text=ref+verse.replace('<<','[').replace('>>',']')
+        return text
+    def renumberreference(self,ref):
+        return self.rewritereference[ref]
+    def markuppsalmheadings(self,text,state):
+        text=re.sub('([;.?!:])(\w)','\\1 \\2',text)
+        return text
+    def getbookprettyname(self,book):
+        return book
+    def renumberreference(self,ref):
+        return ref
+    def paragraphcapstotitlecase(self,text):
+        '''Convert capitals to titlecase'''
+        m=self.titlecasewl.search(text)
+        if m and not self.titlecasebl.search(text):
+            # Change to titlecase - UTF8 stuff just works, it seems:
+            text=''
+            if m.group(1): text+=m.group(1)
+            if m.group(2): text+=m.group(2)
+            text+=m.group(3).title()+m.group(4)
+        return text
+
+class French:
+    languageindex=4
+    bookfullnamesFr = {
+        'Ge'   : 'Genèse',
+        'Ex'   : 'Exode',
+        'Le'   : 'Lévitique',
+        'Nu'   : 'Nombres',
+        'De'   : 'Deutéronome',
+        'Jos'  : 'Josué',
+        'Jg'   : 'Juges',
+        'Ru'   : 'Ruth',
+        '1Sa'  : '1 Samuel',
+        '2Sa'  : '2 Samuel',
+        '1Ki'  : '1 Rois',
+        '2Ki'  : '2 Rois',
+        '1Ch'  : '1 Chroniques',
+        '2Ch'  : '2 Chroniques',
+        'Ezr'  : 'Esdras',
+        'Ne'   : 'Néhémie',
+        'Es'   : 'Esther',
+        'Job'  : 'Job',
+        'Ps'   : 'Psaumes',
+        'Pr'   : 'Proverbes',
+        'Ec'   : 'Ecclésiaste',
+        'Song' : 'Cantique des Cantiques',
+        'Isa'  : 'Ésaïe',
+        'Jer'  : 'Jérémie',
+        'La'   : 'Lamentations',
+        'Eze'  : 'Ézéchiel',
+        'Da'   : 'Daniel',
+        'Ho'   : 'Osée',
+        'Joe'  : 'Joël',
+        'Am'   : 'Amos',
+        'Ob'   : 'Abdias',
+        'Jon'  : 'Jonas',
+        'Mic'  : 'Michée',
+        'Na'   : 'Nahum',
+        'Hab'  : 'Habacuc',
+        'Zep'  : 'Sophonie',
+        'Hag'  : 'Aggée',
+        'Zec'  : 'Zacharie',
+        'Mal'  : 'Malachie',
+        'Mt'   : 'Matthieu',
+        'Mr'   : 'Marc',
+        'Lu'   : 'Luc',
+        'Joh'  : 'Jean',
+        'Ac'   : 'Actes',
+        'Ro'   : 'Romains',
+        '1Co'  : '1 Corinthiens',
+        '2Co'  : '2 Corinthiens',
+        'Ga'   : 'Galates',
+        'Eph'  : 'Éphésiens',
+        'Php'  : 'Philippiens',
+        'Col'  : 'Colossiens',
+        '1Th'  : '1 Thessaloniciens',
+        '2Th'  : '2 Thessaloniciens',
+        '1Ti'  : '1 Timothée',
+        '2Ti'  : '2 Timothée',
+        'Tit'  : 'Tite',
+        'Phm'  : 'Philémon',
+        'Heb'  : 'Hébreux',
+        'Jas'  : 'Jacques',
+        '1Pe'  : '1 Pierre',
+        '2Pe'  : '2 Pierre',
+        '1Jo'  : '1 Jean',
+        '2Jo'  : '2 Jean',
+        '3Jo'  : '3 Jean',
+        'Jude' : 'Jude',
+        'Re'   : 'Révélation',
+    }
+    def __init__(self,file='de.psalmtitles', numberfile='de.renumbering'):
+        self.bookFullnames=self.bookfullnamesFr
+        self.oldtestament="L'ANCIEN TESTAMENT"
+        self.newtestament="LE NOVEAU TESTAMENT"
+        pass
+    def prefilter(self,text):
+        lineformat_re=re.compile('(.*? \d+:\d+ ) *(.*)')
+        m=lineformat_re.search(text)
+        if m:
+            ref,verse=m.groups()
+            if verse.startswith('<<'):
+                text=ref+verse
+                pass
+            else:
+                text=ref+verse.replace('<<','[').replace('>>',']')
+        return text
+    def renumberreference(self,ref):
+        return ref
+    def markuppsalmheadings(self,text,state):
+        text=re.sub('([;.?!:])(\w)','\\1 \\2',text)
+        return text
+    def getbookprettyname(self,book):
+        return book
+    def renumberreference(self,ref):
+        return ref
+    def paragraphcapstotitlecase(self,text):
+        '''Convert capitals to titlecase'''
+        m=self.titlecasewl.search(text)
+        if m and not self.titlecasebl.search(text):
+            # Change to titlecase - UTF8 stuff just works, it seems:
+            text=''
+            if m.group(1): text+=m.group(1)
+            if m.group(2): text+=m.group(2)
+            text+=m.group(3).title()+m.group(4)
+        return text
+
 class Afrikaans:
+    languageindex=2
     af_lowercase={
         'Á': 'á',
         'É': 'é',
@@ -332,19 +560,21 @@ class Afrikaans:
             if not m: continue
             self.titles[m.group(1)]=m.group(2)
 
-        self.aftoen={}
-        self.entoaf={}
-        fd=open(numberfile,'r')
-        for line in fd:
-            en,af=line.strip().split('\t',1)
-            self.aftoen[af]=en
-            self.aftoen[en]=af
+        self.rewritereference=RewriteReference(numberfile)
+        #self.aftoen={}
+        #self.entoaf={}
+        #fd=open(numberfile,'r')
+        #for line in fd:
+        #    en,af=line.strip().split('\t',1)
+        #    self.aftoen[af]=en
+        #    self.aftoen[en]=af
+    def prefilter(self,text):
+        return text
     def getbookprettyname(self,book):
         return self.booknamesAccented[book][1]
     def renumberreference(self,ref):
         # Rewrite references
-        ref= self.aftoen.get(ref,ref)
-        return ref
+        return self.rewritereference[ref]
     def paragraphcapstotitlecase(self,text):
         '''Convert capitals to titlecase'''
         m=self.titlecasewl.search(text)
@@ -365,85 +595,15 @@ class Afrikaans:
         return text
 
 class paragraphdivisions:
-    def staticdata(self):
-        self.paragraphs={}
-        self.bookmapdata='''\
-GEN      : Genesis         :  Genesis 
-EXOD     : Exodus          :  Exodus 
-LEV      : Leviticus       :  Levitikus 
-NUM      : Numbers         :  Numeri 
-DEUT     : Deuteronomy     :  Deuteronomium 
-JOSH     : Joshua          :  Josua 
-JUDG     : Judges          :  Rigters 
-RUTH     : Ruth            :  Rut 
-1SAM     : 1 Samuel        :  1 Samuel 
-2SAM     : 2 Samuel        :  2 Samuel 
-1KGS     : 1 Kings         :  1 Konings 
-2KGS     : 2 Kings         :  2 Konings 
-1CHRON   : 1 Chronicles    :  1 Kronieke 
-2CHRON   : 2 Chronicles    :  2 Kronieke 
-EZRA     : Ezra            :  Esra 
-NEH      : Nehemiah        :  Nehemia 
-ESTH     : Esther          :  Ester 
-JOB      : Job             :  Job 
-PS       : Psalms          :  Psalms 
-PROV     : Proverbs        :  Spreuke 
-ECC      : Ecclesiastes    :  Prediker 
-SONG     : Song of Solomon :  Hooglied 
-ISA      : Isaiah          :  Jesaja 
-JER      : Jeremiah        :  Jeremia 
-LAM      : Lamentations    :  Klaagliedere 
-EZEK     : Ezekiel         :  Esegiel 
-DAN      : Daniel          :  Daniel 
-HOSEA    : Hosea           :  Hosea 
-JOEL     : Joel            :  Joel 
-AMOS     : Amos            :  Amos 
-OBAD     : Obadiah         :  Obadja 
-JONAH    : Jonah           :  Jona 
-MICAH    : Micah           :  Miga 
-NAHUM    : Nahum           :  Nahum 
-HAB      : Habakkuk        :  Habakuk 
-ZEPH     : Zephaniah       :  Sefanja 
-HAG      : Haggai          :  Haggai 
-ZECH     : Zechariah       :  Sagaria 
-MAL      : Malachi         :  Maleagi 
-MATT     : Matthew         :  Mattheus 
-MARK     : Mark            :  Markus 
-LUKE     : Luke            :  Lukas 
-JOHN     : John            :  Johannes 
-ACTS     : Acts            :  Handelinge 
-ROM      : Romans          :  Romeine 
-1COR     : 1 Corinthians   :  1 Korinthiers 
-2COR     : 2 Corinthians   :  2 Korinthiers 
-GAL      : Galatians       :  Galasiers 
-EPH      : Ephesians       :  Efesiers 
-PHIL     : Philippians     :  Filippense 
-COL      : Colossians      :  Kolossense 
-1THES    : 1 Thessalonians :  1 Thessalonicense 
-2THES    : 2 Thessalonians :  2 Thessalonicense 
-1TIM     : 1 Timothy       :  1 Timotheus 
-2TIM     : 2 Timothy       :  2 Timotheus 
-TITUS    : Titus           :  Titus 
-PHILEM   : Philemon        :  Filemon 
-HEB      : Hebrews         :  Hebreers 
-JAS      : James           :  Jakobus 
-1PET     : 1 Peter         :  1 Petrus 
-2PET     : 2 Peter         :  2 Petrus 
-1JOHN    : 1 John          :  1 Johannes 
-2JOHN    : 2 John          :  2 Johannes 
-3JOHN    : 3 John          :  3 Johannes 
-JUDE     : Jude            :  Judas 
-REV      : Revelation      :  Openbaring'''
-
     def __init__(self,file,language):
         self.language=language
+        self.languageindex=language.languageindex
         self.staticdata()
         self.bookmap=[]
         for line in self.bookmapdata.split('\n'):
             bits=re.split(' *: *',line.strip())
-            if len(bits)==3:
+            if len(bits)>3:
                 self.bookmap.append(bits)
-
         self.refs={}
         fd=open(file,'r')
         line1=fd.readline()
@@ -462,6 +622,78 @@ REV      : Revelation      :  Openbaring'''
             else:
                 self.addparagraph(bits[verse_range_i])
 
+    def staticdata(self):
+        self.paragraphs={}
+        self.bookmapdata='''\
+pericope  1=english           2=afrikaans         3=german            4=french
+GEN      : Genesis         :  Genesis           : 1. Mose           : Genèse
+EXOD     : Exodus          :  Exodus            : 2. Mose           : Exode
+LEV      : Leviticus       :  Levitikus         : 3. Mose           : Lévitique
+NUM      : Numbers         :  Numeri            : 4. Mose           : Nombres
+DEUT     : Deuteronomy     :  Deuteronomium     : 5. Mose           : Deutéronome
+JOSH     : Joshua          :  Josua             : Josua             : Josué
+JUDG     : Judges          :  Rigters           : Richter           : Juges
+RUTH     : Ruth            :  Rut               : Ruth              : Ruth
+1SAM     : 1 Samuel        :  1 Samuel          : 1. Samuel         : 1 Samuel
+2SAM     : 2 Samuel        :  2 Samuel          : 2. Samuel         : 2 Samuel
+1KGS     : 1 Kings         :  1 Konings         : 1. Könige         : 1 Rois
+2KGS     : 2 Kings         :  2 Konings         : 2. Könige         : 2 Rois
+1CHRON   : 1 Chronicles    :  1 Kronieke        : 1. Chronik        : 1 Chroniques
+2CHRON   : 2 Chronicles    :  2 Kronieke        : 2. Chronik        : 2 Chroniques
+EZRA     : Ezra            :  Esra              : Esra              : Esdras
+NEH      : Nehemiah        :  Nehemia           : Nehemia           : Néhémie
+ESTH     : Esther          :  Ester             : Ester             : Esther
+JOB      : Job             :  Job               : Hiob              : Job
+PS       : Psalms          :  Psalms            : Psalmen           : Psaumes
+PROV     : Proverbs        :  Spreuke           : Sprüche           : Proverbes
+ECC      : Ecclesiastes    :  Prediker          : Prediger          : Ecclésiaste
+SONG     : Song of Solomon :  Hooglied          : Hohelied          : Cantique des Cantiques
+ISA      : Isaiah          :  Jesaja            : Jesaja            : Ésaïe
+JER      : Jeremiah        :  Jeremia           : Jeremia           : Jérémie
+LAM      : Lamentations    :  Klaagliedere      : Klagelieder       : Lamentations
+EZEK     : Ezekiel         :  Esegiel           : Hesekiel          : Ézéchiel
+DAN      : Daniel          :  Daniel            : Daniel            : Daniel
+HOSEA    : Hosea           :  Hosea             : Hosea             : Osée
+JOEL     : Joel            :  Joel              : Joel              : Joël
+AMOS     : Amos            :  Amos              : Amos              : Amos
+OBAD     : Obadiah         :  Obadja            : Obadja            : Abdias
+JONAH    : Jonah           :  Jona              : Jona              : Jonas
+MICAH    : Micah           :  Miga              : Micha             : Michée'
+NAHUM    : Nahum           :  Nahum             : Nahum             : Nahum
+HAB      : Habakkuk        :  Habakuk           : Habakuk           : Habacuc
+ZEPH     : Zephaniah       :  Sefanja           : Zephanja          : Sophonie
+HAG      : Haggai          :  Haggai            : Haggai            : Aggée
+ZECH     : Zechariah       :  Sagaria           : Sacharja          : Zacharie
+MAL      : Malachi         :  Maleagi           : Maleachi          : Malachie
+MATT     : Matthew         :  Mattheus          : Matthäus          : Matthieu
+MARK     : Mark            :  Markus            : Markus            : Marc
+LUKE     : Luke            :  Lukas             : Lukas             : Luc
+JOHN     : John            :  Johannes          : Johannes          : Jean
+ACTS     : Acts            :  Handelinge        : Apostelgeschichte : Actes
+ROM      : Romans          :  Romeine           : Römer             : Romains
+1COR     : 1 Corinthians   :  1 Korinthiers     : 1. Korinther      : 1 Corinthiens
+2COR     : 2 Corinthians   :  2 Korinthiers     : 2. Korinther      : 2 Corinthiens
+GAL      : Galatians       :  Galasiers         : Galater           : Galates
+EPH      : Ephesians       :  Efesiers          : Epheser           : Éphésiens
+PHIL     : Philippians     :  Filippense        : Philipper         : Philippiens
+COL      : Colossians      :  Kolossense        : Kolosser          : Colossiens
+1THES    : 1 Thessalonians :  1 Thessalonicense : 1. Thessalonicher : 1 Thessaloniciens
+2THES    : 2 Thessalonians :  2 Thessalonicense : 2. Thessalonicher : 2 Thessaloniciens
+1TIM     : 1 Timothy       :  1 Timotheus       : 1. Timotheus      : 1 Timothée
+2TIM     : 2 Timothy       :  2 Timotheus       : 2. Timotheus      : 2 Timothée
+TITUS    : Titus           :  Titus             : Titus             : Tite
+PHILEM   : Philemon        :  Filemon           : Philemon          : Philémon
+HEB      : Hebrews         :  Hebreers          : Hebräer           : Hébreux
+JAS      : James           :  Jakobus           : Jakobus           : Jacques
+1PET     : 1 Peter         :  1 Petrus          : 1. Petrus         : 1 Pierre
+2PET     : 2 Peter         :  2 Petrus          : 2. Petrus         : 2 Pierre
+1JOHN    : 1 John          :  1 Johannes        : 1. Johannes       : 1 Jean
+2JOHN    : 2 John          :  2 Johannes        : 2. Johannes       : 2 Jean
+3JOHN    : 3 John          :  3 Johannes        : 3. Johannes       : 3 Jean
+JUDE     : Jude            :  Judas             : Judas             : Jude
+REV      : Revelation      :  Openbaring        : Offenbarung       : Révélation
+'''
+
     def bookmaplookup(self,srccol,dstcol,value):
         for r in self.bookmap:
             if r[srccol]==value: return r[dstcol]
@@ -471,7 +703,8 @@ REV      : Revelation      :  Openbaring'''
         '''Add to the list'''
         m=re.search('(\S+) (\d+:\d+)',refs)
         chapterandverse = m.group(2)
-        book = self.bookmaplookup(0,1,m.group(1))
+        book = self.bookmaplookup(0,self.languageindex,m.group(1))
+        # e.g. Song of Songs 4:12
         ref1 = book+' '+chapterandverse
         #if ref1.startswith('Psalms'): ref1='Psalm '+ref1.split()[-1]
         ref1 = self.language.renumberreference(ref1)
@@ -513,10 +746,14 @@ class bibleformatter:
         lineformat_re=re.compile('(.*?) (\d+):(\d+) (.*)')
         for line in self.fd:
             if line.startswith("Source:"): continue
+            line=self.language.prefilter(line)
             m=lineformat_re.search(line.strip())
-            book,chapter,verse,text=m.groups()
-            book=self.language.bookFullnames.get(book,book)
-            yield book,chapter,verse,text
+            if m:
+                book,chapter,verse,text=m.groups()
+                book=self.language.bookFullnames.get(book,book)
+                yield book,chapter,verse,text
+            else:
+                print('G3021 '+line.strip())
 
     def chapternumber(self,book,chapter, one_chapter=False):
         # Generate  chapter numbers for each book
@@ -636,15 +873,16 @@ class bibleformatter:
             newbook = ostate['book']!=self.state['book']
             newchapter = ostate['chapter']!=self.state['chapter'] or newbook
             if newchapter and ostate['book']:
-                ostate['sbook']=ostate['book'].replace(' ','').lower().replace('1','i').replace('2','ii').replace('3','iii')
+                # ostate['sbook']=ostate['book'].replace(' ','').lower().replace('1','i').replace('2','ii').replace('3','iii')
+                ostate['sbook']=bookiii(ostate['book'])
                 ostate['romanchapter']=romannumerals[int(ostate['chapter'])]
                 yield ( r'\ifdefined\biblendchapter%(sbook)s%(romanchapter)s{\biblendchapter%(sbook)s%(romanchapter)s}\fi' % ostate ) + '%\n'
                 yield ( r'\biblendchapter{%(book_s)s %(chapter)s}{%(index)s}' % ostate ) + '%\n'
             if newbook and ostate['book']:
-                ostate['sbook']=ostate['book'].replace(' ','').lower().replace('1','i').replace('2','ii').replace('3','iii')
+                ostate['sbook']=bookiii(ostate['book'])
                 yield ( r'\ifdefined\biblendbook%(sbook)s{\biblendbook%(sbook)s}\fi' % ostate ) + '%\n'
                 yield ( r'\biblendbook{%(book)s}' % ostate ) + '%\n'
-            if newbook and book.startswith('Matthe'): # matthew/matteus
+            if newbook and book.startswith('Matth'): # matthew/matteus
                 yield ( r'\biblbeforenewtestament' % self.state ) + '%\n'
                 yield ( (r'\biblnewsection{'+self.language.newtestament+'}') % self.state ) + '%\n'
             if newbook:
@@ -691,18 +929,34 @@ def iteratechapters(language,src):
     for line in en.booktolatex():
         yield line
 
+def bookiii(name):
+    name=name.replace(' ','').\
+        lower().\
+        replace('.','').\
+        replace('1','i').\
+        replace('2','ii').\
+        replace('3','iii')
+    name=re.sub('[^a-z]+','x',name) # replace accents with x
+    return name
 #import os
 #src=os.popen('sed 1,23145d < ../TEXT-PCE-127.txt','r')
 #src=os.popen('sed "/^\(Joh\|Ro\) / p; d" < ../TEXT-PCE-127.txt','r')
 #src=open('../1769.txt','r')
-english=English()
-afrikaans=Afrikaans()
+english=English() # 1
+afrikaans=Afrikaans() # 2
+german=German() # 3
+french=French() # 4
 src_dst = [
-    # (english,   '../TEXT-PCE-127.txt', 'english.tex'), # don't like this one any more
-    (english,   '../kingjamesbibleonline.txt', 'english.tex'), # like this one more
-    (afrikaans, '../af1953.txt', 'afrikaans.tex'), ]
+    # (english,   '../text/TEXT-PCE-127.txt', 'english.tex'), # don't like this one any more
+    (english,   '../text/kingjamesbibleonline.txt', 'english.tex'), # like this one more
+    (english,   '../text/kingjamesbibleonline-semicaps.txt', 'en.tex'), # like this one more
+    (afrikaans, '../text/af1953.txt', 'afrikaans.tex'), 
+    (german, '../text/sch2000.txt', 'sch2000.tex'), 
+    (french, '../text/fr.ostervald2018', 'ostervald2018.tex'), ]
 
 for language,srcfile,dstfile in src_dst:
+    if not os.path.exists(srcfile):
+        continue
     md5=os.popen('md5sum %s' % srcfile,'r').readline().split()[0]
     src=open(srcfile,'r')
     outfd=open(dstfile,'w')

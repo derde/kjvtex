@@ -10,6 +10,20 @@
 \def\mytexlanguage{english}%
 \def\mysourcetext{english}%
 \def\mypageadjustments{}% Any other page adjustments - crop package goes here
+\def\mybooktitlepreamble{% before each new book title, we emit this:
+    \needspace{6\baselineskip}%
+    \null\par
+}
+\newcommand\mybooktitlebox[1]{%
+    \hfill%center it
+    \raisebox{0.6\baselineskip}[0.5\baselineskip][0pt]{%
+        \mybooktitletextbf{\mybooktitlefont\mybooktitlesettings #1}}%
+    \bookheadingstrut{2\baselineskip}% assume that the paragraph above did the trick ...
+    \hfill%center it
+}
+
+
+
 \def\mybooktitlesettings{%
     \spaceskip=0.33em%  "Song of Solomon" title seems to use undersized spacing without this, unless you don't change spaceskip
     \relax\color{mygray}% Don't bleed through the page - just be lighter
@@ -19,16 +33,21 @@
 \def\mypreverse{}% set this to \par for verse-per-line
 \def\mypreversei{}% set this to \par for verse-per-line
 \def\mypreverseii{}% set this to \par for verse-per-line
-\def\mypredocument{}
-\def\mydocumentsettings{
+\def\mypredocument{}% things we set before the document - like setting the language
+\def\mydocumentsettings{%
   \rightskip=0pt plus 0.5em  % slightly ragged right - really improves readability, at the cost of 1.5% pages (12 pages over 800)
 }
 \def\myhypenpenalty{1000}% We are really quite willing to hyphenate
 \def\myheadsep{0.0em}
-\def\myversescale{0.65}
-\def\mychapterscale{0.90}
-\def\mychapterspace{0.25\baselineskip}% needspace for chapter title
-\def\myverseraise{0.3em}
+\def\myverseboldness{\myboldness}% verse number font scaling
+\def\myversefontstretch{\myfontstretch}% verse number font scaling
+\def\mychapterfontstretch{\myfontstretch}% verse number font scaling
+\def\mychapterfontname{\mysansfont}% verse number font scaling
+\def\myversescale{0.65}% verse number font scaling
+\def\mychapterscale{0.90}% chapter number scale
+\def\mychapterspace{0.25\baselineskip}% needspace for chapter title (should be 2\baselineskip - but in multicolumn, it doesn't work)
+\def\myverseraise{0.3em}% verse number superscript scaling
+\def\myversehspace{0.8pt}% space after verse number
 \def\biblfontcustom{}
 \def\myboldness{FakeBold=1.01,}\def\myboldness{}%FakeBold is binary on/off, it seems
 \def\myletterspace{}
@@ -36,6 +55,8 @@
 \def\mylayoutblurb{No headings; verses share lines; ragged; psalm titles; epistle postscripts}
 \def\mycolumnsep{1em}
 \def\mycontentcolumns{2}
+\def\mygrayshade{0.33}
+\def\mylettrinefindent{3pt}
 \def\mycolumnseprule{0em}
 \def\biblnewparagraph{\par}% Paragraph break instruction
 \def\biblbeforeoldtestament{\par\newpage}% NEW PAGE before old testament
@@ -69,6 +90,7 @@
 }}
 \newcommand\oddbindingmarks{\showbindingmarks{0pt}}
 \newcommand\evenbindingmarks{\showbindingmarks{\paperwidth-1pt}}
+\def\myversefontname{\mysansfont}
 \def\mysansfontii{\mysansfont}
 
 % Pages before Genesis

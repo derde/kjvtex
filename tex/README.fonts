@@ -118,3 +118,10 @@ GENERATE GRAZE SHORTER NARROW FROM GRAZE SHORTER:
             nib width 5
             nib height 1
             contours (from closed): External only     
+
+TAKE II:
+
+    All that custom kerning is ugly.  It seems to be adequate nice to kern
+    Left "A-Za-z" to Right "A-Za-z.,;:" with 300 spacing (whatever 300 is).
+
+

@@ -1,24 +1,39 @@
 % A5 Bible in 640 pages: 8 point
 \input{bibldefault.tex}
+\def\mysourcetext{en}%
 
-\def\mymargins{left=7mm,top=8mm,right=7mm,bottom=5mm,bindingoffset=4mm,headheight=5mm}
+%\def\mymargins{left=7mm,top=8mm,right=7mm,bottom=5mm,bindingoffset=4mm,headheight=5mm}
+\def\mymargins{left=9mm,top=7mm+\myfontsize-2pt,right=9mm,bottom=7mm,bindingoffset=2mm,headheight=\baselineskip+2pt}
 \def\mypapersize{148mm,210mm}% A5
 \def\mydisplayfont{Graze Shorter}
 \def\myfontname{[GrazeShorter.otf]}
 %\def\mysansfont{Liberation Sans}
 \def\mysansfontii{Liberation Sans}
 \def\mysansfont{[GrazeShorter.otf]}
-\def\myfontsize{8.1pt}
-\def\mybaseline{8.1pt}
-\def\myfontstretch{1.000}
-\def\mycolumnsep{0.7em}
+%\def\myfontsize{8.0pt}
+%\def\mybaseline{8.0074pt}
+\def\myfontsize{9.0pt}
+\def\mybaseline{9.0pt}
+\def\myfontstretch{0.875}
+% Chapter numbering
+\def\mychapterfontstretch{0.6}\def\mychapterfontname{GrazeShorter-Bold.otf}
+\def\mychapterscale{1.05}
+\def\mychapterspace{0.44\baselineskip}
+% Verse numbering:
+\def\myversefontstretch{0.6}\def\myversefontname{GrazeShorter-Bold.otf}
+\def\myversescale{0.75}
+\def\myverseraise{0.4ex}% =~ (\baselineskip+\fontsize)/2 - \fontsize*\myversescale)
+\def\myversehspace{0.5pt}% space after verse number
+% 
+\def\mycolumnsep{0.75em}
+\def\mygrayshade{0.20}
+\def\mylettrinefindent{1pt}
 \def\mydocumentsettings{% Ragged
   % \spaceskip=0.28em plus 0.14em minus 0.08em\relax
   \spaceskip=\dimexpr\the\fontdimen2\font-\the\fontdimen4\font\relax plus 0.07em % plus \the\fontdimen4\font % space between words: keep it constant, with tiny changes, no up-side
-  \rightskip=0pt plus 1.6em\relax% space on right hand margin: keep it small
-  \parfillskip=0pt plus 10em\relax%   last line of paragraph space: use up all of the spare space here.
+  \rightskip=0pt plus 0.8em\relax% space on right hand margin: keep it small
+  \parfillskip=0pt plus 3em\relax%   last line of paragraph space: use up all of the spare space here.
 }%
-\def\myhypenpenalty{1400}%   Lower penalty means more hypenation and fewer pages
 \def\myfontopts{
     BoldFont=[GrazeShorter-Bold.otf],
     ItalicFont=[GrazeShorter-Italic.otf],
@@ -29,12 +44,9 @@
 \def\myextradisplay{}
 \def\mytoccolumns{3}
 \def\mycontentcolumns{2}
-\def\mychapterscale{1.05}
-\def\myversescale{0.80}
-\def\myverseraise{2pt}% =~ (\baselineskip+\fontsize)/2 - \fontsize*\myversescale)
 \renewcommand\myfrontmatter{%
-    \mypagei%   blank
-    \mypagei%   blank
+    %\mypagei%   blank
+    %\mypagei%   blank
     \mypageiii%  title page
     \mypageii%   print info page
     %\mypagei%   blank
@@ -49,7 +61,7 @@
     \kjvwordlist
     \kjvtopics
 }
-\def\myhypenpenalty{200}%   Lower penalty means more hypenation and fewer pages
+\def\myhypenpenalty{1800}%   Lower penalty means more hypenation and fewer pages
 \input{hyph-en.tex}
 \renewcommand{\biblepistleattribution}[1]{}
 %\renewcommand{\biblsectionseparator}[1]{}
@@ -57,6 +69,16 @@
 \def\mylayoutblurb{No headings; verses share lines; ragged; no psalm titles; no epistle postscripts;\par
 Words of Christ in black.\par
 }
-\def\mychapterspace{0.34\baselineskip}
+\def\mybooktitlepreamble{\needspace{5\baselineskip}}
+\renewcommand\mybooktitlebox[1]{%
+    \hfill%center it
+    \raisebox{0.4\baselineskip}[0.5\baselineskip][0pt]{%
+        \mybooktitletextbf{\mybooktitlefont\mybooktitlesettings #1}}%
+    \bookheadingstrut{2\baselineskip}% assume that the paragraph above did the trick ...
+    \hfill%center it
+}
+\def\mypredocument{
+    \pretolerance=0
+}
 \input{biblayout.tex}
 
