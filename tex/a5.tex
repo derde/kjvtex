@@ -2,8 +2,8 @@
 \input{bibldefault.tex}
 \def\mysourcetext{en}%
 
-%\def\mymargins{left=7mm,top=8mm,right=7mm,bottom=5mm,bindingoffset=4mm,headheight=5mm}
-\def\mymargins{left=9mm,top=7mm+\myfontsize-2pt,right=9mm,bottom=7mm,bindingoffset=2mm,headheight=\baselineskip+2pt}
+%\def\mymargins{left=7mm,gop=8mm,right=7mm,bottom=5mm,bindingoffset=4mm,headheight=5mm}
+\def\mymargins{left=10mm,top=7mm+\myfontsize-1pt,right=7mm,bottom=7mm,bindingoffset=2mm,headheight=\baselineskip+1pt}
 \def\mypapersize{148mm,210mm}% A5
 \def\mydisplayfont{Graze Shorter}
 \def\myfontname{[GrazeShorter.otf]}
@@ -12,18 +12,18 @@
 \def\mysansfont{[GrazeShorter.otf]}
 %\def\myfontsize{8.0pt}
 %\def\mybaseline{8.0074pt}
-\def\myfontsize{9.0pt}
-\def\mybaseline{9.0pt}
-\def\myfontstretch{0.875}
+\def\myfontsize{8.86pt}
+\def\mybaseline{8.86pt}
+\def\myfontstretch{0.90}
 % Chapter numbering
 \def\mychapterfontstretch{0.6}\def\mychapterfontname{GrazeShorter-Bold.otf}
-\def\mychapterscale{1.05}
+\def\mychapterscale{1.0}
 \def\mychapterspace{0.44\baselineskip}
 % Verse numbering:
 \def\myversefontstretch{0.6}\def\myversefontname{GrazeShorter-Bold.otf}
 \def\myversescale{0.75}
-\def\myverseraise{0.4ex}% =~ (\baselineskip+\fontsize)/2 - \fontsize*\myversescale)
-\def\myversehspace{0.5pt}% space after verse number
+\def\myverseraise{0.35ex}% =~ (\baselineskip+\fontsize)/2 - \fontsize*\myversescale)
+\def\myversehspace{0.3pt}% space after verse number
 % 
 \def\mycolumnsep{0.75em}
 \def\mygrayshade{0.20}
@@ -31,8 +31,8 @@
 \def\mydocumentsettings{% Ragged
   % \spaceskip=0.28em plus 0.14em minus 0.08em\relax
   \spaceskip=\dimexpr\the\fontdimen2\font-\the\fontdimen4\font\relax plus 0.07em % plus \the\fontdimen4\font % space between words: keep it constant, with tiny changes, no up-side
-  \rightskip=0pt plus 0.8em\relax% space on right hand margin: keep it small
-  \parfillskip=0pt plus 3em\relax%   last line of paragraph space: use up all of the spare space here.
+  \rightskip=0pt plus 3em\relax% space on right hand margin: keep it small
+  \parfillskip=0pt plus 10em\relax%   last line of paragraph space: use up all of the spare space here.
 }%
 \def\myfontopts{
     BoldFont=[GrazeShorter-Bold.otf],
@@ -79,6 +79,7 @@ Words of Christ in black.\par
 }
 \def\mypredocument{
     \pretolerance=0
+    \renewcommand{\headruleskip}{-2pt}
 }
 \input{biblayout.tex}
 
