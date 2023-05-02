@@ -29,14 +29,20 @@ def getpropernouns(fn):
 def decap(fn, fo, propernouns):
     fd=open(fn,'r')
     continuation=False
-    continuation_re=re.compile('[:;,]\s*$')
-    continuation_bl_re=re.compile('(say|saying|said|written)[a-z ]*[:;,]\s*$') # saying: Quotation
-    word_re=re.compile('^(.*:\d+\s+\[?)([A-Z][a-z]+)(.*)',re.S)
+    continuation_re=re.compile(r'[a-z:;,]\)?\s*$')
+    continuation_bl_re=re.compile('\\b(crieth|saith|say|saying|said|written|call|Itheil|burden|vowed.*of Jacob|shake the head)\\b[a-z ]*[:;,]\s*$') # saying: Quotation
+    word_re=re.compile('^(.*:\d+\s+[[\(]*)([A-Z][a-z]+)(.*)',re.S)
     for line in fd:
+        if line.find('thanks can we render to God again for you, for all the')>0:
+            line+=''
         if continuation:
             m=word_re.search(line)
-            if m and m.group(2) not in propernouns:
-                line = m.group(1)+m.group(2).lower()+m.group(3)
+            if m:
+                if m.group(2) in propernouns:
+                    w=m.group(2)
+                    if not propernouns[w].startswith("*"): propernouns[w]='*'+propernouns[w]
+                else:
+                    line = m.group(1)+m.group(2).lower()+m.group(3)
         continuation = continuation_re.search(line) and not continuation_bl_re.search(line)
         fo.write(line)
 
@@ -44,11 +50,15 @@ def decap(fn, fo, propernouns):
 fn='../text/kingjamesbibleonline.txt'
 propernouns=getpropernouns(fn)
 n='Abialbon Adina Ahi Ahiam Ahinadab Amam Arab Beerah Cretes Dimnah Eliahba Elihoreph Eluzai Hadid Halhul Hallohesh Heleb Hezrai Hezro Hurai Huz Igal Ishmerai Ithai Kenan Machnadebai Magpiash Maharai Malchiram Mishmannah Nohah Non Sallu Shammoth Sibbecai Ummah Uthai Uzzia Vaniah Zenan Hodijah Zelek'
-for r in n.split(): propernouns[r]=True
-propernouns.pop("The")
-propernouns.pop("So")
-for k in propernouns: sys.stdout.write(k+' ')
-sys.stdout.write('\n')
+for r in n.split(): propernouns[r]=r
+n='So To The One Great Praise Night On No'
+for r in n.split(): propernouns.pop(r)
 fo=open('../text/kingjamesbibleonline-semicaps.txt','w')
 decap(fn,fo,propernouns)
-
+knouns=[]
+for k in propernouns:
+    if propernouns[k].startswith('*'):
+        knouns.append(k)
+knouns.sort()
+sys.stdout.write(' '.join(knouns))
+sys.stdout.write('\n')
