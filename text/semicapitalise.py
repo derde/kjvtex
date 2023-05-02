@@ -53,7 +53,7 @@ n='Abialbon Adina Ahi Ahiam Ahinadab Amam Arab Beerah Cretes Dimnah Eliahba Elih
 for r in n.split(): propernouns[r]=r
 n='So To The One Great Praise Night On No'
 for r in n.split(): propernouns.pop(r)
-fo=open('../text/kingjamesbibleonline-semicaps.txt','w')
+fo=open('../text/kingjamesbibleonline-sc.txt','w')
 decap(fn,fo,propernouns)
 knouns=[]
 for k in propernouns:
