@@ -47,7 +47,7 @@
 \mypageadjustments% Any other page adjustments - crop package goes here
 %\usepackage[absolute,overlay]{textpos}% Put things in absolute positions (for thumb marker)
 \usepackage[absolute]{textpos}% Put things in absolute positions (for thumb marker)
-\TPGrid[0mm,10mm]{30}{61}% defines tiny boxes down right hand margin for book name - see "textblock" below.  For 66 books, we have 61 markers
+\TPGrid[0mm,10mm]{30}{38}% defines tiny boxes down right hand margin for book name - see "textblock" below.  For 66 books, we have 61 markers
 % 0.3528pt/mm ... 334pt,510pt
 %\usepackage[grid]{mymulticol}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -99,11 +99,10 @@
 % register true is way better ...
 %\fancyhead[L]{\textsf{\leftmark}}% Top left header
 %\fancyhead[EL]{ - \em\textsf{\rightmark} - }% Top left header
-%\fancyhead[ER]{\begin{textblock}{1}(0,\mythumbindex)\hfill\rule[0em]{4mm}{3mm}\end{textblock}}% This is the chapter marker block
 \fancyhead[ER]{}% This is the chapter marker block
 \fancyhead[OL]{}% This is the chapter marker block
-\fancyhead[OR]{\myheadingfont \textbf{\textemdash\ \leftmark\hspace{1em}\null}\biblthumbmark{\mythumbindex}\oddbindingmarks}% Top right header
-\fancyhead[EL]{\myheadingfont \textbf{\textemdash\ \rightmark}\evenbindingmarks}% Top left header - leading dash is to discourage accidental reading of the heading
+\fancyhead[OR]{\myheadingfont \textbf{\textemdash\ \leftmark\hspace{1em}\null}\biblthumbmarkright{\mythumbindex}\oddbindingmarks}% Top right header
+\fancyhead[EL]{\myheadingfont \textbf{\textemdash\ \rightmark}\biblthumbmarkleft{\mythumbindex}\evenbindingmarks}% Top left header - leading dash is to discourage accidental reading of the heading
 \fancyhead[C]{\myheadingfont {\thepage}}% Center footer - bold is less readable
 \renewcommand{\headrulewidth}{0.0pt}% lines just amplify the skewness of skewly printed pages 
 \renewcommand{\footrulewidth}{0.0pt}%
@@ -116,7 +115,7 @@
 \biblfontcustom
 \newfontfamily\mynostretchfont[FakeStretch=1]{\mysansfont}% Used for page headings
 \newfontfamily\myheadingfont[\myboldness FakeStretch=\myfontstretch,Scale=1.00]{\mysansfont}% Used for page headings
-\newfontfamily\mysmallcapsfont[\myfontopts\myboldness FakeStretch=\myfontstretch,Scale=0.85]{\myfontname}% Used for (synthetic) smallcaps
+\newfontfamily\mysmallcapsfont[\myfontopts\myboldness FakeStretch=\myfontstretch,Scale=0.80]{\myfontname}% Used for (synthetic) smallcaps
 \newfontfamily\mylatexfont[FakeStretch=1.0]{Liberation Serif}% For saying "Latex" without looking ugly
 \newfontfamily\myhebrewfont[]{Liberation Serif}% For Psalm 119
 %\fontspec{Gentium Book Plus}\setmainfont[Numbers=Uppercase]{Gentium Book Plus}% 947 pages +2
@@ -167,7 +166,9 @@
 %%  \setsecheadstyle{\marginhead}
 \def\hebrewleader{}%
 \newcommand{\biblepsalmheading}[1]{{\em #1}}%
-\newcommand{\sharedverse}[2]{\raisebox{\myverseraise}[0pt]{\myversefont\textbf{#1}\hspace{\myversehspace}}\def\mythumbindex{#2}}%3 points up, count height as 0 points, kern at end
+\newcommand{\sharedverse}[2]{\raisebox{\myverseraise}[0pt]{\myversefont\textbf{#1}}\def\mythumbindex{#2}}%3 points up, count height as 0 points, kern at end
+\newcommand{\versehskip}{\hspace{\myversehspace}}
+\newcommand{\versehskipa}{\hspace{\myverseahspace}}% Kern verses starting with capital A
 \newcommand{\versei}[2]{\noindent\mypreversei \hebrewleader\def\hebrewleader{}}%3 points up, count height as 0 points, kern at end
 \newcommand{\verseii}[2]{\mypreverseii\hebrewleader\def\hebrewleader{}\sharedverse{#1}{#2}}%3 points up, count height as 0 points, kern at end
 \renewcommand{\verse}[2]{\mypreverse  \hebrewleader\def\hebrewleader{}\sharedverse{#1}{#2}}%3 points up, count height as 0 points, kern at end
@@ -178,13 +179,15 @@
     \renewcommand{\biblonecolumn}{\end{multicols}\renewcommand{\biblonecolumn}{}}%
 }%
 % FIXI?
-\newcommand{\biblthumbmark}[1]{%
-\begin{textblock}{1}(29,#1)%
+\newcommand{\biblthumbmark}[3]{% 1:horizontal tab, 2: vertical tab, 3: hspace
+\begin{textblock}{1}(#1,#2)%
 %\rule[0em]{1em}{1ex}%
 \hfuzz=72pt
-\raisebox{0pt}[0pt]{\color{lightgray}\rule[0em]{8mm}{1.0em}}%
+\raisebox{0pt}[0pt]{\hspace{#3}\color{lightgray}\rule[0em]{8mm}{1.5em}}% vert offset, width, height
 \end{textblock}
 }
+\newcommand{\biblthumbmarkright}[1]{\biblthumbmark{29}{#1}{0.5mm}}%
+\newcommand{\biblthumbmarkleft}[1]{\biblthumbmark{0}{#1}{-4mm}}%
 \newlength{\rightmarkspace}%
 \newlength{\rightmarksep}
 \setlength{\rightmarkspace}{\paperwidth-5em}% 

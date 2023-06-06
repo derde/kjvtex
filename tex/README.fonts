@@ -121,7 +121,23 @@ GENERATE GRAZE SHORTER NARROW FROM GRAZE SHORTER:
 
 TAKE II:
 
-    All that custom kerning is ugly.  It seems to be adequate nice to kern
-    Left "A-Za-z" to Right "A-Za-z.,;:" with 300 spacing (whatever 300 is).
+    All that custom kerning is ugly.
 
+    It seems to be adequate nice to kern Left "A-Za-z" to Right "A-Za-z.,;:"
+    with 300 spacing (whatever 300 is).
+
+    And then I looked at it again.  Kerning to 150 causes the baseline of the
+    font to be a more pronounced line (not always interrupted by horizontal
+    inter-character spaces).  Having that baseline more visible means that the
+    horizontal spacing does not as much visually interfere with the vertical
+    spacing.  I think that when the Font Size was set to something
+    other than 1000, the automatic kerning did not work very well at all.
+
+
+The metrics of Graze Shorter are:
+    x-height:  553 (height of letter x)                          4.95pt
+    body-height x+ascender+descender: 744+194=938 (font height)  8.4pt
+    cap-height: 740 (height of capital)
+    ratio of x-height to body-height: 1.696
+    ratio of x-height to k-height: 1.35 - 4744/553 
 

@@ -3,18 +3,17 @@
 \def\mysourcetext{en}%
 
 %\def\mymargins{left=7mm,gop=8mm,right=7mm,bottom=5mm,bindingoffset=4mm,headheight=5mm}
-\def\mymargins{left=10mm,top=7mm+\myfontsize-1pt,right=7mm,bottom=7mm,bindingoffset=2mm,headheight=\baselineskip+1pt}
+\def\mymargins{left=10mm,top=7mm+\myfontsize-1pt,right=7mm,bottom=7mm,bindingoffset=1mm,headheight=\baselineskip+1pt}
 \def\mypapersize{148mm,210mm}% A5
 \def\mydisplayfont{Graze Shorter}
 \def\myfontname{[GrazeShorter.otf]}
 %\def\mysansfont{Liberation Sans}
 \def\mysansfontii{Liberation Sans}
 \def\mysansfont{[GrazeShorter.otf]}
-%\def\myfontsize{8.0pt}
-%\def\mybaseline{8.0074pt}
-\def\myfontsize{8.86pt}
-\def\mybaseline{8.86pt}
-\def\myfontstretch{0.90}
+\def\myfontsize{8.5pt}
+\def\mybaseline{8.8pt}
+\def\myfontstretch{0.90} %0.875}
+
 % Chapter numbering
 \def\mychapterfontstretch{0.6}\def\mychapterfontname{GrazeShorter-Bold.otf}
 \def\mychapterscale{1.0}
@@ -22,18 +21,20 @@
 % Verse numbering:
 \def\myversefontstretch{0.6}\def\myversefontname{GrazeShorter-Bold.otf}
 \def\myversescale{0.75}
-\def\myverseraise{0.35ex}% =~ (\baselineskip+\fontsize)/2 - \fontsize*\myversescale)
+\def\myverseraise{0.40ex}% =~ (\baselineskip+\fontsize)/2 - \fontsize*\myversescale)
 \def\myversehspace{0.3pt}% space after verse number
+\def\myverseahspace{-0.05em}% space after verse number before A
 % 
 \def\mycolumnsep{0.75em}
 \def\mygrayshade{0.20}
 \def\mylettrinefindent{1pt}
 \def\mydocumentsettings{% Ragged
   % \spaceskip=0.28em plus 0.14em minus 0.08em\relax
-  \spaceskip=\dimexpr\the\fontdimen2\font-\the\fontdimen4\font\relax plus 0.07em % plus \the\fontdimen4\font % space between words: keep it constant, with tiny changes, no up-side
-  \rightskip=0pt plus 3em\relax% space on right hand margin: keep it small
-  \parfillskip=0pt plus 10em\relax%   last line of paragraph space: use up all of the spare space here.
+  \spaceskip=\dimexpr\the\fontdimen2\font-\the\fontdimen4\font\relax plus 0.2em % plus \the\fontdimen4\font % space between words: keep it constant, with tiny changes, no up-side
+  \rightskip=0pt plus 2em\relax% space on right hand margin: keep it small
+  \parfillskip=0pt plus 5em\relax%   last line of paragraph space: use up all of the spare space here.
 }%
+\def\myboldness{ }
 \def\myfontopts{
     BoldFont=[GrazeShorter-Bold.otf],
     ItalicFont=[GrazeShorter-Italic.otf],
@@ -61,7 +62,7 @@
     \kjvwordlist
     \kjvtopics
 }
-\def\myhypenpenalty{1800}%   Lower penalty means more hypenation and fewer pages
+\def\myhypenpenalty{100}%   Lower penalty means more hypenation and fewer pages
 \input{hyph-en.tex}
 \renewcommand{\biblepistleattribution}[1]{}
 %\renewcommand{\biblsectionseparator}[1]{}

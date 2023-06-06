@@ -194,6 +194,33 @@ Kerning
     ragged-right
     column-separation=2mm (incl line)
 
+### ESV paperback
+(generous spacing, large margins)
+
+    pages=618 (including front and rear)
+    page-height=217mm
+    page-width=147mm
+    top-space=12mm (from top of page to main text)
+    top-margin=7mm (from top of page to heading printing)
+    heading-height=2mm (height of heading)
+    outer-margin=7mm
+    inner-margin=10mm
+    bottom-space=7mm
+    bottom-margin=7mm
+    footnote-height= -
+    psalms-verse-per-line
+    lines-per-page=69
+    text-height=196mm
+    line-spacing=196mm/69==2.84057971014492753623mm==8.05pt
+    height-of-ph-to-inter-line-spacing=31:43
+    text-height-ph=5.8pt
+    justified
+    perfect-binding
+    header-topics
+    justified
+    poetic-indentation
+    column-separation=3mm (no line)
+
 ### Waterproof bible
 For this paper size and similar margins, we can do 707 pages: CharisSIL 9.0pt text, line spacing 9.5pt, scaled 0.86
 

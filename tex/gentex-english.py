@@ -156,6 +156,74 @@ class English:
         'Jude' : 'Jude',
         'Re'   : 'Revelation',
     }
+    tabIndexPos = {
+        'Genesis':         1,
+        'Exodus':          2,
+        'Leviticus':       3,
+        'Numbers':         4,
+        'Deuteronomy':     5,
+        'Joshua':          6,
+        'Judges':          7,
+        'Ruth':            8,
+        '1 Samuel':        9,
+        '2 Samuel':        10,
+        '1 Kings':         11,
+        '2 Kings':         12,
+        '1 Chronicles':    13,
+        '2 Chronicles':    14,
+        'Ezra':            15,
+        'Nehemiah':        16,
+        'Esther':          17,
+        'Job':             18,
+        'Psalms':          19,
+        'Proverbs':        20,
+        'Ecclesiastes':    21,
+        'Song of Solomon': 22,
+        'Isaiah':          23,
+        'Jeremiah':        24,
+        'Lamentations':    25,
+        'Ezekiel':         26,
+        'Daniel':          27,
+        'Hosea':           28,
+        'Joel':            29,
+        'Amos':            30,
+        'Obadiah':         31,
+        'Jonah':           31,
+        'Micah':           32,
+        'Nahum':           33,
+        'Habakkuk':        34,
+        'Zephaniah':       35,
+        'Haggai':          36,
+        'Zechariah':       37,
+        'Malachi':         38,
+        'Matthew':         6,
+        'Mark':            7,
+        'Luke':            8,
+        'John':            9,
+        'Acts':            10,
+        'Romans':          11,
+        '1 Corinthians':   12,
+        '2 Corinthians':   13,
+        'Galatians':       14,
+        'Ephesians':       15,
+        'Philippians':     16,
+        'Colossians':      17,
+        '1 Thessalonians': 18,
+        '2 Thessalonians': 18,
+        '1 Timothy':       19,
+        '2 Timothy':       20,
+        'Titus':           21,
+        'Philemon':        21,
+        'Hebrews':         22,
+        'James':           23,
+        '1 Peter':         24,
+        '2 Peter':         25,
+        '1 John':          26,
+        '2 John':          26,
+        '3 John':          26,
+        'Jude':            27,
+        'Revelation':      28,
+    }
     def __init__(self,file='english.psalmtitles', numberfile='english.renumbering'):
         self.bookFullnames=self.bookfullnamesEn
         self.oldtestament="THE OLD TESTAMENT"
@@ -245,6 +313,7 @@ class German:
         self.oldtestament="DAS ALTE TESTAMENT"
         self.newtestament="DAS NEUE TESTAMENT"
         self.rewritereference=RewriteReference(numberfile)
+        self.tabIndexPos={}
     def prefilter(self,text):
         lineformat_re=re.compile('(.*? \d+:\d+ ) *(.*)')
         m=lineformat_re.search(text)
@@ -350,6 +419,7 @@ class French:
         self.bookFullnames=self.bookfullnamesFr
         self.oldtestament="L'ANCIEN TESTAMENT"
         self.newtestament="LE NOVEAU TESTAMENT"
+        self.tabIndexPos={}
         pass
     def prefilter(self,text):
         lineformat_re=re.compile('(.*? \d+:\d+ ) *(.*)')
@@ -383,6 +453,7 @@ class French:
         return text
 
 class Afrikaans:
+    tabIndexPos={}
     languageindex=2
     af_lowercase={
         'Á': 'á',
@@ -765,13 +836,13 @@ class bibleformatter:
         # o+=self.verseheading('1') + '%\n'
         return o
 
-    def verseheading(self,verse):
+    def verseheading(self,verse,insert):
         # r+=  r'\verse{'+verse+'}'  
         cmd='\\verse'
         if verse=='1': cmd=r'\versei' # no space before 1st verse
         elif verse=='2': cmd=r' \verseii' # space before 2nd verse
         else: cmd=r' \verse' # space before verses 3 and on
-        return r''+cmd+'{'+verse+'}{'+str(self.state['index'])+'}'
+        return r''+cmd+'{'+verse+insert+'}{'+str(self.state['index'])+'}'
 
     def isnewparagraph(self,book,chapter,verse,text):
         # Afrikaans text has capital words indicating new paragraphs
@@ -850,7 +921,7 @@ class bibleformatter:
         self.state['chapter']=''
         self.state['verse']=''
         self.state['text']=''
-        self.state['index']=22
+        self.state['index']=1
         self.state['shortbook']=''
         newbook=True
         yield r'\biblbeforeoldtestament' % self.state +'%\n'
@@ -888,6 +959,9 @@ class bibleformatter:
             if newbook:
                 if self.state['book'] not in ('2 John','3 John','2 Peter', '2 Timothy', '2 Thessalonians'):
                     self.state['index']=((self.state['index']) % 61 )+1
+                    i=self.language.tabIndexPos.get(self.state['book'])
+                    if i:
+                        self.state['index']=i
                 self.state['prettyname']=self.language.getbookprettyname(self.state['book'])
                 yield r'\biblbookheading{%(prettyname)s}' % self.state+'%\n';
                 yield r'\biblnewbook{%(book)s}{%(short)s}' % self.state + '%\n'
@@ -908,7 +982,12 @@ class bibleformatter:
             text = self.language.markuppsalmheadings(text,self.state)
             text=text.replace('’',"'") # weird unicode is weird
             text = self.hebrew.adjust(text,self.state)
-            t += self.verseheading(verse)
+            firstletter = text[:1]
+            if firstletter in ('A'):
+                insert = '\\versehskipa'
+            else:
+                insert = '\\versehskip'
+            t += self.verseheading(verse,insert)
             t += r'\biblnewreference{%(REFERENCE)s}{%(index)s}' % self.state
             text=re.sub(r'<<\[(.*?)\]>>*',self.sub_format_epistleattribution,text)
             text=re.sub(r'<<([^a-z]*?)>>',self.sub_format_sectionsep,text)
@@ -949,7 +1028,7 @@ french=French() # 4
 src_dst = [
     # (english,   '../text/TEXT-PCE-127.txt', 'english.tex'), # don't like this one any more
     (english,   '../text/kingjamesbibleonline.txt', 'english.tex'), # like this one more
-    (english,   '../text/kingjamesbibleonline-semicaps.txt', 'en.tex'), # like this one more
+    (english,   '../text/kingjamesbibleonline-sc.txt', 'en.tex'), # like this one more
     (afrikaans, '../text/af1953.txt', 'afrikaans.tex'), 
     (german, '../text/sch2000.txt', 'sch2000.tex'), 
     (french, '../text/fr.ostervald2018', 'ostervald2018.tex'), ]
