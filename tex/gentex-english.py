@@ -20,6 +20,19 @@ romannumerals=[ '', 'i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix',
     'cxxxviii', 'cxxxix', 'cxl', 'cxli', 'cxlii', 'cxliii', 'cxliv', 'cxlv',
     'cxlvi', 'cxlvii', 'cxlviii', 'cxlix', 'cl', ]
 
+# Unicode smallcaps
+smallcaps={ 'a': 'ᴀ', 'b': 'ʙ', 'c': 'ᴄ', 'd': 'ᴅ', 'e': 'ᴇ', 'f': 'ꜰ', 'g':
+'ɢ', 'h': 'ʜ', 'i': 'ɪ', 'j': 'ᴊ', 'k': 'ᴋ', 'l': 'ʟ', 'm': 'ᴍ', 'n': 'ɴ', 'o':
+'ᴏ', 'p': 'ᴘ', 'q': 'ǫ', 'r': 'ʀ', 's': 'ꜱ', 't': 'ᴛ', 'u': 'ᴜ', 'v': 'ᴠ', 'w':
+'ᴡ', 'x': 'x', 'y': 'ʏ', 'z': 'ᴢ' }
+
+
+def do_smallcaps(word):
+    o=''
+    for c in word.lower():
+        o+=smallcaps.get(c,c)
+    return o
+
 # DISCLAIMER: this code is torturous, because it is hacked from code for making
 # a side-by-side parallel Bible, which needs a lot of bad hacks.  I'm sorry.
 # Don't write your own code like this.  Be better.
@@ -196,11 +209,11 @@ class English:
         'Haggai':          36,
         'Zechariah':       37,
         'Malachi':         38,
-        'Matthew':         6,
-        'Mark':            7,
-        'Luke':            8,
-        'John':            9,
-        'Acts':            10,
+        'Matthew':         5,
+        'Mark':            6,
+        'Luke':            7,
+        'John':            8,
+        'Acts':            9,
         'Romans':          11,
         '1 Corinthians':   12,
         '2 Corinthians':   13,
@@ -214,15 +227,15 @@ class English:
         '2 Timothy':       20,
         'Titus':           21,
         'Philemon':        21,
-        'Hebrews':         22,
-        'James':           23,
-        '1 Peter':         24,
-        '2 Peter':         25,
-        '1 John':          26,
-        '2 John':          26,
-        '3 John':          26,
-        'Jude':            27,
-        'Revelation':      28,
+        'Hebrews':         23,
+        'James':           25,
+        '1 Peter':         26,
+        '2 Peter':         27,
+        '1 John':          28,
+        '2 John':          28,
+        '3 John':          28,
+        'Jude':            29,
+        'Revelation':      31,
     }
     def __init__(self,file='english.psalmtitles', numberfile='english.renumbering'):
         self.bookFullnames=self.bookfullnamesEn
@@ -867,6 +880,18 @@ class bibleformatter:
         #    return m.group(1)+m.group(2)
         word=m.group(1)
         smallcapsd=word[0]+r'{\mysmallcapsfont '+word[1:]+'}'
+        # smallcapsd= r'\textsc{'+m.group(1).title()+'}'
+        whitespace=m.group(2)
+        # if not whitespace: whitespace='%\n'
+        return smallcapsd+whitespace
+
+    def sub_format_smallcaps(self,m):
+        # UNICODE VERSION:
+        # This would exclude matches as the first word in the text:
+        #if m.span(1)[0]==0:
+        #    return m.group(1)+m.group(2)
+        word=m.group(1)
+        smallcapsd=word[0]+do_smallcaps(word[1:])
         # smallcapsd= r'\textsc{'+m.group(1).title()+'}'
         whitespace=m.group(2)
         # if not whitespace: whitespace='%\n'
