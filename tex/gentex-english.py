@@ -27,7 +27,7 @@ smallcaps={ 'a': 'ᴀ', 'b': 'ʙ', 'c': 'ᴄ', 'd': 'ᴅ', 'e': 'ᴇ', 'f': 'ꜰ
 'ᴡ', 'x': 'x', 'y': 'ʏ', 'z': 'ᴢ' }
 
 
-def do_smallcaps(word):
+def unicodesmallcaps(word):
     o=''
     for c in word.lower():
         o+=smallcaps.get(c,c)
@@ -879,23 +879,8 @@ class bibleformatter:
         #if m.span(1)[0]==0:
         #    return m.group(1)+m.group(2)
         word=m.group(1)
-        smallcapsd=word[0]+r'{\mysmallcapsfont '+word[1:]+'}'
-        # smallcapsd= r'\textsc{'+m.group(1).title()+'}'
         whitespace=m.group(2)
-        # if not whitespace: whitespace='%\n'
-        return smallcapsd+whitespace
-
-    def sub_format_smallcaps(self,m):
-        # UNICODE VERSION:
-        # This would exclude matches as the first word in the text:
-        #if m.span(1)[0]==0:
-        #    return m.group(1)+m.group(2)
-        word=m.group(1)
-        smallcapsd=word[0]+do_smallcaps(word[1:])
-        # smallcapsd= r'\textsc{'+m.group(1).title()+'}'
-        whitespace=m.group(2)
-        # if not whitespace: whitespace='%\n'
-        return smallcapsd+whitespace
+        return r'{\mysmallcaps{'+word[0]+'}{'+word[1:]+'}{'+unicodesmallcaps(word[1:])+'}}'+whitespace
 
     def sub_format_italics(self,m):
         smallcapsd='{\em ' + m.group(1) + '}'
