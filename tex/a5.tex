@@ -11,8 +11,8 @@
 \def\mysansfontii{Liberation Sans}
 \def\mysansfont{[GrazeShorter.otf]}
 \def\myfontsize{8.5pt}
-\def\mybaseline{9.35pt}
-\def\myfontstretch{0.90} %0.875}
+\def\mybaseline{9.0pt}
+\def\myfontstretch{0.925} %0.875}
 
 % Chapter numbering
 \def\mychapterfontstretch{0.6}\def\mychapterfontname{GrazeShorter-Bold.otf}
@@ -26,7 +26,7 @@
 \def\myverseahspace{-0.05em}% space after verse number before A
 % 
 \def\mycolumnsep{0.75em}
-\def\mygrayshade{0.20}
+\def\mygrayshade{0.25}
 \def\mylettrinefindent{1pt}
 \def\mydocumentsettings{% Ragged
   % \spaceskip=0.28em plus 0.14em minus 0.08em\relax
@@ -81,6 +81,7 @@ Words of Christ in black.\par
 \def\mypredocument{
     \pretolerance=0
     \renewcommand{\headruleskip}{-2pt}
+    \frenchspacing% Oh wow ... this saves two pages!
 }
 \input{biblayout.tex}
 

@@ -1,0 +1,29 @@
+KERNING
+
+do not kern trailing question mark (it over-loves lower case y - y?)
+-- done, I think - only kern A-Za-z to a-z,.;:
+
+
+END-OF-PAGE CHAPTERS
+
+Chapters that start on the last line of the page are generally deferred to the
+following page.  That's nice: but sometimes not appropriate.  The alternative
+is to raise the drop cap into the previous line, instead of dropping it.
+
+This manual hack to .tex is a modification to en.tex that makes and end-of-page
+one-line chapter start, with the drop-caps ascending into the previous line --
+
+\parfillskip=0pt plus 1pt\relax%
+ \verse{25\versehskipa}{18}\biblnewreference{JOB 24:25}{18}%
+And if {\em it be} not {\em so} now, who will make me a liar, and
+\bibldropcapschapter{25}%
+make my speech nothing worth?\biblendreference{JOB 24:25}{18}
+\ifdefined\biblendchapterjobxxiv{\biblendchapterjobxxiv}\fi%
+\biblendchapter{Job 24}{18}%
+\biblnewchapter{Job 25}%
+\bibleparnoindent\verse{1\versehskip}{18}%
+\biblnewreference{JOB 25:1}{18}Then answered Bildad the Shuhite, and said,\biblendreference{JOB 25:1}{18}
+
+This might be possible to automate using end-of-paragraph indentation, and a multi-pass system --
+https://tex.stackexchange.com/questions/579392/indent-the-last-line-of-a-paragraph
+
