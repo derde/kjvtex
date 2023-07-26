@@ -44,7 +44,7 @@ default: $(PDF)
 	@grep -5 LATEX $@
 	@echo "Hypehation: ` grep -P '[-]' $@ | grep -vw page | grep -Po '[-]' | wc -l `"
 
-english.tex: gentex-english.py
+english.tex: gentex-english.py 1526.Pericopes.csv
 	./gentex-english.py english.tex
 
 clean:
