@@ -30,11 +30,12 @@ def decap(fn, fo, propernouns):
     fd=open(fn,'r')
     continuation=False
     continuation_re=re.compile(r'[a-z:;,]\)?\s*$')
-    continuation_bl_re=re.compile('\\b(crieth|saith|say|saying|said|written|call|Itheil|burden|vowed.*of Jacob|shake the head)\\b[a-z ]*[:;,]\s*$') # saying: Quotation
+    continuation_bl_re=re.compile('\\b(crieth|saith|say|saying|said|written|call|Itheil|burden|vowed.*of Jacob|shake the head|a parable)\\b[a-z ]*[:;,]\s*$') # saying: Quotation
+
     # Numbers 28:28 and their meat offering of flour mingled with oil, three tenth deals unto one bullock, two tenth deals unto one ram,
     # Numbers 28:29 A several tenth deal unto one lamb, throughout the seven lambs;
 
-    word_re=re.compile('^(.*:\d+\s+[[\(]*)([A-Z][a-z]+)(.*)',re.S)
+    word_re=re.compile('^(.*:\d+\s+[[\(]*)(A[a-z]*|[B-Z][a-z]+)(.*)',re.S)
     for line in fd:
         if line.find('thanks can we render to God again for you, for all the')>0:
             line+=''
@@ -54,7 +55,7 @@ fn='../text/kingjamesbibleonline.txt'
 propernouns=getpropernouns(fn)
 n='Abialbon Adina Ahi Ahiam Ahinadab Amam Arab Beerah Cretes Dimnah Eliahba Elihoreph Eluzai Hadid Halhul Hallohesh Heleb Hezrai Hezro Hurai Huz Igal Ishmerai Ithai Kenan Machnadebai Magpiash Maharai Malchiram Mishmannah Nohah Non Sallu Shammoth Sibbecai Ummah Uthai Uzzia Vaniah Zenan Hodijah Zelek'
 for r in n.split(): propernouns[r]=r
-n='So To The One Great Praise Night On No A'
+n='So To The One Great Praise Night On No'
 for r in n.split(): propernouns.pop(r)
 fo=open('../text/kingjamesbibleonline-sc.txt','w')
 decap(fn,fo,propernouns)

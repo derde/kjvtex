@@ -30,7 +30,8 @@
 \def\mylettrinefindent{1pt}
 \def\mydocumentsettings{% Ragged
   % \spaceskip=0.28em plus 0.14em minus 0.08em\relax
-  \spaceskip=\dimexpr\the\fontdimen2\font-\the\fontdimen4\font\relax plus 0.2em % plus \the\fontdimen4\font % space between words: keep it constant, with tiny changes, no up-side
+  % \spaceskip=\dimexpr\the\fontdimen2\font-\the\fontdimen4\font\relax plus 0.1em % plus \the\fontdimen4\font % space between words: keep it constant, with tiny changes, no up-side
+  \spaceskip=\dimexpr\the\fontdimen2\font-\the\fontdimen4\font\relax % plus \the\fontdimen4\font % space between words: keep it constant, with tiny changes, no up-side
   \rightskip=0pt plus 2em\relax% space on right hand margin: keep it small
   \parfillskip=0pt plus 5em\relax%   last line of paragraph space: use up all of the spare space here.
 }%
