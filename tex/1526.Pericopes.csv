@@ -349,7 +349,7 @@ LEV 24:10
 6109	23	347	Northern Kings Defeated	JOSH 11:1-23
 6132	24	348	List of Defeated Kings	JOSH 12:1-24
 6156	7	349	Land Still to Be Taken	JOSH 13:1-7
-6163	26	350	Division of the Land East of the Jordan	JOSH 13:8-33
+6163	26	350	Division of the Land East of the Jordan	JOSH 13:7-33
 6189	5	351	Division of the Land West of the Jordan	JOSH 14:1-5
 6194	10	352	Hebron Given to Caleb	JOSH 14:6-15
 6204	63	353	Allotment for Judah	JOSH 15:1-63
@@ -1046,7 +1046,7 @@ PS 119:89 97 105 113 121 129 137 145 153 161 169
 18616	11	1043	Stubborn Israel	ISA 48:1-11
 18627	11	1044	Israel Freed	ISA 48:12-22
 18638	8	1045	The Servant of the LORD	ISA 49:1-8
-18646	18	1046	Restoration of Israel	ISA 49:9-26
+18646	18	1046	Restoration of Israel	ISA 49:7-26
 18664	11	1047	Israel's Sin and the Servant's Obedience	ISA 50:1-11
 18675	16	1048	Everlasting Salvation for Zion	ISA 51:1-16
 18691	19	1049	The Cup of the LORD's Wrath	ISA 51:17-52:12
@@ -1055,7 +1055,7 @@ PS 119:89 97 105 113 121 129 137 145 153 161 169
 18742	13	1052	Invitation to the Thirsty	ISA 55:1-13
 18755	8	1053	Salvation for Others	ISA 56:1-8
 18763	17	1054	God's Accusation Against the Wicked	ISA 56:9-57:13
-18780	8	1055	Comfort for the Contrite	ISA 57:14-21
+18780	8	1055	Comfort for the Contrite	ISA 57:12-21
 18788	14	1056	True Fasting	ISA 58:1-14
 18802	21	1057	Sin, Confession and Redemption	ISA 59:1-21
 18823	22	1058	The Glory of Zion	ISA 60:1-22
@@ -1176,6 +1176,7 @@ PS 119:89 97 105 113 121 129 137 145 153 161 169
 21206	26	1173	A Lament for Egypt	EZEK 30:1-26
 21232	18	1174	A Cedar in Lebanon	EZEK 31:1-18
 21250	32	1175	A Lament for Pharaoh	EZEK 32:1-32
+EZEK 32:17
 21282	20	1176	Ezekiel a Watchman	EZEK 33:1-20
 21302	13	1177	Jerusalem's Fall Explained	EZEK 33:21-33
 21315	31	1178	Shepherds and Sheep	EZEK 34:1-31
@@ -1528,7 +1529,7 @@ PS 119:89 97 105 113 121 129 137 145 153 161 169
 25047	18	1524	The Baptism and Genealogy of Jesus	LUKE 3:21-38
 25065	13	1525	The Temptation of Jesus	LUKE 4:1-13
 25078	17	1526	Jesus Rejected at Nazareth	LUKE 4:14-30
-25095	7	1527	Jesus Drives Out an Evil Spirit	LUKE 4:31-37
+25095	7	1527	Jesus Drives Out an Evil Spirit	LUKE 4:30-37
 25102	7	1528	Jesus Heals Many	LUKE 4:38-44
 25109	11	1529	The Calling of the First Disciples	LUKE 5:1-11
 25120	5	1530	The Man With Leprosy	LUKE 5:12-16
@@ -2032,7 +2033,7 @@ PS 13:3 5
 PS 14:4 7
 PS 15:4 
 PS 16:3 5 7 19
-PS 17:3 6 9 13 15
+PS 17:3 6 10 13 15
 PS 18:3 5 7 9 13 16 20 28 30 34 37 40 46 49
 PS 19:7 12
 PS 20:6
@@ -2078,12 +2079,12 @@ PS 59:6 14 16
 PS 60:6 9
 PS 61:3 5
 PS 62:5 9
-PS 63:6 9 11
+PS 63:5 9 11
 PS 64:7
 PS 65:5 9
 PS 66:5 8 13 16
 PS 67:3 5
-PS 68:5 8 11 18 22 30 33
+PS 68:5 9 11 18 22 28 32
 PS 69:4 9 13 16 19 22 26 30 34
 PS 70:4
 PS 71:4 7 20 22
@@ -2119,7 +2120,7 @@ PS 101:5
 PS 102:8 13 18 24
 PS 103:3 8 17
 PS 104:6 10 16 19 24 27 31
-PS 105:8 12 20 32 37 43
+PS 105:8 13 20 32 37 43
 PS 106:4 6 8 13 16 19 28 32 34 40 44 47
 PS 107:8 10 15 17 21 23 31 33 42
 PS 108:5 7 10
@@ -2150,8 +2151,8 @@ PS 140:4 6 9
 PS 141:3 8
 PS 142:3 6
 PS 143:5 7 9 
-PS 144:5 9 12
-PS 146:8 10
+PS 144:5 9 11
+PS 146:5 10
 PS 147:7 15
 PS 148:7 
 PS 149:5
