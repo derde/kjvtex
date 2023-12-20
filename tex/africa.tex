@@ -3,15 +3,45 @@
 
 \def\mymargins{left=13mm,top=15mm,right=13mm,bottom=15mm,bindingoffset=2mm,headheight=5mm}
 \def\mypapersize{135mm,200mm}
-\def\myfontname{Charis SIL}
-\def\mysansfont{DejaVu Sans Condensed}
-\def\myfontsize{9.50pt}
-\def\mybaseline{10.00pt}
+\def\myfontname{[GrazeShorter.otf]}
+%\def\mysansfont{Liberation Sans}
+\def\mysansfontii{Liberation Sans}
+\def\mysansfont{[GrazeShorter.otf]}
+\def\myfontsize{9.00pt}
+\def\mybaseline{9.45pt}
 \def\myfontstretch{0.875}
 %\def\myboldness{FakeBold=1.01,}
 \def\myboldness{} %FakeBold is on/off, it seems
-\def\myfontopts{}
-\def\myletterspace{LetterSpace=-2 plus 2 minus 0}% The 3em space is what a good font design uses ... and we trample it
+\def\myfontopts{
+    BoldFont=[GrazeShorter-Bold.otf],
+    ItalicFont=[GrazeShorter-Italic.otf],
+}
+% Verse settings
+\def\myversefontstretch{0.6}\def\myversefontname{GrazeShorter-Bold.otf}
+\def\myversescale{0.75}
+\def\myverseraise{0.35ex}% =~ (\baselineskip+\fontsize)/2 - \fontsize*\myversescale)
+\def\myversehspace{0.3pt}% space after verse number
+\def\myverseahspace{-0.05em}% space after verse number before A
+
+% Chapter space skip
+\def\mychapterspace{0.44\baselineskip}
+
+% Meh
+\def\mydocumentsettings{% Ragged
+  % \spaceskip=0.28em plus 0.14em minus 0.08em\relax
+  % \spaceskip=\dimexpr\the\fontdimen2\font-\the\fontdimen4\font\relax plus 0.1em % plus \the\fontdimen4\font % space between words: keep it constant, with tiny changes, no up-side
+  \spaceskip=\dimexpr\the\fontdimen2\font-\the\fontdimen4\font\relax % plus \the\fontdimen4\font % space between words: keep it constant, with tiny changes, no up-side
+  \rightskip=0pt plus 1.7em\relax% space on right hand margin: keep it small
+  % \parfillskip=0pt plus 15em\relax%   last line of paragraph space: use up all of the spare space here.
+  \parfillskip=0pt plus 4.1em\relax%   last line of paragraph space: use up all of the spare space here.
+}%
 \def\myhypenpenalty{1300}
-\def\mytoccolumns{4}
+\def\mytoccolumns{3}
+\def\mycolumnsep{0.75em}
+\def\mygrayshade{0.25}
+\def\mypredocument{
+    \pretolerance=200
+    \renewcommand{\headruleskip}{-2pt}
+    \frenchspacing% Oh wow ... this saves two pages!
+}
 \input{biblayout.tex}

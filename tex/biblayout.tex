@@ -9,6 +9,7 @@
 %\usepackage{lastpage}
 \usepackage{calc}
 \usepackage{fontspec}
+\usepackages
 % \usepackage{xunicode}
 % \usepackage[margin=0.8in]{geometry}
 %\usepackage[left=1.5cm,top=2.0cm,right=1.5cm,bottom=1.5cm,bindingoffset=0.5cm]{geometry}
@@ -99,8 +100,9 @@
 % register true is way better ...
 %\fancyhead[L]{\textsf{\leftmark}}% Top left header
 %\fancyhead[EL]{ - \em\textsf{\rightmark} - }% Top left header
-\fancyhead[ER]{}% This is the chapter marker block
-\fancyhead[OL]{}% This is the chapter marker block
+\fancyhead[ER]{\extramark\hspace{1em}}% This is the chapter marker block
+\fancyhead[OL]{\extramark}% This is the chapter marker block
+\newcommand\extramark{}
 \fancyhead[OR]{\myheadingfont \textbf{\textemdash\ \leftmark\hspace{1em}\null}\biblthumbmarkright{\mythumbindex}\oddbindingmarks}% Top right header
 \fancyhead[EL]{\myheadingfont \textbf{\textemdash\ \rightmark}\biblthumbmarkleft{\mythumbindex}\evenbindingmarks}% Top left header - leading dash is to discourage accidental reading of the heading
 \fancyhead[C]{\myheadingfont {\thepage}}% Center footer - bold is less readable
@@ -171,7 +173,7 @@
 \newcommand{\versehskipa}{\hspace{\myverseahspace}}% Kern verses starting with capital A
 \newcommand{\versei}[2]{\noindent\mypreversei \hebrewleader\def\hebrewleader{}}%3 points up, count height as 0 points, kern at end
 \newcommand{\verseii}[2]{\mypreverseii\hebrewleader\def\hebrewleader{}\sharedverse{#1}{#2}}%3 points up, count height as 0 points, kern at end
-\renewcommand{\verse}[2]{\mypreverse  \hebrewleader\def\hebrewleader{}\sharedverse{#1}{#2}}%3 points up, count height as 0 points, kern at end
+\renewcommand{\verse}[2]{\mypreverse\hebrewleader\def\hebrewleader{}\sharedverse{#1}{#2}}%3 points up, count height as 0 points, kern at end
 %\newcommand{\biblpagetitles}[2]{\lock{#1}{#2}}%
 \newcommand{\biblonecolumn}{}%
 \newcommand{\bibltwocolumn}{%
@@ -243,8 +245,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %\newcommand{\bibldropcapschapter}[1]{\null\needspace{0.5\baselineskip}%
 \newcommand{\bibldropcapschapter}[1]{\needspace{\mychapterspace}% big mystery here ... for needspace within 2 column environment, this is the number of lines /2 /2 (ie div 4)
-%\lettrine[lines=2, lraise=0.05, lhang=0.00, findent=3pt, nindent=0pt, loversize=0.0]{\hspace{2pt}\textbf{\mychapterfont \smash{#1}}}{}}%
-\lettrine[lines=2, lraise=0.00, lhang=0.00, findent=\mylettrinefindent, nindent=0pt, loversize=0.0]{\textbf{\mychapterfont #1}}{}%
+%\lettrine[lines=2, lraise=0.05, lhang=0.00, findent=3pt, nindent=0pt, loversize=0.0]{\hspace{2pt}\textbf{\mychapterfont \smash{#1}}}{}}% bug: if you raise by 0.05, it breaks grid alignment for register-true 
+\lettrine[lines=2, lraise=0.00, lhang=0.00, findent=\mylettrinefindent, nindent=0pt, loversize=0.0]{\raisebox{\mychapterraise}[0pt]{\textbf{\mychapterfont\mychapterfontextra #1}}}{}%
 }%
 %debug: \textbf{#1}}%
 % Work around lettrine bug with "Fpar" definition from https://tex.stackexchange.com/questions/369868/using-lettrine-with-short-paragraphs :
@@ -376,7 +378,7 @@ Text area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit
 %% \closein\myfiletocread
 \begin{center}
 %\noindent\hspace{0.05\linewidth}% Indent the TOC so
-\begin{minipage}{0.90\linewidth}%
+\begin{minipage}{\mytocwidth}%
     \InputIfFileExists{\jobname.section}{}{}
 \bibltocendmulticol
 \end{minipage}

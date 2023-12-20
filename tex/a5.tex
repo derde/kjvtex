@@ -1,5 +1,6 @@
 % A5 Bible in 640 pages: 8 point
 \input{bibldefault.tex}
+
 \def\mysourcetext{en}%
 
 %\def\mymargins{left=7mm,gop=8mm,right=7mm,bottom=5mm,bindingoffset=4mm,headheight=5mm}
@@ -9,19 +10,24 @@
 \def\myfontname{[GrazeShorter.otf]}
 %\def\mysansfont{Liberation Sans}
 \def\mysansfontii{Liberation Sans}
-\def\mysansfont{[GrazeShorter.otf]}
-\def\myfontsize{8.5pt}
-\def\mybaseline{9.0pt}
-\def\myfontstretch{0.925} %0.875}
+\def\mysansfont{Liberation Sans}
+\def\myfontsize{8.0pt} % This pretty much determines the page count
+\def\mybaseline{8.4pt} % Recommended minimum is fontsize * 1.05 here
+\def\myfontstretch{0.9543} % Adjust this from 0.875 (tight) to 1.00 (nice) for fine adjustment of page count (and maybe pagination)
 
 % Chapter numbering
-\def\mychapterfontstretch{0.6}\def\mychapterfontname{GrazeShorter-Bold.otf}
+%\def\mychapterfontstretch{0.6}\def\mychapterfontname{GrazeShorter-Bold.otf}
+\def\mychapterfontstretch{0.8}\def\mychapterfontname{Liberation Serif}
+\def\mychapterraise{1pt}% push the chapter number up this much
+\def\mychapterfontextra{\color{mygray}}% push the chapter number up this much
 \def\mychapterscale{1.0}
 \def\mychapterspace{0.44\baselineskip}
+
 % Verse numbering:
-\def\myversefontstretch{0.6}\def\myversefontname{GrazeShorter-Bold.otf}
-\def\myversescale{0.75}
-\def\myverseraise{0.40ex}% =~ (\baselineskip+\fontsize)/2 - \fontsize*\myversescale)
+%\def\myversefontstretch{0.6}\def\myversefontname{GrazeShorter-Bold.otf}
+\def\myversefontstretch{0.8}\def\myversefontname{Liberation Sans}
+\def\myversescale{0.80}
+\def\myverseraise{0.45ex}% =~ (\baselineskip+\fontsize)/2 - \fontsize*\myversescale)
 \def\myversehspace{0.3pt}% space after verse number
 \def\myverseahspace{-0.05em}% space after verse number before A
 % 
@@ -30,10 +36,13 @@
 \def\mylettrinefindent{1pt}
 \def\mydocumentsettings{% Ragged
   % \spaceskip=0.28em plus 0.14em minus 0.08em\relax
-  % \spaceskip=\dimexpr\the\fontdimen2\font-\the\fontdimen4\font\relax plus 0.1em % plus \the\fontdimen4\font % space between words: keep it constant, with tiny changes, no up-side
-  \spaceskip=\dimexpr\the\fontdimen2\font-\the\fontdimen4\font\relax % plus \the\fontdimen4\font % space between words: keep it constant, with tiny changes, no up-side
-  \rightskip=0pt plus 2em\relax% space on right hand margin: keep it small
-  \parfillskip=0pt plus 5em\relax%   last line of paragraph space: use up all of the spare space here.
+  \spaceskip=\dimexpr\the\fontdimen2\font-\the\fontdimen4\font\relax plus 0.03em % plus \the\fontdimen4\font % space between words: keep it constant, with tiny changes, no up-side
+  % \spaceskip=\dimexpr\the\fontdimen2\font-\the\fontdimen4\font\relax % plus \the\fontdimen4\font % space between words: keep it constant, with tiny changes, no up-side
+  \rightskip=0pt plus 1.7em\relax% space on right hand margin: keep it small
+  %\parfillskip=0pt plus 15em\relax%   last line of paragraph space: use up all of the spare space here.
+  %\parfillskip=0pt plus 0.2\linewidth\relax%   last line of paragraph space: use up all of the spare space here.
+  \parfillskip=0pt plus 2.5em\relax%   last line of paragraph space: use up all of the spare space here.
+  %\parfillskip=0pt plus 4.1em\relax%   last line of paragraph space: use up all of the spare space here.
 }%
 \def\myboldness{ }
 \def\myfontopts{
@@ -47,7 +56,6 @@
 \def\mytoccolumns{3}
 \def\mycontentcolumns{2}
 \renewcommand\myfrontmatter{%
-    %\mypagei%   blank
     %\mypagei%   blank
     \mypageiii%  title page
     \mypageii%   print info page
@@ -63,13 +71,13 @@
     \kjvwordlist
     \kjvtopics
 }
-\def\myhypenpenalty{100}%   Lower penalty means more hypenation and fewer pages
+\def\myhypenpenalty{950}% Lower penalty means more hypenation and fewer pages - there should be around one hypenation per page, I reckon
 \input{hyph-en.tex}
 \renewcommand{\biblepistleattribution}[1]{}
 %\renewcommand{\biblsectionseparator}[1]{}
 \renewcommand{\biblpsalmheading}[1]{}
-\def\mylayoutblurb{No headings; verses share lines; ragged; no psalm titles; no epistle postscripts;\par
-Words of Christ in black.\par
+\def\mylayoutblurb{No headings; verses share lines; ragged; no psalm titles; no epistle postscripts;\hfill\par
+Words of Christ in black.\hfill\par
 }
 \def\mybooktitlepreamble{\needspace{5\baselineskip}}
 \renewcommand\mybooktitlebox[1]{%
@@ -79,10 +87,42 @@ Words of Christ in black.\par
     \bookheadingstrut{2\baselineskip}% assume that the paragraph above did the trick ...
     \hfill%center it
 }
-\def\mypredocument{
-    \pretolerance=0
+\def\mypredocument{%
+    \pretolerance=200
     \renewcommand{\headruleskip}{-2pt}
     \frenchspacing% Oh wow ... this saves two pages!
+    \newfontfamily\tinyfont[FakeStretch=\myversefontstretch,Scale=0.9]{\mysansfont}
+    \definecolor{circlegrey}{gray}{0.9}
 }
+
+\def\usepackages{
+\usepackage{zref-savepos}
+\usepackage{pifont}
+\usepackage{circledsteps}
+}
+
+\def\putmarginpar#1#2{%
+  \zsavepos{#1}%
+  \ifnum20432158>\number\zposx{#1}%
+     \hbox to 0pt{\hskip\dimexpr-\zposx{#1}sp +0.5cm \relax#2}%
+  \else
+     \hbox to 0pt{\hskip4.2cm {\vtop to 0pt{\parindent0pt\hsize 2cm#2}}}
+  \fi%
+}
+
+\def\ENmottoii{\circlegreyfill{\small A}\ Gospel outline starts at Romans 3:10, page \pageref{g:a} }
+\def\qromansqiiiqx{\label{g:a}\topnote{\circlegreyfill{\small A}}{Romans 3:10, 3:23 (sin). Turn to page \pageref{g:b} }}
+\def\qromansqiiiqxxiii{\topnote{\circlegreyfill{\small A}}{Romans 3:10, 3:23 (sin). Turn to page \pageref{g:b} }}
+\def\qromansqviqxxiii{\label{g:b}\topnote{\circlegreyfill{\small B}}{Romans 6:23 (judgement). Turn to page \pageref{g:c} }}
+\def\qrevelationqxxqxiv{\label{g:c}\topnote{\circlegreyfill{\small B}}{Revelation 20:14-15, 21:8 (punishment).  Turn to page \pageref{g:d} }}
+\def\qrevelationqxxiqviii{\topnote{\circlegreyfill{\small B}}{Revelation 20:14-15, 21:8 (punishment).  Turn to page \pageref{g:d} }}
+%\def\qromansqiiiqxxiii\topnote{Gospel: Romans 3:23, Turn to page \pageref{g:b} }}
+\def\qicorinthiansqxvqiii{\label{g:d}\topnote{\circlegreyfill{\small C}}{1 Corinthians 15:3-4 (the cross).  Turn to page \pageref{g:e} }}
+\def\qromansqvqviii{\label{g:e}\topnote{\circlegreyfill{\small C}}{Romans 5:8 (punishment). Turn to page \pageref{g:f} }}
+\def\qactsqxviqxxxi{\label{g:f}\topnote{\circlegreyfill{\small D}}{Acts 16:31 (believe).  Turn to page \pageref{g:g} }}
+\def\qjohnqiiiqxvi{\label{g:g}\topnote{\circlegreyfill{\small D}}{John 3:16 (believe). Turn to page \pageref{g:h} }}
+\def\qjohnqvqxxiv{\label{g:h}\topnote{\circlegreyfill{\small E}}{John 5:24 (saved forever). Turn to page \pageref{g:i} }}
+\def\qromansqxqxiii{\label{g:i}\topnote{\circlegreyfill{\small E}}{Romans 10:13 (believe, ask).}}
+
 \input{biblayout.tex}
 

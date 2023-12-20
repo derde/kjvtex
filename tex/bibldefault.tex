@@ -44,9 +44,11 @@
 \def\myversefontstretch{\myfontstretch}% verse number font scaling
 \def\mychapterfontstretch{\myfontstretch}% verse number font scaling
 \def\mychapterfontname{\mysansfont}% verse number font scaling
+\def\mychapterfontextra{\relax}% fontextra ... things like \color{mygray}
 \def\myversescale{0.65}% verse number font scaling
 \def\mychapterscale{0.90}% chapter number scale
 \def\mychapterspace{0.25\baselineskip}% needspace for chapter title (should be 2\baselineskip - but in multicolumn, it doesn't work)
+\def\mychapterraise{0pt}% push the chapter number up this much
 \def\myverseraise{0.3em}% verse number superscript scaling
 \def\myversehspace{0.8pt}% space after verse number
 \def\myverseahspace{\myversehspace}% space after verse number before A
@@ -106,6 +108,48 @@
 \newcommand\myrearmatter{%
     % Nothing to see here, sorry - no maps, no concordance, no dictionary, no weights and measures
 }
+\newcommand\usepackages{}
+\newcommand\bibl[1]{#1}
+\def\mytocwidth{0.90\linewidth}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\circlegreyoutline[1]{%
+  \Circled[outer color=circlegrey,fill color=circlegrey,inner color=black,inner xsep=1pt,inner ysep=2pt]{#1}%
+% fill color=black,inner color=white,inner xsep=0.2ex,inner ysep=0.5ex,#1]{\sffamily\:#2} \fi }
+}
+\newcommand\circlegreyfill[1]{%
+    \raisebox{0.5pt}{%
+        \Circled[outer color=circlegrey,fill color=circlegrey,inner color=black,inner xsep=1pt,inner ysep=2pt]{#1}
+    }
+% fill color=black,inner color=white,inner xsep=0.2ex,inner ysep=0.5ex,#1]{\sffamily\:#2} \fi }
+}
+% Code clone city:
+\newcommand{\circlesharedverse}[2]{\raisebox{1.5pt}[0pt]{\circlegreyoutline{\myversefont\textbf{#1}}}\def\mythumbindex{#2}}%
+\newcommand{\circleverse}[2]{\mypreverse\hebrewleader\def\hebrewleader{}\circlesharedverse{#1}{#2}}%
+
+\newcommand\tmpverse{}
+% Underline the next verse number, by redefining "verse"
+\newcommand\circleoverrideverse{%
+    \let\overse\verse\relax
+    \renewcommand\verse[2]{%
+        \let\verse\overse
+        \circleverse{##1}{##2}%j\hskip-1pt
+    }
+}
+% Add a top-of-page note to a verse
+\newcommand\topnote[2]{%
+    \circleoverrideverse% decorate the verse number
+    \gdef\extramark{%
+        \tinyfont%
+        \spaceskip=\dimexpr\the\fontdimen2\font-\the\fontdimen4\font\relax% plus \the\fontdimen4\font % space between words: keep it constant, with tiny changes, no up-side
+        #1\ #2\null
+        \gdef\extramark{\null}%
+    }%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 \input{kjvwordlist}
 \input{kjvdifferences}

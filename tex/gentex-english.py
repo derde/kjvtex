@@ -18,7 +18,15 @@ romannumerals=[ '', 'i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix',
     'cxxii', 'cxxiii', 'cxxiv', 'cxxv', 'cxxvi', 'cxxvii', 'cxxviii', 'cxxix',
     'cxxx', 'cxxxi', 'cxxxii', 'cxxxiii', 'cxxxiv', 'cxxxv', 'cxxxvi', 'cxxxvii',
     'cxxxviii', 'cxxxix', 'cxl', 'cxli', 'cxlii', 'cxliii', 'cxliv', 'cxlv',
-    'cxlvi', 'cxlvii', 'cxlviii', 'cxlix', 'cl', ]
+    'cxlvi', 'cxlvii', 'cxlviii', 'cxlix', 'cl', 'cli', 'clii', 'cliii',
+    'cliv', 'clv', 'clvi', 'clvii', 'clviii', 'clix', 'clx', 'clxi', 'clxii',
+    'clxiii', 'clxiv', 'clxv', 'clxvi', 'clxvii', 'clxviii', 'clxix', 'clxx',
+    'clxxi', 'clxxii', 'clxxiii', 'clxxiv', 'clxxv', 'clxxvi', 'clxxvii',
+    'clxxviii', 'clxxix', 'clxxx', 'clxxxi', 'clxxxii', 'clxxxiii', 'clxxxiv',
+    'clxxxv', 'clxxxvi', 'clxxxvii', 'clxxxviii', 'clxxxix', 'cxc', 'cxci',
+    'cxcii', 'cxciii', 'cxciv', 'cxcv', 'cxcvi', 'cxcvii', 'cxcviii', 'cxcix',
+    'cc',
+]
 
 # Unicode smallcaps
 smallcaps={ 'a': 'ᴀ', 'b': 'ʙ', 'c': 'ᴄ', 'd': 'ᴅ', 'e': 'ᴇ', 'f': 'ꜰ', 'g':
@@ -100,6 +108,8 @@ class Hebrew:
         return text
 
 class English:
+    ot=1
+    nt=1
     languageindex=1
     bookfullnamesEn = {
         'Ge'   : 'Genesis',
@@ -252,6 +262,8 @@ class English:
         return book
 
 class German:
+    ot=1
+    nt=1
     languageindex=3
     bookfullnamesDe = {
         'Ge'   : '1. Mose',
@@ -359,6 +371,8 @@ class German:
         return text
 
 class French:
+    ot=1
+    nt=1
     languageindex=4
     bookfullnamesFr = {
         'Ge'   : 'Genèse',
@@ -466,6 +480,8 @@ class French:
         return text
 
 class Afrikaans:
+    ot=1
+    nt=1
     tabIndexPos={}
     languageindex=2
     af_lowercase={
@@ -629,7 +645,9 @@ class Afrikaans:
         'Openbaring'           : ['OPENBARING'         ,'Openbaring'          ],
     }
 
-    def __init__(self,file='afrikaans.psalmtitles', numberfile='afrikaans.renumbering'):
+    def __init__(self,file='afrikaans.psalmtitles', numberfile='afrikaans.renumbering', ot=1, nt=1):
+        self.ot=ot
+        self.nt=nt
         # Hebrew letter, prefix, capitalised-word
         self.titlecasewl=re.compile(r"^([A-Z][a-z]+\. )?(’n |O |O, )?([-A-ZÁÉÊËÍÓŌÚ]{2,})(.*)")
         self.titlecasebl=re.compile(r"^([A-Z][a-z]+\. )?(’n |O, )?(HERE)")
@@ -813,6 +831,8 @@ class bibleformatter:
     # python seems to have these already ... not sure what we're doing here ...
     def __init__(self,language,file):
         self.language=language;
+        self.ot=language.ot
+        self.nt=language.nt
         self.hebrew=Hebrew()
         self.state={
             'book': '',
@@ -852,9 +872,10 @@ class bibleformatter:
     def verseheading(self,verse,insert):
         # r+=  r'\verse{'+verse+'}'  
         cmd='\\verse'
-        if verse=='1': cmd=r'\versei' # no space before 1st verse
-        elif verse=='2': cmd=r' \verseii' # space before 2nd verse
-        else: cmd=r' \verse' # space before verses 3 and on
+        if verse=='1':
+            cmd=r'\versei' # no space before 1st verse
+        elif verse=='2': cmd=r'\verseii' # space before 2nd verse
+        else: cmd=r'\verse' # space before verses 3 and on
         return r''+cmd+'{'+verse+insert+'}{'+str(self.state['index'])+'}'
 
     def isnewparagraph(self,book,chapter,verse,text):
@@ -921,6 +942,21 @@ class bibleformatter:
         if book=='PSALMS': return 'PSALM'
         return book
 
+    def reftoroman(self,book,chapter,verse,cmd):
+        book=book.replace(' ','').lower();
+        book=book.replace('1','i')
+        book=book.replace('2','ii')
+        book=book.replace('3','iii')
+        book=book.lower().replace(' ','')
+        return cmd+ book + \
+            'q'+romannumerals[int(chapter)]+\
+            'q'+romannumerals[int(verse)];
+
+    def reftoconditional(self,book,chapter,verse,cmd):
+        c = self.reftoroman(book,chapter,verse,cmd)
+        if not c: return ''
+        return r'\ifdefined'+c+c+r'\fi{}'
+
     def booktolatex(self):
         '''Parse the book, and return paragraphs'''
         self.state['paragraph']=0
@@ -934,8 +970,11 @@ class bibleformatter:
         self.state['index']=1
         self.state['shortbook']=''
         newbook=True
-        yield r'\biblbeforeoldtestament' % self.state +'%\n'
-        yield (r'\biblnewsection{'+self.language.oldtestament+'}') % self.state +'%\n'
+        emit = 0
+        if self.ot:
+            emit = 1
+            yield r'\biblbeforeoldtestament' % self.state +'%\n'
+            yield (r'\biblnewsection{'+self.language.oldtestament+'}') % self.state +'%\n'
         for book,chapter,verse,text in self.booktochapters():
             ostate=copy.copy(self.state)
             self.state['sourcereference']=book+' '+chapter+':'+verse
@@ -957,15 +996,17 @@ class bibleformatter:
                 # ostate['sbook']=ostate['book'].replace(' ','').lower().replace('1','i').replace('2','ii').replace('3','iii')
                 ostate['sbook']=bookiii(ostate['book'])
                 ostate['romanchapter']=romannumerals[int(ostate['chapter'])]
-                yield ( r'\ifdefined\biblendchapter%(sbook)s%(romanchapter)s{\biblendchapter%(sbook)s%(romanchapter)s}\fi' % ostate ) + '%\n'
-                yield ( r'\biblendchapter{%(book_s)s %(chapter)s}{%(index)s}' % ostate ) + '%\n'
+                if emit: yield ( r'\ifdefined\biblendchapter%(sbook)s%(romanchapter)s{\biblendchapter%(sbook)s%(romanchapter)s}\fi' % ostate ) + '%\n'
+                if emit: yield ( r'\biblendchapter{%(book_s)s %(chapter)s}{%(index)s}' % ostate ) + '%\n'
             if newbook and ostate['book']:
                 ostate['sbook']=bookiii(ostate['book'])
-                yield ( r'\ifdefined\biblendbook%(sbook)s{\biblendbook%(sbook)s}\fi' % ostate ) + '%\n'
-                yield ( r'\biblendbook{%(book)s}' % ostate ) + '%\n'
+                if emit: yield ( r'\ifdefined\biblendbook%(sbook)s{\biblendbook%(sbook)s}\fi' % ostate ) + '%\n'
+                if emit: yield ( r'\biblendbook{%(book)s}' % ostate ) + '%\n'
             if newbook and book.startswith('Matth'): # matthew/matteus
-                yield ( r'\biblbeforenewtestament' % self.state ) + '%\n'
-                yield ( (r'\biblnewsection{'+self.language.newtestament+'}') % self.state ) + '%\n'
+                if self.nt:
+                    emit=1
+                if emit: yield ( r'\biblbeforenewtestament' % self.state ) + '%\n'
+                if emit: yield ( (r'\biblnewsection{'+self.language.newtestament+'}') % self.state ) + '%\n'
             if newbook:
                 if self.state['book'] not in ('2 John','3 John','2 Peter', '2 Timothy', '2 Thessalonians'):
                     self.state['index']=((self.state['index']) % 61 )+1
@@ -973,22 +1014,25 @@ class bibleformatter:
                     if i:
                         self.state['index']=i
                 self.state['prettyname']=self.language.getbookprettyname(self.state['book'])
-                yield r'\biblbookheading{%(prettyname)s}' % self.state+'%\n';
-                yield r'\biblnewbook{%(book)s}{%(short)s}' % self.state + '%\n'
+                if emit: yield r'\biblbookheading{%(prettyname)s}' % self.state+'%\n';
+                if emit: yield r'\biblnewbook{%(book)s}{%(short)s}' % self.state + '%\n'
             if newchapter:
                 if self.state['shortbook']:
-                    yield r'\biblnewchapter{%(book_s)s}' % self.state + '%\n' # omit chapter from heading for 1-heading book
+                    if emit: yield r'\biblnewchapter{%(book_s)s}' % self.state + '%\n' # omit chapter from heading for 1-heading book
                 else:
-                    yield r'\biblnewchapter{%(book_s)s %(chapter)s}' % self.state + '%\n'
-                    yield r'\bibldropcapschapter{%(chapter)s}' % self.state + '%\n' 
+                    if emit: yield r'\biblnewchapter{%(book_s)s %(chapter)s}' % self.state + '%\n'
+                    if emit: yield r'\bibldropcapschapter{%(chapter)s}' % self.state + '%\n' 
             if self.state['isnewparagraph']:
                 if verse=='1':
                     pass # meh .. it might be new, but we don't want to print it
                 elif verse=='2':
-                    yield r'\biblsyntheticparii' % self.state + '%\n'
+                    if emit: yield r'\biblsyntheticparii' % self.state + '%\n'
                 else:
-                    yield r'\biblnewparagraph' % self.state + '%\n'
+                    if emit: yield r'\biblnewparagraph' % self.state + '%\n'
             t=''
+            if self.state['verse']!='1':
+                t+=' ';
+            t += self.reftoconditional(self.state['book'],self.state['chapter'],self.state['verse'],'\\q')
             text = self.language.markuppsalmheadings(text,self.state)
             text=text.replace('’',"'") # weird unicode is weird
             text = self.hebrew.adjust(text,self.state)
@@ -999,19 +1043,20 @@ class bibleformatter:
                 insert = '\\versehskip'
             t += self.verseheading(verse,insert)
             t += r'\biblnewreference{%(REFERENCE)s}{%(index)s}' % self.state
+            # each verse has a prefix that can be defined
             text=re.sub(r'<<\[(.*?)\]>>*',self.sub_format_epistleattribution,text)
             text=re.sub(r'<<([^a-z]*?)>>',self.sub_format_sectionsep,text)
             text=re.sub(r'<<(.*?)>>',self.sub_format_psalmheading,text)
             text=re.sub(r'\[(.*?)\]',self.sub_format_italics,text)
             text=re.sub(r'AEneas','Æneas',text)
             text= self.reformat_smallcaps(text)
-            t += text
+            t += r'\bibl{'+text+'}'  # final wrap for text
             t += r'\biblendreference{%(REFERENCE)s}{%(index)s}' % self.state 
             t += '\n'
-            yield t
-        yield ( r'\biblendchapter{%(book_s)s %(chapter)s}{%(index)s}' % self.state ) + '%\n'
-        yield ( r'\biblendlastbook{%(book)s}' % self.state ) + '%\n'
-        yield ( r'\biblafternewtestament' % self.state ) + '%\n'
+            if emit: yield t
+        if emit: yield ( r'\biblendchapter{%(book_s)s %(chapter)s}{%(index)s}' % self.state ) + '%\n'
+        if emit: yield ( r'\biblendlastbook{%(book)s}' % self.state ) + '%\n'
+        if emit: yield ( r'\biblafternewtestament' % self.state ) + '%\n'
 
 def iteratechapters(language,src):
     en=bibleformatter(language,src)
@@ -1033,6 +1078,7 @@ def bookiii(name):
 #src=open('../1769.txt','r')
 english=English() # 1
 afrikaans=Afrikaans() # 2
+afrikaansnt=Afrikaans(ot=0,nt=1) # 2
 german=German() # 3
 french=French() # 4
 src_dst = [
@@ -1040,6 +1086,7 @@ src_dst = [
     (english,   '../text/kingjamesbibleonline.txt', 'english.tex'), # like this one more
     (english,   '../text/kingjamesbibleonline-sc.txt', 'en.tex'), # like this one more
     (afrikaans, '../text/af1953.txt', 'afrikaans.tex'), 
+    (afrikaansnt, '../text/af1953.txt', 'afrikaans-nt.tex'), 
     (german, '../text/sch2000.txt', 'sch2000.tex'), 
     (french, '../text/fr.ostervald2018', 'ostervald2018.tex'), ]
 
