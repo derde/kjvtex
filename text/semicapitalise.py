@@ -30,7 +30,12 @@ def decap(fn, fo, propernouns):
     fd=open(fn,'r')
     continuation=False
     continuation_re=re.compile(r'[a-z:;,]\)?\s*$')
-    continuation_bl_re=re.compile('\\b(crieth|saith|say|saying|said|written|call|Itheil|burden|vowed.*of Jacob|shake the head|a parable)\\b[a-z ]*[:;,]\s*$') # saying: Quotation
+    bl_patterns=['stood up in the midst',
+        'Carshena,',
+        'Nicodemus saith unto them,',
+        '\\b(crieth|saith|say|saying|said|written|call|Itheil|burden|vowed.*of Jacob|shake the head|a parable)\\b[a-z ]*[:;,]\s*$',
+        ]
+    continuation_bl_re=re.compile('|'.join(bl_patterns))
 
     # Numbers 28:28 and their meat offering of flour mingled with oil, three tenth deals unto one bullock, two tenth deals unto one ram,
     # Numbers 28:29 A several tenth deal unto one lamb, throughout the seven lambs;
