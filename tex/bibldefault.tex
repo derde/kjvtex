@@ -140,7 +140,8 @@
 }
 % Add a top-of-page note to a verse
 \newcommand\topnote[2]{%
-    \circleoverrideverse% decorate the verse number
+    % \circleoverrideverse% decorate the verse number
+    \boldverse
     \gdef\extramark{%
         \tinyfont%
         \spaceskip=\dimexpr\the\fontdimen2\font-\the\fontdimen4\font\relax% plus \the\fontdimen4\font % space between words: keep it constant, with tiny changes, no up-side
