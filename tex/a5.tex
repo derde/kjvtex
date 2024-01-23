@@ -8,12 +8,18 @@
 \def\mypapersize{148mm,210mm}% A5
 \def\mydisplayfont{Graze Shorter}
 \def\myfontname{[GrazeShorter.otf]}
+%\def\myfontname{Bitstream Charter}
+%\def\mydisplayfont{Bitstream Charter}
 %\def\mysansfont{Liberation Sans}
+\def\myfontopts{
+    BoldFont=[GrazeShorter-Bold.otf],
+    ItalicFont=[GrazeShorter-Italic.otf],
+}
 \def\mysansfontii{Liberation Sans}
 \def\mysansfont{Liberation Sans}
-\def\myfontsize{8.0pt} % This pretty much determines the page count
-\def\mybaseline{8.4pt} % Recommended minimum is fontsize * 1.05 here
-\def\myfontstretch{0.9543} % Adjust this from 0.875 (tight) to 1.00 (nice) for fine adjustment of page count (and maybe pagination)
+\def\myfontsize{7.59pt} % This pretty much determines the page count
+\def\mybaseline{8.47pt} % Recommended minimum is fontsize * 1.05 here # 65×8.4719
+\def\myfontstretch{1.000} % Adjust this from 0.875 (tight) to 1.00 (nice) for fine adjustment of page count (and maybe pagination)
 
 % Chapter numbering
 %\def\mychapterfontstretch{0.6}\def\mychapterfontname{GrazeShorter-Bold.otf}
@@ -21,13 +27,13 @@
 \def\mychapterraise{1pt}% push the chapter number up this much
 \def\mychapterfontextra{\color{mygray}}% push the chapter number up this much
 \def\mychapterscale{1.0}
-\def\mychapterspace{0.44\baselineskip}
+\def\mychapterspace{0.40\baselineskip}
 
 % Verse numbering:
 %\def\myversefontstretch{0.6}\def\myversefontname{GrazeShorter-Bold.otf}
 \def\myversefontstretch{0.8}\def\myversefontname{Liberation Sans}
 \def\myversescale{0.80}
-\def\myverseraise{0.45ex}% =~ (\baselineskip+\fontsize)/2 - \fontsize*\myversescale)
+\def\myverseraise{0.50ex}% =~ (\baselineskip+\fontsize)/2 - \fontsize*\myversescale)
 \def\myversehspace{0.3pt}% space after verse number
 \def\myverseahspace{-0.05em}% space after verse number before A
 % 
@@ -44,11 +50,6 @@
   \parfillskip=0pt plus 2.5em\relax%   last line of paragraph space: use up all of the spare space here.
   %\parfillskip=0pt plus 4.1em\relax%   last line of paragraph space: use up all of the spare space here.
 }%
-\def\myboldness{ }
-\def\myfontopts{
-    BoldFont=[GrazeShorter-Bold.otf],
-    ItalicFont=[GrazeShorter-Italic.otf],
-}
 \renewcommand\showbindingmarks[1]{}
 % This works, but it seems neater to squash the font, rather than reduce the inter-character spacing:
 %\def\myletterspace{LetterSpace=0 plus 0 minus 0}
@@ -111,18 +112,18 @@ Words of Christ in black.\hfill\par
 }
 
 \def\ENmottoii{\circlegreyfill{\small A}\ Gospel outline starts at Romans 3:10, page \pageref{g:a} }
-\def\qromansqiiiqx{\label{g:a}\topnote{\circlegreyfill{\small A}}{Romans 3:10, 3:23 (sin). Turn to page \pageref{g:b} }}
-\def\qromansqiiiqxxiii{\topnote{\circlegreyfill{\small A}}{Romans 3:10, 3:23 (sin). Turn to page \pageref{g:b} }}
-\def\qromansqviqxxiii{\label{g:b}\topnote{\circlegreyfill{\small B}}{Romans 6:23 (judgement). Turn to page \pageref{g:c} }}
-\def\qrevelationqxxqxiv{\label{g:c}\topnote{\circlegreyfill{\small B}}{Revelation 20:14-15, 21:8 (punishment).  Turn to page \pageref{g:d} }}
+\def\qromansqiiiqx{\boldverse\label{g:a}\topnote{\circlegreyfill{\small A}}{Romans 3:10, 3:23 (sin). Turn to page \pageref{g:b} }}
+\def\qromansqiiiqxxiii{\boldverse\topnote{\circlegreyfill{\small A}}{Romans 3:10, 3:23 (sin). Turn to page \pageref{g:b} }}
+\def\qromansqviqxxiii{\boldverse\label{g:b}\topnote{\circlegreyfill{\small B}}{Romans 6:23 (judgement). Turn to page \pageref{g:c} }}
+\def\qrevelationqxxqxiv{\boldverse\label{g:c}\topnote{\circlegreyfill{\small B}}{Revelation 20:14-15, 21:8 (punishment).  Turn to page \pageref{g:d} }}
 \def\qrevelationqxxiqviii{\topnote{\circlegreyfill{\small B}}{Revelation 20:14-15, 21:8 (punishment).  Turn to page \pageref{g:d} }}
 %\def\qromansqiiiqxxiii\topnote{Gospel: Romans 3:23, Turn to page \pageref{g:b} }}
-\def\qicorinthiansqxvqiii{\label{g:d}\topnote{\circlegreyfill{\small C}}{1 Corinthians 15:3-4 (the cross).  Turn to page \pageref{g:e} }}
-\def\qromansqvqviii{\label{g:e}\topnote{\circlegreyfill{\small C}}{Romans 5:8 (punishment). Turn to page \pageref{g:f} }}
-\def\qactsqxviqxxxi{\label{g:f}\topnote{\circlegreyfill{\small D}}{Acts 16:31 (believe).  Turn to page \pageref{g:g} }}
-\def\qjohnqiiiqxvi{\label{g:g}\topnote{\circlegreyfill{\small D}}{John 3:16 (believe). Turn to page \pageref{g:h} }}
-\def\qjohnqvqxxiv{\label{g:h}\topnote{\circlegreyfill{\small E}}{John 5:24 (saved forever). Turn to page \pageref{g:i} }}
-\def\qromansqxqxiii{\label{g:i}\topnote{\circlegreyfill{\small E}}{Romans 10:13 (believe, ask).}}
+\def\qicorinthiansqxvqiii{\boldverse\label{g:d}\topnote{\circlegreyfill{\small C}}{1 Corinthians 15:3-4 (the cross).  Turn to page \pageref{g:e} }}
+\def\qromansqvqviii{\boldverse\label{g:e}\topnote{\circlegreyfill{\small C}}{Romans 5:8 (punishment). Turn to page \pageref{g:f} }}
+\def\qactsqxviqxxxi{\boldverse\label{g:f}\topnote{\circlegreyfill{\small D}}{Acts 16:31 (believe).  Turn to page \pageref{g:g} }}
+\def\qjohnqiiiqxvi{\boldverse\label{g:g}\topnote{\circlegreyfill{\small D}}{John 3:16 (believe). Turn to page \pageref{g:h} }}
+\def\qjohnqvqxxiv{\boldverse\label{g:h}\topnote{\circlegreyfill{\small E}}{John 5:24 (saved forever). Turn to page \pageref{g:i} }}
+\def\qromansqxqxiii{\boldverse\label{g:i}\topnote{\circlegreyfill{\small E}}{Romans 10:13 (believe, ask).}}
 
 \input{biblayout.tex}
 

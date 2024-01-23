@@ -1,4 +1,4 @@
-% A5 Bible in 640 pages
+% A5 Afrikaans Byble in 880 bladsye
 \input{bibldefault.tex}
 \def\mysourcetext{afrikaans}
 \def\mytexlanguage{english}
@@ -9,22 +9,21 @@
 \def\ENtitle{DIE BYBEL}
 \def\ENsubtitle{Grootdruk beknop}
 \def\ENmotto{Die vrug van die regverdige is ’n boom van die lewe, en hy wat siele win, is wys.}
-\def\mymargins{left=15mm,top=13mm,right=15mm,bottom=10mm,bindingoffset=5mm,headheight=8mm}
+\def\mymargins{left=8.0mm,top=10mm,right=7.0mm,bottom=7mm,bindingoffset=1mm,headheight=7mm}
 \def\myheadsep{3mm}
-\def\mypapersize{210mm,297mm}% A4
+\def\mypapersize{135mm,195mm}% A5, less 6.5mm right facing/reverse, and 7.5mm top and bottom
+\def\mycolumnsep{0.8em}
 \def\mydisplayfont{Graze Shorter}
 \def\myfontname{[GrazeShorter.otf]}
 \def\mysansfont{Liberation Sans}
-\def\myfontsize{12.00pt}
-\def\mybaseline{12.50pt}
+\def\myfontsize{8.00pt}
+\def\mybaseline{9.03pt}
 \def\myfontopts{
     BoldFont=[GrazeShorter-Bold.otf],
     ItalicFont=[GrazeShorter-Italic.otf],
 }
 % This works, but it seems neater to squash the font, rather than reduce the inter-character spacing:
-\def\myfontstretch{0.90}
-\def\myletterspace{LetterSpace=0 plus 0 minus 2}
-%\def\myfontstretch{0.875}
+\def\myfontstretch{0.929}
 %\def\myletterspace{}
 \def\myextradisplay{}
 \def\myhypenpenalty{1000}%   Lower penalty means more hypenation and fewer pages
@@ -42,9 +41,6 @@
 }
 %\def\biblbeforeoldtestament{\newpage\thispagestyle{noheadings}\null\vfill\begin{center}DIE OU TESTAMENT\end{center}\vfill\null\vfill}
 %\def\biblbeforenewtestament{\newpage\thispagestyle{noheadings}\null\vfill\begin{center}DIE NUWE TESTAMENT\end{center}\vfill\null\vfill}
-\def\myrearmatter{
-%    \kjvwordlist
-}
 
 \def\mypageii{
 \thispagestyle{noheadings}%
@@ -77,9 +73,55 @@ Teks area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit
 \par
 \newpage
 }
-
-\def\mypredocument{
-\selectlanguage{afrikaans}
+\def\mydocumentsettings{
+  \spaceskip=\dimexpr\the\fontdimen2\font-\the\fontdimen4\font\relax plus 0.08em % plus \the\fontdimen4\font % space between words: keep it constant, with tiny changes, no up-side
+  \rightskip=0pt plus 1.8em\relax% space on right hand margin: keep it small
+  \parfillskip=0pt plus 10em\relax%   last line of paragraph space: use up all of the spare space here.
 }
+\def\myhypenpenalty{700}%   Lower penalty means more hypenation and fewer pages
+
+\def\myversehspace{0.3pt}% space after verse number
+\def\myverseahspace{-0.05em}% space after verse number before A
+\def\mychapterraise{1pt}% push the chapter number up this much
+\def\mychapterfontextra{\color{mygray}}% push the chapter number up this much
+\def\mypredocument{
+    \selectlanguage{afrikaans}
+    \frenchspacing% Oh wow ... this saves two pages!
+    \pretolerance=200
+    \renewcommand{\headruleskip}{-2pt}
+    \frenchspacing% Oh wow ... this saves two pages!
+    \newfontfamily\tinyfont[FakeStretch=\myversefontstretch,Scale=0.9]{\mysansfont}
+    \definecolor{circlegrey}{gray}{0.9}
+}
+\def\usepackages{
+\usepackage{zref-savepos}
+\usepackage{pifont}
+\usepackage{circledsteps}
+}
+
+% To omit binding marks
+\renewcommand{\oddbindingmarks}{}
+\renewcommand{\evenbindingmarks}{}
+
+% Gospel outline markup
+\def\ENmottoii{\circlegreyfill{\small A}\ Evangelie verse begin by Romeine 3:10, bladsy \pageref{g:A} }
+\def\qromeineqiiiqx{\boldverse\label{g:A}\topnote{\circlegreyfill{\small A}}{Romeine 3:10, 3:23 (sonde). Na bladsy \pageref{g:B} }}
+\def\qromeineqiiiqxxiii{\boldverse\topnote{\circlegreyfill{\small A}}{Romeine 3:10, 3:23 (sonde). Na bladsy \pageref{g:B} }}
+\def\qromeineqviqxxiii{\boldverse\label{g:B}\topnote{\circlegreyfill{\small B}}{Romeine 6:23 (oordeel). Na bladsy \pageref{g:C} }}
+\def\qopenbaringqxxqxiv{\boldverse\label{g:C}\topnote{\circlegreyfill{\small B}}{Openbaring 20:14-15, 21:8 (die dood).  Na bladsy \pageref{g:D} }}
+\def\qopenbaringqxxiqviii{\boldverse\topnote{\circlegreyfill{\small B}}{Openbaring 20:14-15, 21:8 (hel).  Na bladsy \pageref{g:D} }}
+%\def\qromeineqiiiqxxiii\topnote{Gospel: romeine 3:23, Na bladsy \pageref{g:b} }}
+\def\qikorinthiersqxvqiii{\boldverse\label{g:D}\topnote{\circlegreyfill{\small C}}{1 Kor. 15:3-4 (opstanding).  Na bladsy \pageref{g:E} }}
+\def\qromeineqvqviii{\boldverse\label{g:E}\topnote{\circlegreyfill{\small C}}{Romeine 5:8 (straf). Na bladsy \pageref{g:F} }}
+\def\qhandelingeqxviqxxxi{\boldverse\label{g:F}\topnote{\circlegreyfill{\small D}}{Handelinge 16:31 (glo!).  Na bladsy \pageref{g:G} }}
+\def\qjohannesqiiiqxvi{\boldverse\label{g:G}\topnote{\circlegreyfill{\small D}}{Johannes 3:16 (glo!). Na bladsy \pageref{g:H} }}
+\def\qjohannesqvqxxiv{\boldverse\label{g:H}\topnote{\circlegreyfill{\small E}}{Johannes 5:24 (altyd gered). Na bladsy \pageref{g:I} }}
+\def\qromeineqxqxiii{\boldverse\label{g:I}\topnote{\circlegreyfill{\small E}}{Romeine 10:13 (vra net).}}
+\def\myrearmatter{
+    \newpage\null
+    \thispagestyle{noheadings}
+    \null
+}
+
 \input{biblayout.tex}
 
