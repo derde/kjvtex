@@ -111,7 +111,8 @@
 \newcommand\usepackages{}
 \newcommand\bibl[1]{#1}
 \def\mytocwidth{0.90\linewidth}
-
+\def\bibltocpre{}
+\def\bibltocpost{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand\circlegreyoutline[1]{%
@@ -147,6 +148,8 @@
         \gdef\extramark{\null}%
     }%
 }
+% Make the verse bold by redefining the bibl macro:
+\newcommand{\boldverse}{\renewcommand{\bibl}[1]{\textbf{##1}\renewcommand{\bibl}[1]{####1}}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

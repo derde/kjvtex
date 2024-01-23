@@ -1037,7 +1037,7 @@ class bibleformatter:
             text=text.replace('’',"'") # weird unicode is weird
             text = self.hebrew.adjust(text,self.state)
             firstletter = text[:1]
-            if firstletter in ('A'):
+            if firstletter in ('A','J'):
                 insert = '\\versehskipa'
             else:
                 insert = '\\versehskip'

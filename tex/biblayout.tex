@@ -319,6 +319,7 @@
 \ENcopyright
 \ifdefined\ENmottoii{\ENmottoii\par}\fi
 \null\par
+{\bibltocpre
 Typesetting by {\mylatexfont \LaTeX{}}, %
 \myformattinginfoi
 \par
@@ -342,6 +343,8 @@ Text area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit
 \mylayoutblurb
 %\par\bookheadingstrut{3\baselineskip}%
 \par
+\bibltocpost
+}
 \newpage
 }}}\fi
 %%% PAGE 3: TITLE PAGE %%%%%%%%%%%%%%%
@@ -407,7 +410,7 @@ Text area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit
 }%
 \newcommand{\biblnewbook}[2]{%
     \write\mytoc{%
-        \noindent {\mynostretchfont □ ~}#1 \unexpanded{\mydotfill}{\thepage}\par}% The box is defined in the font, we hope
+        \unexpanded{\bibltocpre}\noindent {\mynostretchfont □ ~}#1 \unexpanded{\mydotfill}{\thepage}\unexpanded{\bibltocpost}\par}% The box is defined in the font, we hope
     \gdef\mybookshort{#2}%
     \gdef\mythumbindex{#2}%
 }%
