@@ -33,7 +33,10 @@ def decap(fn, fo, propernouns):
     bl_patterns=['stood up in the midst',
         'Carshena,',
         'Nicodemus saith unto them,',
-        '\\b(crieth|is spoken|spoken by|hath spoken|saith|say|saying|said|written|call|Itheil|burden|vowed.*of Jacob|shake the head|a parable)\\b[a-z ]*[:;,]\s*$',
+        'spoken by',
+        'is spoken',
+        'was spoken',
+        '\\b(crieth|saith|say|saying|said|written|call|Itheil|burden|vowed.*of Jacob|shake the head|a parable)\\b[a-z ]*[:;,]\s*$',
         ]
     continuation_bl_re=re.compile('|'.join(bl_patterns))
 
