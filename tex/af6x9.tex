@@ -17,20 +17,20 @@
 \def\myfontname{[GrazeShorter.otf]}
 \def\mysansfont{Liberation Sans}
 \def\myfontsize{7.00pt}
-\def\mybaseline{7.350pt}
+\def\mybaseline{7.38pt}
 \def\myfontopts{
     BoldFont=[GrazeShorter-Bold.otf],
     ItalicFont=[GrazeShorter-Italic.otf],
 }
 % This works, but it seems neater to squash the font, rather than reduce the inter-character spacing:
-\def\myfontstretch{0.891}
+\def\myfontstretch{0.94}
 %\def\myletterspace{}
 \def\myextradisplay{}
 \def\myhypenpenalty{1000}%   Lower penalty means more hypenation and fewer pages
 \def\mytoccolumns{3}
 \def\mychapterscale{0.98}
-\def\myversescale{0.80}
-\def\myverseraise{2pt}
+\def\myversescale{0.85}
+\def\myverseraise{1pt}
 \def\mylayoutblurb{}
 
 \renewcommand\myfrontmatter{%
@@ -122,6 +122,10 @@ Teks area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit
     %\newpage\null\thispagestyle{noheadings}
     \newpage\null\thispagestyle{noheadings}
     \newpage\null\thispagestyle{noheadings}
+    \begin{multicols*}{2}
+    \rightskip=0pt plus 0.1em\relax% space on right hand margin: keep it small now
+    \input{gospel-outline.af.tex}%
+    \end{multicols*}
 }
 \def\mychapterspace{0.44\baselineskip}% needspace for chapter title (should be 2\baselineskip - but in multicolumn, it doesn't work)
 
