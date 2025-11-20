@@ -27,3 +27,45 @@ make my speech nothing worth?\biblendreference{JOB 24:25}{18}
 This might be possible to automate using end-of-paragraph indentation, and a multi-pass system --
 https://tex.stackexchange.com/questions/579392/indent-the-last-line-of-a-paragraph
 
+
+
+TOPICS FOR DOCUMENTATION
+
+Some talking head videos on the finer topics of layout could be fun.
+
+Text -
+ * Text selection: kingjamesbibleonline vs purecambridgeedition
+ * Psalm titles, epistle postscript, book titles
+ * Handling italics
+Features -
+ * Front matter - table of contents, font spec list
+ * Rear matter - topics, word list
+Font -
+ * Measuring font sizes in existing publications
+ * Font compaction
+ * Horizontal font scaling - space vs readability
+ * Line spacing
+ * Font kerning
+ * Hyphenation
+ * Page size change by font and spacing size (square of font size, linear of line space)
+Layout -
+ * Minimising space to maximise font size
+ * Continue-on-same-line vs new paragraph per verse
+ * Continue-on-same-page vs new page per book
+ * Chapter numbers drop caps, keep with next
+ * Register-true for bleed through
+ * Page margins
+ * Dangling chapter numbers for final chapter
+ * Front and back pages and matter
+Readability -
+ * Book title graying for bleed-through
+ * Page headings with dash for readability
+ * Ragged right rather than justified
+ * Crop marks for printing
+ * Binding marks
+ * Inter-column space
+ * Final adjustments: end of chapter adjustments
+ * Final adjustments: per-verse adjustments
+ * Laser-printed dummy, binding
+ * Evaluation of the dummy book
+

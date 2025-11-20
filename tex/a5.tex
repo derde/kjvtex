@@ -17,9 +17,9 @@
 }
 \def\mysansfontii{Liberation Sans}
 \def\mysansfont{Liberation Sans}
-\def\myfontsize{7.59pt} % This pretty much determines the page count
-\def\mybaseline{8.47pt} % Recommended minimum is fontsize * 1.05 here # 65×8.4719
-\def\myfontstretch{1.000} % Adjust this from 0.875 (tight) to 1.00 (nice) for fine adjustment of page count (and maybe pagination)
+\def\myfontsize{7.06pt} % This pretty much determines the page count
+\def\mybaseline{7.42pt} % Recommended minimum is fontsize * 1.05 here # 65×8.4719
+\def\myfontstretch{0.875} % Adjust this from 0.875 (tight) to 1.00 (nice) for fine adjustment of page count (and maybe pagination)
 
 % Chapter numbering
 %\def\mychapterfontstretch{0.6}\def\mychapterfontname{GrazeShorter-Bold.otf}
@@ -31,9 +31,9 @@
 
 % Verse numbering:
 %\def\myversefontstretch{0.6}\def\myversefontname{GrazeShorter-Bold.otf}
-\def\myversefontstretch{0.8}\def\myversefontname{Liberation Sans}
+\def\myversefontstretch{0.9}\def\myversefontname{Liberation Sans}
 \def\myversescale{0.80}
-\def\myverseraise{0.50ex}% =~ (\baselineskip+\fontsize)/2 - \fontsize*\myversescale)
+\def\myverseraise{0.35ex}% =~ (\baselineskip+\fontsize)/2 - \fontsize*\myversescale)
 \def\myversehspace{0.3pt}% space after verse number
 \def\myverseahspace{-0.05em}% space after verse number before A
 % 
@@ -42,7 +42,7 @@
 \def\mylettrinefindent{1pt}
 \def\mydocumentsettings{% Ragged
   % \spaceskip=0.28em plus 0.14em minus 0.08em\relax
-  \spaceskip=\dimexpr\the\fontdimen2\font-\the\fontdimen4\font\relax plus 0.03em % plus \the\fontdimen4\font % space between words: keep it constant, with tiny changes, no up-side
+  \spaceskip=\dimexpr\the\fontdimen2\font-\the\fontdimen4\font\relax plus 0.05em % plus \the\fontdimen4\font % space between words: keep it constant, with tiny changes, no up-side
   % \spaceskip=\dimexpr\the\fontdimen2\font-\the\fontdimen4\font\relax % plus \the\fontdimen4\font % space between words: keep it constant, with tiny changes, no up-side
   \rightskip=0pt plus 1.7em\relax% space on right hand margin: keep it small
   %\parfillskip=0pt plus 15em\relax%   last line of paragraph space: use up all of the spare space here.
@@ -55,7 +55,7 @@
 %\def\myletterspace{LetterSpace=0 plus 0 minus 0}
 \def\myextradisplay{}
 \def\mytoccolumns{3}
-\def\mycontentcolumns{2}
+\def\mycontentcolumns{3}
 \renewcommand\myfrontmatter{%
     %\mypagei%   blank
     \mypageiii%  title page
@@ -72,7 +72,7 @@
     \kjvwordlist
     \kjvtopics
 }
-\def\myhypenpenalty{950}% Lower penalty means more hypenation and fewer pages - there should be around one hypenation per page, I reckon
+\def\myhypenpenalty{850}% Lower penalty means more hypenation and fewer pages - there should be around one hypenation per page, I reckon
 \input{hyph-en.tex}
 \renewcommand{\biblepistleattribution}[1]{}
 %\renewcommand{\biblsectionseparator}[1]{}

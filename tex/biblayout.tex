@@ -82,7 +82,7 @@
     \fancyhead[EL]{\thepage}% hush
     \fancyhead[ER]{}% hush
     \fancyhead[OL]{}% hush
-    \fancyhead[C]{\myheadingfont \textbf{\mycurrentsection}}% hush
+    \fancyhead[C]{\mynoautospacing\myheadingfont \textbf{\mycurrentsection}}% hush
     \fancyhead[OR]{\thepage}% hush
 }
 \fancypagestyle{endmatter}{%
@@ -103,9 +103,9 @@
 \fancyhead[ER]{\extramark\hspace{1em}}% This is the chapter marker block
 \fancyhead[OL]{\extramark}% This is the chapter marker block
 \newcommand\extramark{}
-\fancyhead[OR]{\myheadingfont \textbf{\textemdash\ \leftmark\hspace{1em}\null}\biblthumbmarkright{\mythumbindex}\oddbindingmarks}% Top right header
-\fancyhead[EL]{\myheadingfont \textbf{\textemdash\ \rightmark}\biblthumbmarkleft{\mythumbindex}\evenbindingmarks}% Top left header - leading dash is to discourage accidental reading of the heading
-\fancyhead[C]{\myheadingfont {\thepage}}% Center footer - bold is less readable
+\fancyhead[OR]{\mynoautospacing\myheadingfont \textbf{\textemdash\ \leftmark\hspace{1em}\null}\biblthumbmarkright{\mythumbindex}\oddbindingmarks}% Top right header
+\fancyhead[EL]{\mynoautospacing\myheadingfont \textbf{\textemdash\ \rightmark}\biblthumbmarkleft{\mythumbindex}\evenbindingmarks}% Top left header - leading dash is to discourage accidental reading of the heading
+\fancyhead[C]{\mynoautospacing\myheadingfont {\thepage}}% Center footer - bold is less readable
 \renewcommand{\headrulewidth}{0.0pt}% lines just amplify the skewness of skewly printed pages 
 \renewcommand{\footrulewidth}{0.0pt}%
 %\defaultfontfeatures{Scale=MatchLowercase}

@@ -104,20 +104,28 @@ TODO:
 GENERATE GRAZE SHORTER NARROW FROM GRAZE SHORTER:
 
     For each subfont:
-    Scaling:
-        Ctrl+\
+    Scaling: Scale horizontally by .875
+        Ctrl+A; Ctrl+\  # scale all characters
         Origin: Glyph Origin
         Operation: Scale...
-        X: 0.875
-        Y: 0
-        Scale horizontally by .875
+        X: 87.5%  (0.875)
+        Y: 100 %  (0)
+        Round to Int
+    Hint all:
+        Ctrl+A, Ctrl+Shift+H
     Correct for font weight reduction:
         Expand stroke horizontally by 5 pts (not 13/2 = 6.5):
         Ctrl+Shift+E, with these settings:
+            nib type: elliptical
+            nib width 5  (Major axis width)
+            nib height 1  (Major axis height)
             nib angle: 0
-            nib width 5
-            nib height 1
             contours (from closed): External only     
+    Font info:
+        Ctrl+Shift+F
+        Set font name (x3)
+    Save as
+        Ctrrl+Shift+S
 
 TAKE II:
 
@@ -130,8 +138,9 @@ TAKE II:
     font to be a more pronounced line (not always interrupted by horizontal
     inter-character spaces).  Having that baseline more visible means that the
     horizontal spacing does not as much visually interfere with the vertical
-    spacing.  I think that when the Font Size was set to something
-    other than 1000, the automatic kerning did not work very well at all.
+    spacing - that's a good thing.  I think that when the Font Size was set to
+    something other than 1000, the automatic kerning did not work very well at
+    all.
 
 
 The metrics of Graze Shorter are:

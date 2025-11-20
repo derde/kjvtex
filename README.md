@@ -170,6 +170,7 @@ Kerning
 
 ### Africa marked edition 
 (generous spacing, large margins)
+For this paper size and similar margins, we can do 1145 pages: Graze Shorter 9.0pt text, line spacing 9.45pt, scaled 0.875
 
     pages=1147=878+269 (OT+NT)
     page-height=200mm

@@ -35,8 +35,8 @@ default: $(PDF)
 .NOTINTERMEDIATE: meh
 
 %.pdf : %.tex $(PDFDEPS) $(FONTS_GRAZESHORTER)
-	xelatex $< </dev/null 
-	grep myrearmatter -A3 < $< | grep -P '^\s*\\mypageiii' || xelatex $< </dev/null  # just run it again, for the TOC, because CPU is cheap
+	rm -f $@ ; xelatex $< </dev/null 
+	grep myrearmatter -A3 < $< | grep -P '^\s*\\mypageiii' || { rm $@ ; xelatex $< </dev/null  ; } # just run it again, for the TOC, because CPU is cheap
 	grep --color 'Overfull.*' `echo $<|sed 's/\.tex/.log/'` || true # just run it again, for the TOC, because CPU is cheap
 
 %.txt : %.pdf
