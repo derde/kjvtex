@@ -1,0 +1,129 @@
+% A5 Afrikaans Byble in 880 bladsye
+\input{bibldefault.tex}
+\def\mysourcetext{afrikaans}
+\def\mytexlanguage{english}
+\def\ENpages{bladsye}%
+\def\ENaspect{verleng}%
+\def\ENlinespacing{lyne}%
+\def\ENpretitle{Die Bybel in Afrikaans}
+\def\ENtitle{DIE BYBEL}
+\def\ENsubtitle{1953/1933 Vertaling}
+\def\ENmotto{Die vrug van die regverdige is ’n boom van die lewe, en hy wat siele win, is wys.}
+\def\mymargins{left=12mm,top=12mm+\myfontsize-1pt,right=12mm,bottom=12mm,bindingoffset=8mm,headheight=\baselineskip+1pt}
+\def\mypapersize{6in,9in}% US trade 6x9 inch
+\def\myheadsep{3mm}
+\def\mycolumnsep{0.75em}
+\def\mydisplayfont{Graze Shorter}
+\def\myfontname{[GrazeShorter.otf]}
+\def\mysansfont{Liberation Sans}
+\def\myfontsize{7.00pt}
+\def\mybaseline{7.350pt}
+\def\myfontopts{
+    BoldFont=[GrazeShorter-Bold.otf],
+    ItalicFont=[GrazeShorter-Italic.otf],
+}
+% This works, but it seems neater to squash the font, rather than reduce the inter-character spacing:
+\def\myfontstretch{0.891}
+%\def\myletterspace{}
+\def\myextradisplay{}
+\def\myhypenpenalty{1000}%   Lower penalty means more hypenation and fewer pages
+\def\mytoccolumns{3}
+\def\mychapterscale{0.98}
+\def\myversescale{0.80}
+\def\myverseraise{2pt}
+\def\mylayoutblurb{}
+
+\renewcommand\myfrontmatter{%
+    %\mypagei%   blank
+    \mypageiii%  title page
+    \mypageii%   print info page
+    %\mypageiv%  blank again
+}
+%\def\biblbeforeoldtestament{\newpage\thispagestyle{noheadings}\null\vfill\begin{center}DIE OU TESTAMENT\end{center}\vfill\null\vfill}
+%\def\biblbeforenewtestament{\newpage\thispagestyle{noheadings}\null\vfill\begin{center}DIE NUWE TESTAMENT\end{center}\vfill\null\vfill}
+
+\def\mypageii{
+\thispagestyle{noheadings}%
+\null\vfill
+\InputIfFileExists{\jobname.pages}{}{}
+DIE BYBEL, OU VERTALING\par
+DIE BYBEL IN AFRIKAANS, 1933, hersien 1953\par
+Kopiereg Bybelgenoodskap 1953 (verjaar)\par
+\null\par
+Bladuitleg deur {\mylatexfont \LaTeX{}}, %
+\myformattinginfoi
+\par
+Skrif \myformattinginfoii
+\myformattinginfoiii%
+\par
+Bron kode: https://github.com/derde/kjvtex, ``\jobname.tex''
+\par
+Bron lêer: af1953.txt, c6dc3a4326871399677271a60128dae4 MD5
+\par
+\newcounter{mylines}
+\setcounter{mylines}{\textheight / \baselineskip}
+\newlength{\mybestlinespace}
+\setlength{\mybestlinespace}{\textheight / \themylines}
+Teks area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit{mm}\rndprintlength{\textheight}} 
+ (\arabic{mylines}$\times${\uselengthunit{pt}\rndprintlength{\mybestlinespace}})
+\par
+\mylayoutblurb
+\par
+\bookheadingstrut{3\baselineskip}
+\par
+\newpage
+}
+\def\mydocumentsettings{
+  \spaceskip=\dimexpr\the\fontdimen2\font-\the\fontdimen4\font\relax plus 0.08em % plus \the\fontdimen4\font % space between words: keep it constant, with tiny changes, no up-side
+  \rightskip=0pt plus 1.8em\relax% space on right hand margin: keep it small
+  \parfillskip=0pt plus 10em\relax%   last line of paragraph space: use up all of the spare space here.
+}
+\def\myhypenpenalty{700}%   Lower penalty means more hypenation and fewer pages
+
+\def\myversehspace{0.3pt}% space after verse number
+\def\myverseahspace{-0.05em}% space after verse number before A
+\def\mychapterraise{1pt}% push the chapter number up this much
+\def\mychapterfontextra{\color{mygray}}% push the chapter number up this much
+\def\mypredocument{
+    \selectlanguage{afrikaans}
+    \frenchspacing% Oh wow ... this saves two pages!
+    \pretolerance=200
+    \renewcommand{\headruleskip}{-2pt}
+    \frenchspacing% Oh wow ... this saves two pages!
+    \newfontfamily\tinyfont[FakeStretch=\myversefontstretch,Scale=0.9]{\mysansfont}
+    \definecolor{circlegrey}{gray}{0.9}
+}
+\def\usepackages{
+\usepackage{zref-savepos}
+\usepackage{pifont}
+\usepackage{circledsteps}
+}
+
+% To omit binding marks
+\renewcommand{\oddbindingmarks}{}
+\renewcommand{\evenbindingmarks}{}
+
+\def\ENmottoii{}
+%   % Gospel outline markup
+%   \def\ENmottoii{\circlegreyfill{\small A}\ Evangelie verse begin by Romeine 3:10, bladsy \pageref{g:A} }
+%   \def\qromeineqiiiqx{\label{g:A}\topnote{\circlegreyfill{\small A}}{Romeine 3:10, 3:23 (sonde). Na bladsy \pageref{g:B} }}
+%   \def\qromeineqiiiqxxiii{\topnote{\circlegreyfill{\small A}}{Romeine 3:10, 3:23 (sonde). Na bladsy \pageref{g:B} }}
+%   \def\qromeineqviqxxiii{\label{g:B}\topnote{\circlegreyfill{\small B}}{Romeine 6:23 (oordeel). Na bladsy \pageref{g:C} }}
+%   \def\qopenbaringqxxqxiv{\label{g:C}\topnote{\circlegreyfill{\small B}}{Openbaring 20:14-15, 21:8 (die dood).  Na bladsy \pageref{g:D} }}
+%   \def\qopenbaringqxxiqviii{\topnote{\circlegreyfill{\small B}}{Openbaring 20:14-15, 21:8 (hel).  Na bladsy \pageref{g:D} }}
+%   %\def\qromeineqiiiqxxiii\topnote{Gospel: romeine 3:23, Na bladsy \pageref{g:b} }}
+%   \def\qikorinthiersqxvqiii{\label{g:D}\topnote{\circlegreyfill{\small C}}{1 Kor. 15:3-4 (opstanding).  Na bladsy \pageref{g:E} }}
+%   \def\qromeineqvqviii{\label{g:E}\topnote{\circlegreyfill{\small C}}{Romeine 5:8 (straf). Na bladsy \pageref{g:F} }}
+%   \def\qhandelingeqxviqxxxi{\label{g:F}\topnote{\circlegreyfill{\small D}}{Handelinge 16:31 (glo!).  Na bladsy \pageref{g:G} }}
+%   \def\qjohannesqiiiqxvi{\label{g:G}\topnote{\circlegreyfill{\small D}}{Johannes 3:16 (glo!). Na bladsy \pageref{g:H} }}
+%   \def\qjohannesqvqxxiv{\label{g:H}\topnote{\circlegreyfill{\small E}}{Johannes 5:24 (altyd gered). Na bladsy \pageref{g:I} }}
+%   \def\qromeineqxqxiii{\label{g:I}\topnote{\circlegreyfill{\small E}}{Romeine 10:13 (vra net).}}
+\def\myrearmatter{
+    %\newpage\null\thispagestyle{noheadings}
+    \newpage\null\thispagestyle{noheadings}
+    \newpage\null\thispagestyle{noheadings}
+}
+\def\mychapterspace{0.44\baselineskip}% needspace for chapter title (should be 2\baselineskip - but in multicolumn, it doesn't work)
+
+\input{biblayout.tex}
+
