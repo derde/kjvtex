@@ -1000,7 +1000,8 @@ class bibleformatter:
         # Generate  chapter numbers for each book
         o='';
         if chapter=='1':
-            if book in ('Obadiah','Philemon','2 John','3 John','Jude'):
+            if book in ('Obadiah','Philemon','2 John','3 John','Jude',
+                        'Obadja','Philémon','2 Johannes','3 Johannes','Judas'):
                 return o+self.verseheading('1') #  + '\n';
         global html,template
         if html:
@@ -1163,7 +1164,7 @@ class bibleformatter:
             self.state['chapter']=chapter
             self.state['verse']=verse
             self.state['text']=text
-            self.state['shortbook']=( book in ('Obadiah','Philemon','2 John','3 John','Jude') )
+            self.state['shortbook']=( book in ('Obadiah','Philemon','2 John','3 John','Jude','Obadja','Philemon','2 Johannes','3 Johannes','Judas') )
             self.state['isnewparagraph'] = self.isnewparagraph(book,chapter,verse,text)
             versetmpl = {True: '%(BOOK)s %(verse)s',
                         False: '%(BOOK)s %(chapter)s:%(verse)s' }

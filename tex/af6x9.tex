@@ -1,4 +1,8 @@
 % A5 Afrikaans Byble in 880 bladsye
+% Vertical: trim+bleed=9.25in, trim=9in, safe=8.5"
+% Horizontal: trim+bleed=6.125in, trim=6in (trim 0 gutter inner, 0.125 right), safe=5.375"
+% Page with bleed 6.125 x 9.25 inch
+% Top,bottom bleed: 1.25"
 \input{bibldefault.tex}
 \def\mysourcetext{afrikaans}
 \def\mytexlanguage{english}
@@ -9,21 +13,22 @@
 \def\ENtitle{DIE BYBEL}
 \def\ENsubtitle{1953/1933 Vertaling}
 \def\ENmotto{Die vrug van die regverdige is ’n boom van die lewe, en hy wat siele win, is wys.}
-\def\mymargins{left=12mm,top=12mm+\myfontsize-1pt,right=12mm,bottom=12mm,bindingoffset=8mm,headheight=\baselineskip+1pt}
-\def\mypapersize{6in,9in}% US trade 6x9 inch
-\def\myheadsep{3mm}
+% 0.125 trim
+\def\mymargins{left=0.375in,top=0.375in+\mybaseline+\myheadsep,right=0.375in,bottom=0.375in,bindingoffset=0.375in,headheight=\baselineskip+1pt} % >500pages
+\def\mypapersize{6.125in,9.25in}% US trade 6x9 inch plus bleed
+\def\myheadsep{1pt}
 \def\mycolumnsep{0.75em}
 \def\mydisplayfont{Graze Shorter}
 \def\myfontname{[GrazeShorter.otf]}
 \def\mysansfont{Liberation Sans}
-\def\myfontsize{7.00pt}
-\def\mybaseline{7.38pt}
+\def\myfontsize{7.25pt}
+\def\mybaseline{7.25pt}
 \def\myfontopts{
     BoldFont=[GrazeShorter-Bold.otf],
     ItalicFont=[GrazeShorter-Italic.otf],
 }
 % This works, but it seems neater to squash the font, rather than reduce the inter-character spacing:
-\def\myfontstretch{0.94}
+\def\myfontstretch{0.876}
 %\def\myletterspace{}
 \def\myextradisplay{}
 \def\myhypenpenalty{1000}%   Lower penalty means more hypenation and fewer pages
@@ -119,15 +124,20 @@ Teks area {\uselengthunit{mm}\rndprintlength{\textwidth}}$\times${\uselengthunit
 %   \def\qjohannesqvqxxiv{\label{g:H}\topnote{\circlegreyfill{\small E}}{Johannes 5:24 (altyd gered). Na bladsy \pageref{g:I} }}
 %   \def\qromeineqxqxiii{\label{g:I}\topnote{\circlegreyfill{\small E}}{Romeine 10:13 (vra net).}}
 \def\myrearmatter{
-    %\newpage\null\thispagestyle{noheadings}
-    \newpage\null\thispagestyle{noheadings}
     \newpage\null\thispagestyle{noheadings}
     \begin{multicols*}{2}
     \rightskip=0pt plus 0.1em\relax% space on right hand margin: keep it small now
+    \newfontfamily\mygospelfont[FakeStretch=\myfontstretch]{Liberation Sans}%
+    \mygospelfont
     \input{gospel-outline.af.tex}%
     \end{multicols*}
 }
 \def\mychapterspace{0.44\baselineskip}% needspace for chapter title (should be 2\baselineskip - but in multicolumn, it doesn't work)
+\def\biblnewparagraph{\par}% Paragraph break instruction - none
+\def\mypreverse{\par}% set this to \par for verse-per-line
+\def\mypreversei{}% funny indents and symbols maybe?
+\def\mypreverseii{\biblsyntheticparii}% set this to \par for verse-per-line
+\def\myendchapter{\par\null}%
 
 \input{biblayout.tex}
 

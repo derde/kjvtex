@@ -224,7 +224,7 @@
 % New chapter number 
 \newcommand{\biblnewchapter}[1]{}%
 % Move the thumb index (just make sure it doesn't disappear)
-\newcommand{\biblendchapter}[2]{\gdef\mythumbindex{#2}}%
+\newcommand{\biblendchapter}[2]{\gdef\mythumbindex{#2}\ifdefined\myendchapter{\myendchapter}\fi}%
 \newcommand{\bibltocendmulticol}{}%
 \newcommand{\bibltocsectionheader}[1]{%
     \bibltocendmulticol%
